@@ -18,11 +18,6 @@ class Product
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $code_product;
-
-    /**
      * @ORM\Column(type="string", length=64)
      */
     private $name;
@@ -53,31 +48,10 @@ class Product
     private $code_product_replace;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $code_category;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $test;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getCodeProduct(): ?int
-    {
-        return $this->code_product;
-    }
-
-    public function setCodeProduct(int $code_product): self
-    {
-        $this->code_product = $code_product;
-
-        return $this;
-    }
+    private $Category;
 
     public function getName(): ?string
     {
@@ -151,26 +125,14 @@ class Product
         return $this;
     }
 
-    public function getCodeCategory(): ?int
+    public function getCategory(): ?Category
     {
-        return $this->code_category;
+        return $this->Category;
     }
 
-    public function setCodeCategory(int $code_category): self
+    public function setCategory(?Category $Category): self
     {
-        $this->code_category = $code_category;
-
-        return $this;
-    }
-
-    public function getTest(): ?string
-    {
-        return $this->test;
-    }
-
-    public function setTest(string $test): self
-    {
-        $this->test = $test;
+        $this->Category = $Category;
 
         return $this;
     }
