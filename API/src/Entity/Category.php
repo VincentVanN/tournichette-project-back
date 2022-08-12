@@ -32,6 +32,11 @@ class Category
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $test;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Category
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getTest(): ?string
+    {
+        return $this->test;
+    }
+
+    public function setTest(string $test): self
+    {
+        $this->test = $test;
 
         return $this;
     }

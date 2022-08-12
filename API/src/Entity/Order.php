@@ -53,6 +53,11 @@ class Order
      */
     private $code_user;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $test;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -138,6 +143,18 @@ class Order
     public function setCodeUser(int $code_user): self
     {
         $this->code_user = $code_user;
+
+        return $this;
+    }
+
+    public function getTest(): ?string
+    {
+        return $this->test;
+    }
+
+    public function setTest(string $test): self
+    {
+        $this->test = $test;
 
         return $this;
     }

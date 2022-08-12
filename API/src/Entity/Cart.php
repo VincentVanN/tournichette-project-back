@@ -32,6 +32,11 @@ class Cart
      */
     private $type_cart;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $test;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Cart
     public function setTypeCart(string $type_cart): self
     {
         $this->type_cart = $type_cart;
+
+        return $this;
+    }
+
+    public function getTest(): ?string
+    {
+        return $this->test;
+    }
+
+    public function setTest(string $test): self
+    {
+        $this->test = $test;
 
         return $this;
     }
