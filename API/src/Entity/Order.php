@@ -34,12 +34,12 @@ class Order
     private $price;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=5)
      */
     private $payment_status;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=5)
      */
     private $deliver_status;
 

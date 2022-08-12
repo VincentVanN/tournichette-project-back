@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CarRepository;
+use App\Repository\CartRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CarRepository::class)
+ * @ORM\Entity(repositoryClass=CartRepository::class)
  */
-class Car
+class Cart
 {
     /**
      * @ORM\Id
@@ -28,7 +28,7 @@ class Car
     private $price;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=10)
      */
     private $type_cart;
 
