@@ -20,12 +20,7 @@ class Role
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $code_role;
-
-    /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=20)
      */
     private $name;
 
@@ -42,18 +37,6 @@ class Role
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCodeRole(): ?int
-    {
-        return $this->code_role;
-    }
-
-    public function setCodeRole(int $code_role): self
-    {
-        $this->code_role = $code_role;
-
-        return $this;
     }
 
     public function getName(): ?string
