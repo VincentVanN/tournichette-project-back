@@ -23,35 +23,35 @@ class Product
     private $name;
 
     /**
-     * @ORM\Column(type="decimal", precision=3, scale=3)
+     * @ORM\Column(type="decimal", precision=6, scale=3)
      */
     private $stock;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=20)
      */
     private $unity;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $image;
 
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=2)
+     * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private $price;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $code_product_replace;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Category;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Product::class, inversedBy="productReplace", cascade={"persist", "remove"})
+     */
+    private $product;
 
     public function getName(): ?string
     {
@@ -113,18 +113,6 @@ class Product
         return $this;
     }
 
-    public function getCodeProductReplace(): ?int
-    {
-        return $this->code_product_replace;
-    }
-
-    public function setCodeProductReplace(?int $code_product_replace): self
-    {
-        $this->code_product_replace = $code_product_replace;
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->Category;
@@ -133,6 +121,18 @@ class Product
     public function setCategory(?Category $Category): self
     {
         $this->Category = $Category;
+
+        return $this;
+    }
+
+    public function getProduct(): ?self
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?self $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }
