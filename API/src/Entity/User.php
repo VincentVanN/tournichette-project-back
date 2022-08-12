@@ -18,11 +18,6 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $code_user;
-
-    /**
      * @ORM\Column(type="string", length=64)
      */
     private $firstname;
@@ -58,25 +53,14 @@ class User
     private $token;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $code_role;
+    private $role;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCodeUser(): ?int
-    {
-        return $this->code_user;
-    }
-
-    public function setCodeUser(int $code_user): self
-    {
-        $this->code_user = $code_user;
-
-        return $this;
     }
 
     public function getFirstname(): ?string
@@ -163,14 +147,14 @@ class User
         return $this;
     }
 
-    public function getCodeRole(): ?int
+    public function getRole(): ?Role
     {
-        return $this->code_role;
+        return $this->role;
     }
 
-    public function setCodeRole(int $code_role): self
+    public function setRole(?Role $role): self
     {
-        $this->code_role = $code_role;
+        $this->role = $role;
 
         return $this;
     }
