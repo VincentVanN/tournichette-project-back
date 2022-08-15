@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,12 +20,7 @@ class Cart
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $code_cart;
-
-    /**
-     * @ORM\Column(type="decimal", precision=2, scale=2)
+     * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private $price;
 
@@ -33,25 +30,24 @@ class Cart
     private $type_cart;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=CartProduct::class, mappedBy="cart")
      */
-    private $test;
+    private $cartProducts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CartOrder::class, mappedBy="cart")
+     */
+    private $cartOrders;
+
+    public function __construct()
+    {
+        $this->cartProducts = new ArrayCollection();
+        $this->cartOrders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCodeCart(): ?int
-    {
-        return $this->code_cart;
-    }
-
-    public function setCodeCart(int $code_cart): self
-    {
-        $this->code_cart = $code_cart;
-
-        return $this;
     }
 
     public function getPrice(): ?string
@@ -78,14 +74,62 @@ class Cart
         return $this;
     }
 
-    public function getTest(): ?string
+    /**
+     * @return Collection<int, CartProduct>
+     */
+    public function getCartProducts(): Collection
     {
-        return $this->test;
+        return $this->cartProducts;
     }
 
-    public function setTest(string $test): self
+    public function addCartProduct(CartProduct $cartProduct): self
     {
-        $this->test = $test;
+        if (!$this->cartProducts->contains($cartProduct)) {
+            $this->cartProducts[] = $cartProduct;
+            $cartProduct->setCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartProduct(CartProduct $cartProduct): self
+    {
+        if ($this->cartProducts->removeElement($cartProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($cartProduct->getCart() === $this) {
+                $cartProduct->setCart(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CartOrder>
+     */
+    public function getCartOrders(): Collection
+    {
+        return $this->cartOrders;
+    }
+
+    public function addCartOrder(CartOrder $cartOrder): self
+    {
+        if (!$this->cartOrders->contains($cartOrder)) {
+            $this->cartOrders[] = $cartOrder;
+            $cartOrder->setCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartOrder(CartOrder $cartOrder): self
+    {
+        if ($this->cartOrders->removeElement($cartOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($cartOrder->getCart() === $this) {
+                $cartOrder->setCart(null);
+            }
+        }
 
         return $this;
     }

@@ -39,6 +39,22 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByCategory($categoryName): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+            SELECT p
+            FROM App\Entity\Product p
+            JOIN p.category c
+            WHERE c.name = :categoryName
+            '
+        )->setParameter('categoryName', $categoryName);
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

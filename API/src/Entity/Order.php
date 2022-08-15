@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,11 +19,6 @@ class Order
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $code_order;
 
     /**
      * @ORM\Column(type="datetime")
@@ -44,35 +41,36 @@ class Order
     private $deliver_status;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Depot::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $code_depot;
+    private $depot;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $code_user;
+    private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orders")
      */
-    private $test;
+    private $orderProducts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CartOrder::class, mappedBy="orders")
+     */
+    private $cartOrders;
+
+    public function __construct()
+    {
+        $this->orderProducts = new ArrayCollection();
+        $this->cartOrders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCodeOrder(): ?int
-    {
-        return $this->code_order;
-    }
-
-    public function setCodeOrder(int $code_order): self
-    {
-        $this->code_order = $code_order;
-
-        return $this;
     }
 
     public function getDateOrder(): ?\DateTimeInterface
@@ -123,38 +121,86 @@ class Order
         return $this;
     }
 
-    public function getCodeDepot(): ?int
+    public function getDepot(): ?Depot
     {
-        return $this->code_depot;
+        return $this->depot;
     }
 
-    public function setCodeDepot(int $code_depot): self
+    public function setDepot(?Depot $depot): self
     {
-        $this->code_depot = $code_depot;
+        $this->depot = $depot;
 
         return $this;
     }
 
-    public function getCodeUser(): ?int
+    public function getUser(): ?User
     {
-        return $this->code_user;
+        return $this->user;
     }
 
-    public function setCodeUser(int $code_user): self
+    public function setUser(?User $user): self
     {
-        $this->code_user = $code_user;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getTest(): ?string
+    /**
+     * @return Collection<int, OrderProduct>
+     */
+    public function getOrderProducts(): Collection
     {
-        return $this->test;
+        return $this->orderProducts;
     }
 
-    public function setTest(string $test): self
+    public function addOrderProduct(OrderProduct $orderProduct): self
     {
-        $this->test = $test;
+        if (!$this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts[] = $orderProduct;
+            $orderProduct->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderProduct(OrderProduct $orderProduct): self
+    {
+        if ($this->orderProducts->removeElement($orderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getOrders() === $this) {
+                $orderProduct->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CartOrder>
+     */
+    public function getCartOrders(): Collection
+    {
+        return $this->cartOrders;
+    }
+
+    public function addCartOrder(CartOrder $cartOrder): self
+    {
+        if (!$this->cartOrders->contains($cartOrder)) {
+            $this->cartOrders[] = $cartOrder;
+            $cartOrder->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartOrder(CartOrder $cartOrder): self
+    {
+        if ($this->cartOrders->removeElement($cartOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($cartOrder->getOrders() === $this) {
+                $cartOrder->setOrders(null);
+            }
+        }
 
         return $this;
     }

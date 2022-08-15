@@ -2,14 +2,21 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\Category;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class ProductFixtures extends Fixture implements DependentFixtureInterface
+class ProductFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
+
+    public static function getGroups(): array
+    {
+        return ['groupCart'];
+    }
+    
     public function getDependencies()
     {
         return [

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,12 +48,28 @@ class Product
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Category;
+    private $category;
 
     /**
      * @ORM\OneToOne(targetEntity=Product::class, inversedBy="productReplace", cascade={"persist", "remove"})
      */
     private $product;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CartProduct::class, mappedBy="product")
+     */
+    private $cartProducts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="product")
+     */
+    private $orderProducts;
+
+    public function __construct()
+    {
+        $this->cartProducts = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
+    }
 
     public function getName(): ?string
     {
@@ -115,12 +133,12 @@ class Product
 
     public function getCategory(): ?Category
     {
-        return $this->Category;
+        return $this->category;
     }
 
-    public function setCategory(?Category $Category): self
+    public function setCategory(?Category $category): self
     {
-        $this->Category = $Category;
+        $this->category = $category;
 
         return $this;
     }
@@ -133,6 +151,66 @@ class Product
     public function setProduct(?self $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CartProduct>
+     */
+    public function getCartProducts(): Collection
+    {
+        return $this->cartProducts;
+    }
+
+    public function addCartProduct(CartProduct $cartProduct): self
+    {
+        if (!$this->cartProducts->contains($cartProduct)) {
+            $this->cartProducts[] = $cartProduct;
+            $cartProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartProduct(CartProduct $cartProduct): self
+    {
+        if ($this->cartProducts->removeElement($cartProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($cartProduct->getProduct() === $this) {
+                $cartProduct->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderProduct>
+     */
+    public function getOrderProducts(): Collection
+    {
+        return $this->orderProducts;
+    }
+
+    public function addOrderProduct(OrderProduct $orderProduct): self
+    {
+        if (!$this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts[] = $orderProduct;
+            $orderProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderProduct(OrderProduct $orderProduct): self
+    {
+        if ($this->orderProducts->removeElement($orderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getProduct() === $this) {
+                $orderProduct->setProduct(null);
+            }
+        }
 
         return $this;
     }
