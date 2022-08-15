@@ -81,7 +81,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         // dd($superAdminRole, $adminUser);
         $manager->persist($adminUser);
 
-        $nbUser = 50;
+        $nbUser = 100;
 
         for($i = 0; $i < $nbUser; $i++)
         {

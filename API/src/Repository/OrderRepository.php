@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @extends ServiceEntityRepository<Order>
@@ -37,6 +38,22 @@ class OrderRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getPriceCartOrder(Order $entity): Integer
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+            SELECT SUM(co.quantity*c.price) s
+            FROM App\Entity\CartOrder co
+            JOIN co.cart c
+            WHERE co.orders = :order
+            '
+        )->setParameter('order', $entity);
+
+        return $query->getResult();
     }
 
 //    /**

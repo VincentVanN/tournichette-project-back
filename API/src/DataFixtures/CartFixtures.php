@@ -70,7 +70,7 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         $smallCart = new Cart;
         $smallCart->setPrice(10);
-        $smallCart->setTypeCart("small");
+        $smallCart->setTypeCart("big");
 
         $manager->persist($smallCart);
 

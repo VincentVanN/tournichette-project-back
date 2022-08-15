@@ -30,9 +30,10 @@ class CartOrder
     private $orders;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @ORM\Column(type="integer")
      */
     private $quantity;
+
 
     public function getId(): ?int
     {
@@ -63,12 +64,12 @@ class CartOrder
         return $this;
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    public function setQuantity(string $quantity): self
+    public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
 

@@ -21,12 +21,12 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
-    private $date_order;
+    private $orderedAt;
 
     /**
-     * @ORM\Column(type="decimal", precision=2, scale=2)
+     * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private $price;
 
@@ -62,6 +62,16 @@ class Order
      */
     private $cartOrders;
 
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $paidAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $deliveredAt;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -73,14 +83,14 @@ class Order
         return $this->id;
     }
 
-    public function getDateOrder(): ?\DateTimeInterface
+    public function getDateOrder(): ?\DateTimeImmutable
     {
-        return $this->date_order;
+        return $this->orderedAt;
     }
 
-    public function setDateOrder(\DateTimeInterface $date_order): self
+    public function setDateOrder(\DateTimeImmutable $orderedAt): self
     {
-        $this->date_order = $date_order;
+        $this->orderedAt = $orderedAt;
 
         return $this;
     }
@@ -201,6 +211,30 @@ class Order
                 $cartOrder->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPaidAt(): ?\DateTimeImmutable
+    {
+        return $this->paidAt;
+    }
+
+    public function setPaidAt(?\DateTimeImmutable $paidAt): self
+    {
+        $this->paidAt = $paidAt;
+
+        return $this;
+    }
+
+    public function getDeliveredAt(): ?\DateTimeImmutable
+    {
+        return $this->deliveredAt;
+    }
+
+    public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): self
+    {
+        $this->deliveredAt = $deliveredAt;
 
         return $this;
     }
