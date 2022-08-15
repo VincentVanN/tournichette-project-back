@@ -32,7 +32,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $fakerFr = \Faker\Factory::create('fr_FR');
 
         $superAdminUser = new User;
-        // $superAdminRole = new Role;
         $superAdminRole = $manager->getRepository(Role::class)->findBy(['name' => 'ROLE_SUPER_ADMIN']);
         foreach ($superAdminRole as $adminRole) {
             $superAdminUser->setRole($adminRole);

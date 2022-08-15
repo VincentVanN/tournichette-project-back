@@ -18,11 +18,6 @@ class Depot
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $code_depot;
-
-    /**
      * @ORM\Column(type="string", length=64)
      */
     private $name;
@@ -32,26 +27,9 @@ class Depot
      */
     private $address;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $test;
-
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCodeDepot(): ?int
-    {
-        return $this->code_depot;
-    }
-
-    public function setCodeDepot(int $code_depot): self
-    {
-        $this->code_depot = $code_depot;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -74,18 +52,6 @@ class Depot
     public function setAddress(string $address): self
     {
         $this->address = $address;
-
-        return $this;
-    }
-
-    public function getTest(): ?string
-    {
-        return $this->test;
-    }
-
-    public function setTest(string $test): self
-    {
-        $this->test = $test;
 
         return $this;
     }
