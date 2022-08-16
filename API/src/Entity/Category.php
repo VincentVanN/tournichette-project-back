@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -16,16 +17,30 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"api_v1_categories_list"})
+     * @Groups({"api_v1_products_list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"api_v1_categories_list"})
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"api_v1_categories_list"})
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"api_v1_categories_list"})
      */
     private $image;
 
@@ -33,11 +48,6 @@ class Category
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="Category")
      */
     private $products;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
 
     public function __construct()
     {

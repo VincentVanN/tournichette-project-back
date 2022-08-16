@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -16,37 +17,57 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $stock;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $unity;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $image;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
      */
     private $price;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"api_v1_products_list"})
      */
     private $category;
 
@@ -65,15 +86,15 @@ class Product
      */
     private $orderProducts;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
-
     public function __construct()
     {
         $this->cartProducts = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getName(): ?string

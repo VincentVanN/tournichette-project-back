@@ -1,0 +1,23 @@
+### Login
+POST http://localhost:8000/api/login
+content-type: application/json
+
+{
+    "email":"user@user.com",
+    "password":"user"
+}
+
+### Categories list
+GET http://localhost:8000/api/v1/categories
+
+### Category Products (fruits)
+GET http://localhost:8000/api/v1/categories/fruits/products
+
+### Category Products (legumes)
+GET http://localhost:8000/api/v1/categories/legumes/products
+
+### Category Products (produits-transformes)
+GET http://localhost:8000/api/v1/categories/produits-transformes/products
+
+### Products list
+GET http://localhost:8000/api/v1/products
