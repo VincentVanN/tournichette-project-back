@@ -41,9 +41,9 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         for($i = 0 ; $i<$nbOrders; $i++)
         {
             $this->order = new Order();
-            $this->orderType = $faker->randomElement(['small', 'big', 'products']);
+            $this->orderType = $faker->randomElement(['cart', 'products', 'mix']);
 
-            if ($this->orderType === 'small' || $this->orderType === 'big') {
+            if ($this->orderType === 'cart') {
 
                $this->chooseCart($manager);
                 
@@ -52,7 +52,13 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 
                 $this->chooseProducts($manager);
                 
-            } 
+            } elseif ($this->orderType === 'mix') {
+
+                $this->chooseCart($manager);
+                $this->chooseProducts($manager);
+            }
+
+            // TODO mix orders (1 cart (big or small) & products)
             
 
             $order = $this->order;
@@ -96,17 +102,18 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     private function chooseCart($manager)
     {
         $order = $this->order;
+        $priceOrder = $order->getPrice() == null ? 0 : $order->getPrice();
 
         $cartOrder = new CartOrder();
         $cartOrder->setQuantity(1);
         $cartOrder->setOrders($order);
         
 
-        $cart = $manager->getRepository(Cart::class)->findOneBy(['type_cart' => $this->orderType]);
+        $cart = $manager->getRepository(Cart::class)->findOneBy(['type_cart' => $this->faker->randomElement(['small', 'big'])]);
         // $order->setPrice($cart->getPrice());
         $cartOrder->setCart($cart);
 
-        $order->setPrice($cart->getPrice());
+        $order->setPrice($priceOrder + $cart->getPrice());
 
         $manager->persist($cartOrder);
 
@@ -117,9 +124,9 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
 
     private function chooseProducts($manager)
     {
-        $totalPrice = 0;
         $faker = $this->faker;
         $order = $this->order;
+        $priceOrder = $order->getPrice() == null ? 0 : $order->getPrice();
 
         $nbProducts = $faker->numberBetween(1, 5);
         $randomProducts = $faker->randomElements(
@@ -132,12 +139,12 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
             $orderProduct->setProduct($currentProduct);
             $orderProduct->setOrders($order);
             $orderProduct->setQuantity(1);
-            $totalPrice += $currentProduct->getPrice();
+            $priceOrder += $currentProduct->getPrice();
 
             $manager->persist($orderProduct);
         }
 
-        $order->setPrice($totalPrice);
+        $order->setPrice($priceOrder);
 
         $this->order = $order;
 
