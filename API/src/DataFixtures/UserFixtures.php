@@ -41,7 +41,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $superAdminUser->setFirstname($faker->firstName());
         $superAdminUser->setLastname($faker->lastName());
 
-        // $hashedPassword = $this->passwordHash->hashPassword($superAdminUser, 'admin');
         $superAdminUser->setPassword('admin');
 
         $phoneSuperAdmin = $fakerFr->unique()->serviceNumber();
@@ -51,34 +50,27 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $superAdminUser->setAddress($faker->address());
 
         $superAdminUser->setToken($faker->unique()->sha256());
-        // dd($superAdminRole, $superAdminUser);
         $manager->persist($superAdminUser);
 
-        // $manager->flush();
-
         $adminUser = new User;
-        // $superAdminRole = new Role;
         $adminRole = $manager->getRepository(Role::class)->findBy(['name' => 'ROLE_ADMIN']);
         foreach ($adminRole as $currentAdminRole) {
             $adminUser->setRole($currentAdminRole);
         }
 
-        $adminUser->setEmail('superadmin@tournichette.com');
+        $adminUser->setEmail('admin@tournichette.com');
         $adminUser->setFirstname($faker->firstName());
         $adminUser->setLastname($faker->lastName());
 
-        // $hashedPassword = $this->passwordHash->hashPassword($adminUser, 'admin');
         $adminUser->setPassword('admin');
 
         $phoneAdmin = $fakerFr->unique()->serviceNumber();
         $phoneNoSpaceAdmin = str_replace(' ', '', $phoneAdmin);
-        // dd($phoneAdmin, $phoneNoSpaceAdmin);
         $adminUser->setPhone($phoneNoSpaceAdmin);
 
         $adminUser->setAddress($faker->address());
 
         $adminUser->setToken($faker->unique()->sha256());
-        // dd($superAdminRole, $adminUser);
         $manager->persist($adminUser);
 
         $nbUser = 100;
@@ -91,7 +83,11 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 $userObj->setRole($currentUserRole);
             }
 
-            $userObj->setEmail($faker->unique()->email());
+            if ($i === 0) {
+                $userObj->setEmail('user@user.com'); // user test
+            } else {
+                $userObj->setEmail($faker->unique()->email());
+            }
             $userObj->setFirstname($faker->firstName());
             $userObj->setLastname($faker->lastName());
 
@@ -99,13 +95,11 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
             $phoneUser = $fakerFr->unique()->serviceNumber();
             $phoneNoSpaceUser = str_replace(' ', '', $phoneUser);
-            // dd($phoneAdmin, $phoneNoSpaceAdmin);
             $userObj->setPhone($phoneNoSpaceUser);
 
             $userObj->setAddress($faker->address());
 
             $userObj->setToken($faker->unique()->sha256());
-            // dd($superAdminRole, $adminUser);
             $manager->persist($userObj);
         }
 

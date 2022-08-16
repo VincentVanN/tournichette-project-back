@@ -32,45 +32,8 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
         // Small cart
 
         $smallCart = new Cart;
-        $smallCart->setPrice(5);
-        $smallCart->setTypeCart("small");
-
-        $manager->persist($smallCart);
-
-        $category = 'Fruits';
-        $allFruits = $manager->getRepository(Product::class)->findByCategory($category);
-        // dd($allFruits);
-        $randomFruits = $faker->randomElements($allFruits, 1);
-
-        foreach($randomFruits as $currentFruit)
-        {
-            $cartProduct = new CartProduct;
-            $cartProduct->setProduct($currentFruit);
-            $cartProduct->setCart($smallCart);
-            $cartProduct->setQuantity(1);
-
-            $manager->persist($cartProduct);
-        }
-
-        $category = 'Légumes';
-        $allVegetables = $manager->getRepository(Product::class)->findByCategory($category);
-        $randomVegetables = $faker->randomElements($allVegetables, 1);
-
-        foreach($randomVegetables as $currentVegetable)
-        {
-            $cartProduct = new CartProduct;
-            $cartProduct->setProduct($currentVegetable);
-            $cartProduct->setCart($smallCart);
-            $cartProduct->setQuantity(1);
-
-            $manager->persist($cartProduct);
-        }
-
-        // Big cart
-
-        $smallCart = new Cart;
         $smallCart->setPrice(10);
-        $smallCart->setTypeCart("big");
+        $smallCart->setTypeCart("small");
 
         $manager->persist($smallCart);
 
@@ -91,7 +54,44 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         $category = 'Légumes';
         $allVegetables = $manager->getRepository(Product::class)->findByCategory($category);
-        $randomVegetables = $faker->randomElements($allVegetables, 2);
+        $randomVegetables = $faker->randomElements($allVegetables, 3);
+
+        foreach($randomVegetables as $currentVegetable)
+        {
+            $cartProduct = new CartProduct;
+            $cartProduct->setProduct($currentVegetable);
+            $cartProduct->setCart($smallCart);
+            $cartProduct->setQuantity(1);
+
+            $manager->persist($cartProduct);
+        }
+
+        // Big cart
+
+        $smallCart = new Cart;
+        $smallCart->setPrice(15);
+        $smallCart->setTypeCart("big");
+
+        $manager->persist($smallCart);
+
+        $category = 'Fruits';
+        $allFruits = $manager->getRepository(Product::class)->findByCategory($category);
+        // dd($allFruits);
+        $randomFruits = $faker->randomElements($allFruits, 3);
+
+        foreach($randomFruits as $currentFruit)
+        {
+            $cartProduct = new CartProduct;
+            $cartProduct->setProduct($currentFruit);
+            $cartProduct->setCart($smallCart);
+            $cartProduct->setQuantity(1);
+
+            $manager->persist($cartProduct);
+        }
+
+        $category = 'Légumes';
+        $allVegetables = $manager->getRepository(Product::class)->findByCategory($category);
+        $randomVegetables = $faker->randomElements($allVegetables, 4);
 
         foreach($randomVegetables as $currentVegetable)
         {

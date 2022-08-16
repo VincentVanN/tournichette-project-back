@@ -57,14 +57,10 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 $this->chooseCart($manager);
                 $this->chooseProducts($manager);
             }
-
-            // TODO mix orders (1 cart (big or small) & products)
             
-
             $order = $this->order;
 
             $dateOredered = $faker->dateTimeBetween('-1 week');
-            // $dateTimeOredered is DateTime object, so whe need to convert it in DateTimeImmutable object :
             $dateOrederedImmutable = $dateOredered instanceof \DateTimeImmutable ? $dateOredered : \DateTimeImmutable::createFromMutable($dateOredered);
             $order->setDateOrder($dateOrederedImmutable);
 
