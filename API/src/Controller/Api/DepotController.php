@@ -3,46 +3,45 @@
 namespace App\Controller\Api;
 
 use App\Repository\DepotRepository;
-use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-/** @Route("/api/v1/products", name="api_v1_products" )
+/** @Route("/api/v1/depots", name="api_v1_depots" )
  * 
  */
-class ProductController extends AbstractController
+class DepotController extends AbstractController
 {
 
     /**
-    * List all products 
+    * List all depots 
     * @Route("", name="_list", methods="GET")
     * @return Response
     */
-    public function list(ProductRepository $productRepository) :Response
+    public function list(DepotRepository $depotRepository) :Response
     {
-        $allProducts = $productRepository->findAll();
+        $allDepots = $depotRepository->findAll();
 
         return $this->prepareResponse(
             'OK',
-            ['groups' => 'api_v1_products_list'],
-            ['data' => $allProducts]
+            ['groups' => 'api_v1_depots_list'],
+            ['data' => $allDepots]
         );
     }
 
     /**
-     * Show one product with given slug
+     * Show one depot with given slug
      * @Route("/{slug}", name="_show", methods="GET")
      */
-    public function show(string $slug, ProductRepository $productRepository): Response
+    public function show(string $slug, DepotRepository $depotRepository): Response
     {
-        $product = $productRepository->findOneBy(['slug' => $slug]);
+        $depot = $depotRepository->findOneBy(['slug' => $slug]);
 
-        if ($product === null)
+        if ($depot === null)
         {
             return $this->prepareResponse(
-                'No product found for this slug',
+                'No depot found for this slug',
                 [],
                 [],
                 true,
@@ -52,8 +51,8 @@ class ProductController extends AbstractController
 
         return $this->prepareResponse(
             'OK',
-            ['groups' => 'api_v1_product_show'],
-            ['data' => $product]
+            ['groups' => 'api_v1_depot_show'],
+            ['data' => $depot]
         );
 
     }

@@ -21,3 +21,12 @@ GET http://localhost:8000/api/v1/categories/produits-transformes/products
 
 ### Products list
 GET http://localhost:8000/api/v1/products
+
+### One product (carotte)
+GET http://localhost:8000/api/v1/products/carotte
+
+### Depots list
+GET http://localhost:8000/api/v1/depots
+
+### One depot (carlo-feeney)
+GET http://localhost:8000/api/v1/depots/carlo-feeney

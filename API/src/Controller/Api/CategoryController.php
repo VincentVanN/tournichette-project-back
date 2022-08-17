@@ -19,7 +19,7 @@ class CategoryController extends AbstractController
 
     /**
     * List all categories 
-    * @Route("", name="list", methods="GET")
+    * @Route("", name="_list", methods="GET")
     * @return Response
     */
     public function list(CategoryRepository $categoryRepository) :Response

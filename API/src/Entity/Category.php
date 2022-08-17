@@ -19,6 +19,7 @@ class Category
      * @ORM\Column(type="integer")
      * @Groups({"api_v1_categories_list"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $id;
 
@@ -27,6 +28,7 @@ class Category
      * @Groups({"api_v1_categories_list"})
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $name;
 
@@ -35,6 +37,7 @@ class Category
      * @Groups({"api_v1_categories_list"})
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $slug;
 

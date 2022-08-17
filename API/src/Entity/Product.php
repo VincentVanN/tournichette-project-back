@@ -19,6 +19,7 @@ class Product
      * @ORM\Column(type="integer")
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $id;
 
@@ -26,6 +27,7 @@ class Product
      * @ORM\Column(type="string", length=64)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $name;
 
@@ -33,6 +35,7 @@ class Product
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $slug;
 
@@ -40,6 +43,7 @@ class Product
      * @ORM\Column(type="decimal", precision=6, scale=3)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $stock;
 
@@ -47,6 +51,7 @@ class Product
      * @ORM\Column(type="string", length=20)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $unity;
 
@@ -54,6 +59,7 @@ class Product
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $image;
 
@@ -61,20 +67,25 @@ class Product
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $price;
 
     /**
      * Property asked by front-end
+     * 
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $quantity = 1;
 
      /**
      * Property asked by front-end
+     * 
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $parcel = 1;
 
@@ -82,6 +93,7 @@ class Product
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $category;
 

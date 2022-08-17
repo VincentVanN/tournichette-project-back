@@ -18,6 +18,7 @@ class Depot
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
      */
     private $id;
 
@@ -25,24 +26,28 @@ class Depot
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
      */
     private $address;
 
@@ -53,6 +58,8 @@ class Depot
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
      */
     private $slug;
 

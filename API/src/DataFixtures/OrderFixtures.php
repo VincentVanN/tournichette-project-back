@@ -95,6 +95,9 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * Add a random cart (big or small) to the order
+     */
     private function chooseCart($manager)
     {
         $order = $this->order;
@@ -106,7 +109,6 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         
 
         $cart = $manager->getRepository(Cart::class)->findOneBy(['type_cart' => $this->faker->randomElement(['small', 'big'])]);
-        // $order->setPrice($cart->getPrice());
         $cartOrder->setCart($cart);
 
         $order->setPrice($priceOrder + $cart->getPrice());
@@ -118,6 +120,9 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         return $this;
     }
 
+    /**
+    * Add random products to the order
+    */
     private function chooseProducts($manager)
     {
         $faker = $this->faker;
