@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CartProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CartProductRepository::class)
@@ -26,11 +27,13 @@ class CartProduct
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="cartProducts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"api_v1_cart_show"})
      */
     private $product;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @Groups({"api_v1_cart_show"})
      */
     private $quantity;
 

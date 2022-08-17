@@ -6,6 +6,7 @@ use App\Repository\CartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)
@@ -21,16 +22,21 @@ class Cart
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_cart_show"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_cart_show"})
      */
     private $type_cart;
 
     /**
      * @ORM\OneToMany(targetEntity=CartProduct::class, mappedBy="cart")
+     * @Groups({"api_v1_cart_show"})
      */
     private $cartProducts;
 

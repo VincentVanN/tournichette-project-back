@@ -27,3 +27,12 @@ GET http://localhost:8000/api/v1/depots
 ##
 ## http://localhost:8000/api/v1/depots/{slug}
 GET http://localhost:8000/api/v1/depots/jordane-flatley
+
+### All carts
+GET http://localhost:8000/api/v1/carts
+
+### little cart
+GET http://localhost:8000/api/v1/carts/small
+
+### big cart
+GET http://localhost:8000/api/v1/carts/big

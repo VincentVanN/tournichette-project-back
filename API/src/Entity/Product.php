@@ -28,6 +28,7 @@ class Product
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
+     * @Groups({"api_v1_cart_show"})
      */
     private $name;
 
@@ -36,6 +37,7 @@ class Product
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
+     * @Groups({"api_v1_cart_show"})
      */
     private $slug;
 
@@ -52,6 +54,7 @@ class Product
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
+     * @Groups({"api_v1_cart_show"})
      */
     private $unity;
 

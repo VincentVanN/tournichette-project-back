@@ -1,0 +1,20 @@
+{
+    "user": {
+        "token": "user"
+    },
+    "depot": {
+        "id": "" 
+    },
+    "price": 0,
+    "payment_status": "no",
+    // Si achat paniers :
+    "cart": {
+        "type_cart": "small", // "small" ou "big"
+        "quantity": 0
+    },
+    // Si achats produits
+    "product": {
+        "id": "",
+        "quantity": 0
+    }
+  }
