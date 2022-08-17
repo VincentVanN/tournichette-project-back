@@ -3,11 +3,18 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
+    private $userPasswordHasher;
+
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
+    {
+        $this->userPasswordHasher = $userPasswordHasher;
+    }
     public function load(ObjectManager $manager): void
     {
 
@@ -22,8 +29,8 @@ class UserFixtures extends Fixture
         $superAdminUser->setFirstname($faker->firstName());
         $superAdminUser->setLastname($faker->lastName());
 
-        // $superAdminUser->setRole($adminRole);
-        // $superAdminUser->setPassword('admin');
+        $superAdminUser->setRoles(['ROLE_SUPER_ADMIN']);
+        $superAdminUser->setPassword($this->userPasswordHasher->hashPassword($superAdminUser, 'admin'));
 
 
         $phoneSuperAdmin = $fakerFr->unique()->serviceNumber();
@@ -31,6 +38,7 @@ class UserFixtures extends Fixture
         $superAdminUser->setPhone($phoneNoSpaceSuperAdmin);
 
         $superAdminUser->setAddress($faker->address());
+
         $manager->persist($superAdminUser);
 
         // ###################
@@ -41,8 +49,8 @@ class UserFixtures extends Fixture
         $adminUser->setFirstname($faker->firstName());
         $adminUser->setLastname($faker->lastName());
 
-        // $adminUser->setRole($currentAdminRole);
-        // $adminUser->setPassword('admin');
+        $adminUser->setRoles(['ROLE_ADMIN']);
+        $adminUser->setPassword($this->userPasswordHasher->hashPassword($adminUser, 'admin'));
 
         $phoneAdmin = $fakerFr->unique()->serviceNumber();
         $phoneNoSpaceAdmin = str_replace(' ', '', $phoneAdmin);
@@ -72,7 +80,8 @@ class UserFixtures extends Fixture
             $userObj->setFirstname($faker->firstName());
             $userObj->setLastname($faker->lastName());
 
-            // $userObj->setPassword('user');
+            $userObj->setRoles(['ROLE_USER']);
+            $userObj->setPassword($this->userPasswordHasher->hashPassword($userObj, 'user'));
 
             $phoneUser = $fakerFr->unique()->serviceNumber();
             $phoneNoSpaceUser = str_replace(' ', '', $phoneUser);

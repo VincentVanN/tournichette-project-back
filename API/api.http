@@ -1,5 +1,16 @@
+### Login
+POST http://localhost:8000/api/login_check
+content-type: application/json
+
+{
+    "username":"user@user.com",
+    "password":"user"
+}
+
 ### Categories list
 GET http://localhost:8000/api/v1/categories
+content-type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjA3NTk5MzYsImV4cCI6MTY2MDc2MzUzNiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidXNlckB1c2VyLmNvbSJ9.O8OnWv3bnNB411sFuNQ0rX8tjq7jjYB_X3xqMS3eNPqj-uNIMs0SOVNie-6ReuubFa_lPahbrznbxH-9Xiv-dmRCWobiITUUKz7QVrix1E4gVWEMx2RIQvyMIyY0TS1UuLy079SVmV8wFYUj_5w_k7wL00dQwXYYzYPGcTXMERH0RanJ4naaMBfkrhBBoZYL5hfKvdYaThBgaztZVV7HKPBYsO0-7GC-eiX7yO-T0V1tJWMbHDNTMVaLrc3gM-2w54EVYUcxris67iLldShSxsCWIRR5DvRgS3lGlrEtkUZxW8jXYg6Kt0nt2Xqczu5tl4qBDkg_CiwuzDNKyzpv2Q
 
 ### Category Products (fruits)
 ##
