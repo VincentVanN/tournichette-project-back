@@ -65,6 +65,20 @@ class Product
     private $price;
 
     /**
+     * Property asked by front-end
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     */
+    private $quantity = 1;
+
+     /**
+     * Property asked by front-end
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     */
+    private $parcel = 1;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"api_v1_products_list"})
@@ -251,5 +265,15 @@ class Product
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+ 
+    public function getParcel()
+    {
+        return $this->parcel;
     }
 }
