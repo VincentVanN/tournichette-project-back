@@ -47,12 +47,6 @@ class Order
     private $depot;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orders")
      */
     private $orderProducts;
@@ -71,6 +65,12 @@ class Order
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $deliveredAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -139,18 +139,6 @@ class Order
     public function setDepot(?Depot $depot): self
     {
         $this->depot = $depot;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -235,6 +223,18 @@ class Order
     public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): self
     {
         $this->deliveredAt = $deliveredAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
