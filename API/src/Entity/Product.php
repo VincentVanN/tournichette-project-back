@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -16,37 +17,83 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $stock;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $unity;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $image;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $price;
 
     /**
+     * Property asked by front-end
+     * 
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
+     */
+    private $quantity = 1;
+
+     /**
+     * Property asked by front-end
+     * 
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
+     */
+    private $parcel = 1;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
      */
     private $category;
 
@@ -65,15 +112,15 @@ class Product
      */
     private $orderProducts;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
-
     public function __construct()
     {
         $this->cartProducts = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -230,5 +277,15 @@ class Product
         $this->slug = $slug;
 
         return $this;
+    }
+
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+ 
+    public function getParcel()
+    {
+        return $this->parcel;
     }
 }

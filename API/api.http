@@ -1,0 +1,29 @@
+### Categories list
+GET http://localhost:8000/api/v1/categories
+
+### Category Products (fruits)
+##
+## http://localhost:8000/api/v1/categories/{slug}/products
+GET http://localhost:8000/api/v1/categories/fruits/products
+
+### Category Products (legumes)
+GET http://localhost:8000/api/v1/categories/legumes/products
+
+### Category Products (produits-transformes)
+GET http://localhost:8000/api/v1/categories/produits-transformes/products
+
+### Products list
+GET http://localhost:8000/api/v1/products
+
+### One product (poivron)
+##
+## http://localhost:8000/api/v1/products/{slug}
+GET http://localhost:8000/api/v1/products/poivron
+
+### Depots list
+GET http://localhost:8000/api/v1/depots
+
+### One depot (jordane-flatley)
+##
+## http://localhost:8000/api/v1/depots/{slug}
+GET http://localhost:8000/api/v1/depots/jordane-flatley

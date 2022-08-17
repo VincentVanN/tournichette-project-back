@@ -39,7 +39,7 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCategory($categoryName): array
+    public function findByCategory($slug): array
     {
         $entityManager = $this->getEntityManager();
 
@@ -48,9 +48,9 @@ class ProductRepository extends ServiceEntityRepository
             SELECT p
             FROM App\Entity\Product p
             JOIN p.category c
-            WHERE c.name = :categoryName
+            WHERE c.slug = :slug
             '
-        )->setParameter('categoryName', $categoryName);
+        )->setParameter('slug', $slug);
 
         return $query->getResult();
     }
