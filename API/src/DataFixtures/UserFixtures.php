@@ -49,7 +49,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         $superAdminUser->setAddress($faker->address());
 
-        $superAdminUser->setToken($faker->unique()->sha256());
+        $superAdminUser->setToken('superadmin');
         $manager->persist($superAdminUser);
 
         $adminUser = new User;
@@ -70,7 +70,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         $adminUser->setAddress($faker->address());
 
-        $adminUser->setToken($faker->unique()->sha256());
+        $adminUser->setToken('admin');
         $manager->persist($adminUser);
 
         $nbUser = 100;
@@ -84,9 +84,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             }
 
             if ($i === 0) {
-                $userObj->setEmail('user@user.com'); // user test
+                // Create a specific user test
+                $userObj->setEmail('user@user.com');
+                $userObj->setToken('user');
             } else {
                 $userObj->setEmail($faker->unique()->email());
+                $userObj->setToken($faker->unique()->sha256());
             }
             $userObj->setFirstname($faker->firstName());
             $userObj->setLastname($faker->lastName());
@@ -99,7 +102,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
             $userObj->setAddress($faker->address());
 
-            $userObj->setToken($faker->unique()->sha256());
             $manager->persist($userObj);
         }
 
