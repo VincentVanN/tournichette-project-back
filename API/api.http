@@ -36,3 +36,26 @@ GET http://localhost:8000/api/v1/carts/small
 
 ### big cart
 GET http://localhost:8000/api/v1/carts/big
+
+### Create an order
+POST http://localhost:8000/api/v1/orders/create
+content-type: application/json
+
+{
+    "user": {
+        "token": "user"
+    },
+    "depot": {
+        "id": "1" 
+    },
+    "price": 0,
+    "payment_status": "no",
+    "cart": {
+        "type_cart": "small",
+        "quantity": 0
+    },
+    "product": {
+        "id": "1",
+        "quantity": 0
+    }
+}
