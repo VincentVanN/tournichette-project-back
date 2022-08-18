@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -93,6 +94,7 @@ class UserController extends AbstractController
     {
         $data = $request->getContent();
         $user = $this->getUser();
+        // $currentPassword = $user->getPassword();
 
         $requestData = \json_decode($request->getContent(), true);
 
@@ -106,8 +108,25 @@ class UserController extends AbstractController
             );
         }
 
-        // print_r($requestData['password']);
-        // die;
+        if (!isset($requestData['currentpassword'])) {
+            return $this->prepareResponse(
+                'Current password needed',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+        
+        if (!$passwordHasher->isPasswordValid($user, $requestData['currentpassword'])) {
+            return $this->prepareResponse(
+                'Invalid current password',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         $serializer->deserialize($data, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
 
