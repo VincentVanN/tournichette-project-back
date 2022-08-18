@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OrderProductRepository::class)
@@ -25,12 +26,14 @@ class OrderProduct
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @Groups({"api_v1_order_user_show"})
      */
     private $quantity;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="orderProducts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"api_v1_order_user_show"})
      */
     private $product;
 
