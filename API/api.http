@@ -17,9 +17,12 @@ POST http://localhost:8000/api/v1/users/create
 Content-Type: application/json
 
 {
-    "email": "test@test.com",
-    "password": "password"
-    
+    "email": "tata@tata.com",
+    "password": "password",
+    "firstname": null,
+    "lastname": null ,
+    "phone": null,
+    "address": null
 }
 
 ### User update $2y$13$ckAh0IP2svGr.4KuhpxBKeyeNLRVRZGJapLAoc1mS931ZkQfd5Q9W
