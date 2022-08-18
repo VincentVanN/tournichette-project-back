@@ -6,6 +6,7 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -17,6 +18,8 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"api_v1_orders_user"})
+     * @Groups({"api_v1_order_user_show"})
      */
     private $id;
 
@@ -27,38 +30,38 @@ class Order
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"api_v1_order_user_show"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"api_v1_order_user_show"})
      */
     private $payment_status;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"api_v1_order_user_show"})
      */
     private $deliver_status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Depot::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"api_v1_order_user_show"})
      */
     private $depot;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orders")
+     * @Groups({"api_v1_order_user_show"})
      */
     private $orderProducts;
 
     /**
      * @ORM\OneToMany(targetEntity=CartOrder::class, mappedBy="orders")
+     * @Groups({"api_v1_order_user_show"})
      */
     private $cartOrders;
 
@@ -72,6 +75,12 @@ class Order
      */
     private $deliveredAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -83,11 +92,17 @@ class Order
         return $this->id;
     }
 
+    /**
+     * @Groups({"api_v1_orders_user"})
+     */
     public function getDateOrder(): ?\DateTimeImmutable
     {
         return $this->orderedAt;
     }
 
+    /**
+     * @Groups({"api_v1_order_user_show"})
+     */
     public function setDateOrder(\DateTimeImmutable $orderedAt): self
     {
         $this->orderedAt = $orderedAt;
@@ -139,18 +154,6 @@ class Order
     public function setDepot(?Depot $depot): self
     {
         $this->depot = $depot;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -215,6 +218,9 @@ class Order
         return $this;
     }
 
+    /**
+     * @Groups({"api_v1_order_user_show"})
+     */
     public function getPaidAt(): ?\DateTimeImmutable
     {
         return $this->paidAt;
@@ -227,6 +233,9 @@ class Order
         return $this;
     }
 
+    /**
+     * @Groups({"api_v1_order_user_show"})
+     */
     public function getDeliveredAt(): ?\DateTimeImmutable
     {
         return $this->deliveredAt;
@@ -235,6 +244,18 @@ class Order
     public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): self
     {
         $this->deliveredAt = $deliveredAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

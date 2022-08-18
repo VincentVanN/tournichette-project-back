@@ -15,16 +15,93 @@ class OrderController extends AbstractController
 {
 
     /**
-    * Add a cart 
+    * Add an order 
     * @Route("/create", name="_create", methods="POST")
     * @return Response
     */
     public function create(OrderRepository $orderRepository) :Response
     {
         // TODO
-        // At this time, no datas are saved in BDDn but whe return a 201 HTTP Response Code
+        // At this time, no datas are saved in BDD but whe return a 201 HTTP Response Code
 
         return $this->json('OK', Response::HTTP_CREATED);
+    }
+
+    /**
+    * Show an order of the user given by id
+    * @Route("/{id}", name="_show", methods="GET")
+    * @return Response
+    */
+    public function show(int $id, OrderRepository $orderRepository) :Response
+    {
+        $user = $this->getUser();
+
+        if ($user === null) {
+            return $this->prepareResponse(
+                'User not connected',
+                [],
+                [],
+                true,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $userOrder = $orderRepository->find($id);
+
+        if ($userOrder === null) {
+            return $this->prepareResponse(
+                'No order found with this ID',
+                [],
+                [],
+                true,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $this->prepareResponse(
+            'OK',
+            ['groups' => 'api_v1_order_user_show'],
+            ['data' => $userOrder]
+        );
+    }
+
+
+    /**
+    * List all order of the user
+    * @Route("/user", name="_user", methods="GET")
+    * @return Response
+    */
+    public function list(OrderRepository $orderRepository) :Response
+    {
+        $user = $this->getUser();
+
+        if ($user === null) {
+            return $this->prepareResponse(
+                'User not connected',
+                [],
+                [],
+                true,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $userOrders = $user->getOrders();
+
+        if (count($userOrders) == 0) {
+            return $this->prepareResponse(
+                'No orders found for this user',
+                [],
+                [],
+                true,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $this->prepareResponse(
+            'OK',
+            ['groups' => 'api_v1_orders_user'],
+            ['data' => $userOrders]
+        );
     }
 
     private function prepareResponse(
