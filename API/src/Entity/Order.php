@@ -188,6 +188,15 @@ class Order
         return $this;
     }
 
+    public function resetOrderProducts(): self
+    {
+        foreach ($this->orderProducts as $currentOrderProduct) {
+            $this->removeOrderProduct($currentOrderProduct);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, CartOrder>
      */
@@ -213,6 +222,15 @@ class Order
             if ($cartOrder->getOrders() === $this) {
                 $cartOrder->setOrders(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function resetCartOrders(): self
+    {
+        foreach ($this->cartOrders as $currentCartOrder) {
+            $this->removeCartOrder($currentCartOrder);
         }
 
         return $this;
