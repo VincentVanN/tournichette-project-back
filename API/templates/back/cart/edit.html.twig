@@ -1,0 +1,14 @@
+{% extends 'back/cart/_base.html.twig' %}
+
+{% block title %}Modifier un Panier{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Modifier un Panier</h1>
+
+    {{ include('back/cart/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    {{ include('back/cart/_delete.html.twig') }}
+
+</div>
+{% endblock %}

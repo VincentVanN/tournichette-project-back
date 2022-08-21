@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Cart;
+use App\Utils\MySlugger;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,9 +18,7 @@ class CartType extends AbstractType
             ->add('paiementStatus')
             ->add('adress')
             ->add('user')
-            ->add('deliverSatus')
-            
-            ]);
+            ->add('deliverSatus')  ;     
     }
 
     public function configureOptions(OptionsResolver $resolver): void

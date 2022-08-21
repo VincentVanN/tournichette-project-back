@@ -1,0 +1,27 @@
+{% extends 'back/user/_base.html.twig' %}
+
+{% block title %user{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>user</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ user.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_back_user_edit', {'id': user.id}) }}">Modifier</a>
+
+    {{ include('back/user/_delete.html.twig') }}
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Product;
+use App\Utils\MySlugger;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,9 +18,7 @@ class ProductType extends AbstractType
             ->add('stock')
             ->add('unity')
             ->add('price')
-            ->add('category')
-            
-            ]);
+            ->add('category');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

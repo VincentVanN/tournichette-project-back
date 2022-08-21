@@ -37,7 +37,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             // on slugify le titre fournit par le user avant de l'enregistrer en BDD
             // plus besoin car on a fait un écouteur d'événements
             // $product->setSlug($mySlugger->slugify($product->getTitle()));
@@ -95,5 +94,33 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    public function record(?int $id = null)
+    {
+        $product = $id === null ? new Category() : Category::find($id);
+        $product ->setName($name);
+        $product ->setSlug($slug);
+        $product ->setStock($stock);
+        $product ->setUnity($unity);
+        $product ->setPrice($price);
+        $product ->setQuantity($quantity);
+        $product ->setCategory($category);
+
+        //if there is no error
+        if (empty($errors)) {
+            // we saved in BDD
+            if ($category->save()) {
+                if ($id === null) {
+                    // Si la sauvegarde a fonctionné, on redirige vers la liste des catégories.
+                    return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
+                } else {
+                    // Si la sauvegarde a fonctionné, on redirige vers le formulaire d'édition en mode GET
+                    return $this->redirectToRoute('app_back_product_edit', [], Response::HTTP_SEE_OTHER);
+                }
+            } else {
+                $errors[] = "La sauvegarde a échoué";
+            }
+        }
     }
 }

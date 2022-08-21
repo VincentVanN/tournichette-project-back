@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Depot;
+use App\Utils\MySlugger;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,9 +16,7 @@ class DepotType extends AbstractType
             ->add('firstname')
             ->add('lastname')
             ->add('slug')
-            ->add('adress')
-            
-            ]);
+            ->add('adress');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
