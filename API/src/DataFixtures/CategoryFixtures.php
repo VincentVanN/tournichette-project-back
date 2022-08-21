@@ -14,7 +14,7 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
 
     public static function getGroups(): array
     {
-        return ['groupCart'];
+        return ['groupCart', 'groupProducts'];
     }
 
     public function __construct(MySlugger $slugger)
@@ -27,7 +27,7 @@ class CategoryFixtures extends Fixture implements FixtureGroupInterface
         $categories = [
             "Fruits",
             "Légumes",
-            "Produits transformés"
+            "Epicerie"
         ];
 
         foreach($categories as $currentCategory)
