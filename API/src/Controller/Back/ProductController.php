@@ -96,6 +96,10 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    /**
+     * @Route("/{id}/edit", name="app_back_product_edit", methods={"GET", "POST"})
+     */
     public function record(?int $id = null)
     {
         $product = $id === null ? new Category() : Category::find($id);
