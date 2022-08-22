@@ -55,7 +55,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}", name="app_back_product_show", methods={"GET"})
      */
-    public function show(product $product): Response
+    public function show(Product $product): Response
     {
         return $this->render('back/product/show.html.twig', [
             'product' => $product,
@@ -65,7 +65,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_back_product_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, product $product, ProductRepository $productRepository): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -87,7 +87,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}", name="app_back_product_delete", methods={"POST"})
      */
-    public function delete(Request $request, product $product, ProductRepository $productRepository): Response
+    public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $productRepository->remove($product, true);
@@ -102,7 +102,7 @@ class ProductController extends AbstractController
      */
     public function record(?int $id = null)
     {
-        $product = $id === null ? new Category() : Category::find($id);
+        $product = $id === null ? new Product() : Product::find($id);
         $product ->setName($name);
         $product ->setSlug($slug);
         $product ->setStock($stock);
