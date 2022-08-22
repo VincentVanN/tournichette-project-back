@@ -17,6 +17,18 @@
                 <th>Name</th>
                 <td>{{ product.name }}</td>
             </tr>
+            <tr>
+                <th>category</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td>{{ product.stock }}</td>
+            </tr>
+            <tr>
+                <th>Unity</th>
+                <td>{{ product.unity }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -25,3 +37,10 @@
     {{ include('back/product/_delete.html.twig') }}
 </div>
 {% endblock %}
+
+<td>{{ product.id }}</td>
+                <td>{{ product.category_id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.tva }}</td>
+                <td>{{ product.unity }}</td>
