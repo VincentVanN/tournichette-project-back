@@ -87,6 +87,19 @@ class Product
      */
     private $quantity = 1;
 
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"api_v1_product_show"})
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"api_v1_product_show"})
+     */
+    private $colorimetry;
+
      /**
      * Property asked by front-end
      * 
@@ -294,5 +307,29 @@ class Product
     public function getParcel()
     {
         return $this->parcel;
+    }
+
+    public function getColorimetry(): ?string
+    {
+        return $this->colorimetry;
+    }
+
+    public function setColorimetry(?string $colorimetry): self
+    {
+        $this->colorimetry = $colorimetry;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }
