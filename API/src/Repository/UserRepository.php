@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -54,6 +55,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
 
         $this->add($user, true);
+    }
+
+    public function findAllSortByLastname()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT u
+            FROM App\Entity\User u
+            ORDER BY u.lastname'
+        );
+
+        return $query->getResult();
     }
 
 //    /**

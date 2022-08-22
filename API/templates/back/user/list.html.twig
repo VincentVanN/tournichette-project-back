@@ -1,0 +1,83 @@
+{% extends 'back/user/_base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <h1 class="text-center">Liste des utilisateurs</h1>
+
+    <div class="row justify-content-around">
+        <section class="card col-5 border border-0">
+        <div class="card-body">
+            <h2 class="text-center">Clients</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Téléphone</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for currentUser in users %}
+                    <tr>
+                        <td scope="row">{{ currentUser.id }}</td>
+                        <td>{{ currentUser.lastname }}</td>
+                        <td>{{ currentUser.firstname }}</td>
+                        <td>{{ currentUser.email }}</td>
+                        <td>{{ currentUser.phone }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>    
+        </div>
+    </section>
+
+    <section class="card col-5 border border-0">
+        <div class="card-body">
+            <h2 class="text-center">Le staff</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Téléphone</th>
+                        <th scope="col">Rôle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for currentUser in superAdmins %}
+                    <tr>
+                        <td scope="row">{{ currentUser.id }}</td>
+                        <td>{{ currentUser.lastname }}</td>
+                        <td>{{ currentUser.firstname }}</td>
+                        <td>{{ currentUser.email }}</td>
+                        <td>{{ currentUser.phone }}</td>
+                    </tr>
+                {% endfor %}
+                {% for currentUser in admins %}
+                    <tr>
+                        <td scope="row">{{ currentUser.id }}</td>
+                        <td>{{ currentUser.lastname }}</td>
+                        <td>{{ currentUser.firstname }}</td>
+                        <td>{{ currentUser.email }}</td>
+                        <td>{{ currentUser.phone }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>    
+        </div>
+    </section>
+    </div>
+
+    <a class="btn btn-primary" href="">Modifier</a>
+
+    {{ include('back/user/_delete.html.twig') }}
+</div>
+{% endblock %}

@@ -133,6 +133,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRoleName(): string
+    {
+        switch($this->roles)
+        {
+            case 'ROLE_SUPER_ADMIN' :
+                return 'Super admin';
+            case 'ROLE_ADMIN' :
+                return 'Administrateur';
+            case 'ROLE_USER' :
+                return 'Client';
+        }
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
