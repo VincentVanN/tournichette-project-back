@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Back;
 
 use App\Entity\Cart;
 use App\Form\CartType;
@@ -15,11 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    
-
-/**
-     * @Route("/", name="app_back_product_index", methods={"GET"})
-     */
+    /**
+         * @Route("/", name="app_back_product_index", methods={"GET"})
+         */
     public function index(ProductRepository $productRepository): Response
     {
         return $this->render('back/product/index.html.twig', [
@@ -123,4 +121,4 @@ class CartController extends AbstractController
             }
         }
     }
-    
+}
