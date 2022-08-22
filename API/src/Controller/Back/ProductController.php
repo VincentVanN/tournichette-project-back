@@ -127,4 +127,25 @@ class ProductController extends AbstractController
             }
         }
     }
+
+        /**
+        * @Route("/dash", name="dashboard")
+        */
+        public function dash(Request $request, OrderRepository $order, ProductRepository $product, OrderProduct $orderproduct)
+        {
+            //$session = $request->getSession();
+            
+            $idOrder = count($order->findAll());
+            $stocknumber = 0;
+            $allProducts = $product->findAll();
+            
+            for ($i = 0; $i < count($allProducts); $i++) {
+                $stocknumber = $stocknumber + $allProducts[$i]->getStock();
+            }
+            return $this->render('back/product/index.html.twig', [
+                
+                'idOrder' => $idOrder,
+                'stockNumber' => $stocknumber,
+            ]);
+        }
 }
