@@ -17,7 +17,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
 
     public static function getGroups(): array
     {
-        return ['groupCart'];
+        return ['groupCart', 'groupProducts'];
     }
     
     public function getDependencies()
@@ -34,9 +34,6 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
 
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         $faker = \Faker\Factory::create();
         $faker->addProvider(new \FakerRestaurant\Provider\fr_FR\Restaurant($faker));
 
@@ -81,9 +78,9 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
             $manager->persist($productObj);
         }
 
-        // Transformed products
+        // Grocery products
 
-        $categoryObj = $manager->getRepository(Category::class)->findBy(["name" => "Produits transformés"]);
+        $categoryObj = $manager->getRepository(Category::class)->findBy(["name" => "Epicerie"]);
         $TransformedProductCategory = $categoryObj['0'];
 
         for ($i = 0; $i < $nbProducts; $i++)

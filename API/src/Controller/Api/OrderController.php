@@ -2,11 +2,22 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\CartOrder;
+use App\Entity\Depot;
+use App\Entity\Order;
+use App\Entity\OrderProduct;
+use App\Repository\CartRepository;
+use App\Repository\DepotRepository;
 use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /** @Route("/api/v1/orders", name="api_v1_orders" )
  * 
@@ -15,16 +26,208 @@ class OrderController extends AbstractController
 {
 
     /**
-    * Add a cart 
+    * Add an order 
     * @Route("/create", name="_create", methods="POST")
     * @return Response
     */
-    public function create(OrderRepository $orderRepository) :Response
+    public function create(
+        Request $request,
+        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
+        DepotRepository $depotRepository,
+        ProductRepository $productRepository,
+        CartRepository $cartRepository,
+        EntityManagerInterface $em,
+        OrderRepository $orderRepository) :Response
     {
-        // TODO
-        // At this time, no datas are saved in BDDn but whe return a 201 HTTP Response Code
+        $data = $request->getContent();
+        $requestData = \json_decode($data, true);
+        $priceOrder = 0;
 
-        return $this->json('OK', Response::HTTP_CREATED);
+        $order = $serializer->deserialize($data, Order::class, 'json');
+        $order->resetOrderProducts();
+        $order->resetCartOrders();
+        $order->setUser($this->getUser());
+        $order->setPaymentStatus('no');
+        $order->setDeliverStatus('no');
+        $order->setDateOrder(new \DateTimeImmutable());
+
+        if (!isset($requestData['depot']) || $requestData['depot'] == '') {
+            return $this->prepareResponse(
+                'Depot must be set.',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $depot = $depotRepository->find($requestData['depot']);
+
+        if ($depot === null) {
+            return $this->prepareResponse(
+                'Depot with ID [' . $requestData['depot'] . '] not found.',
+                [],
+                [],
+                true,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $order->setDepot($depot);
+
+        if (isset($requestData['orderProducts']) && count($requestData['orderProducts']) > 0) {
+
+            foreach ($requestData['orderProducts'] as $currentOrderProduct)
+            {
+                if (isset($currentOrderProduct['quantity']) && $currentOrderProduct['quantity'] > 0) {
+                    $orderProduct = $normalizer->denormalize($requestData['orderProducts'], OrderProduct::class, 'json');
+                    $product = $productRepository->find($currentOrderProduct['id']);
+                    
+                    if ($product === null) {
+                        return $this->prepareResponse(
+                            'Product for ID [' . $currentOrderProduct['id'] . '] not found.',
+                            [],
+                            [],
+                            true,
+                            Response::HTTP_NOT_FOUND
+                        );
+                    }
+
+                    $orderProduct->setProduct($product);
+                    $orderProduct->setQuantity($currentOrderProduct['quantity']);
+                    $order->addOrderProduct($orderProduct);
+
+                    $em->persist($orderProduct);
+
+                    $priceOrder += $currentOrderProduct['quantity'] * $product->getPrice();
+                }
+            }
+        }
+
+        if (isset($requestData['cartOrders']) && count($requestData['cartOrders']) > 0) {
+
+            foreach ($requestData['cartOrders'] as $currentCartOrder)
+            {
+                if (isset($currentCartOrder['quantity']) && $currentCartOrder['quantity'] >= 1) {
+                    $cartOrder = $normalizer->denormalize($requestData['cartOrders'], CartOrder::class, 'json');
+                    $cart = $cartRepository->findOneBy(['type_cart' => $currentCartOrder['type_cart']]);
+                    
+                    if ($cart === null) {
+                        return $this->prepareResponse(
+                            'Cart for this type [' . $currentCartOrder['type_cart'] . '] not found.',
+                            [],
+                            [],
+                            true,
+                            Response::HTTP_NOT_FOUND
+                        );
+                    }
+
+                    $cartOrder->setCart($cart);
+                    $cartOrder->setQuantity((int)$currentCartOrder['quantity']);
+                    $order->addCartOrder($cartOrder);
+
+                    $em->persist($cartOrder);
+
+                    $priceOrder += $currentCartOrder['quantity'] * $cart->getPrice();
+                }
+            }
+        }
+
+        $message = 'Order create.';
+
+        if ($priceOrder != $order->getPrice()) {
+            $order->setPrice($priceOrder);
+            $message .= ' The price has been adjusted.';
+        }
+        
+        $em->persist($order);
+        $em->flush();
+        
+        return $this->prepareResponse(
+            $message,
+            [],
+            [],
+            true,
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+    * Show an order of the user given by id
+    * @Route("/{id}", name="_show", methods="GET", requirements={"id"="\d+"})
+    * @return Response
+    */
+    public function show(int $id, OrderRepository $orderRepository) :Response
+    {
+        $user = $this->getUser();
+
+        if ($user === null) {
+            return $this->prepareResponse(
+                'User not connected',
+                [],
+                [],
+                true,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $userOrder = $orderRepository->find($id);
+
+        if ($userOrder === null) {
+            return $this->prepareResponse(
+                'No order found with this ID',
+                [],
+                [],
+                true,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $this->prepareResponse(
+            'OK',
+            ['groups' => 'api_v1_order_user_show'],
+            ['data' => $userOrder]
+        );
+    }
+
+
+    /**
+    * List all order of the user
+    * @Route("/user", name="_user", methods="GET")
+    * @return Response
+    */
+    public function list(OrderRepository $orderRepository) :Response
+    {
+        $user = $this->getUser();
+
+        if ($user === null) {
+            return $this->prepareResponse(
+                'User not connected',
+                [],
+                [],
+                true,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+
+        $userOrders = $user->getOrders();
+
+        if (count($userOrders) == 0) {
+            return $this->prepareResponse(
+                'No orders found for this user',
+                [],
+                [],
+                true,
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        return $this->prepareResponse(
+            'OK',
+            ['groups' => 'api_v1_orders_user'],
+            ['data' => $userOrders]
+        );
     }
 
     private function prepareResponse(

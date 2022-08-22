@@ -39,7 +39,6 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         $category = 'Fruits';
         $allFruits = $manager->getRepository(Product::class)->findByCategory($category);
-        // dd($allFruits);
         $randomFruits = $faker->randomElements($allFruits, 2);
 
         foreach($randomFruits as $currentFruit)
@@ -76,7 +75,6 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         $category = 'Fruits';
         $allFruits = $manager->getRepository(Product::class)->findByCategory($category);
-        // dd($allFruits);
         $randomFruits = $faker->randomElements($allFruits, 3);
 
         foreach($randomFruits as $currentFruit)

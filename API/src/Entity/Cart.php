@@ -24,6 +24,7 @@ class Cart
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_order_user_show"})
      */
     private $price;
 
@@ -31,6 +32,7 @@ class Cart
      * @ORM\Column(type="string", length=10)
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_order_user_show"})
      */
     private $type_cart;
 
