@@ -55,6 +55,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
             $productObj->setUnity('kg');
             $productObj->setPrice($faker->randomFloat(2, 1, 10));
             $productObj->setCategory($vegetableCategory);
+            $productObj->setDescription($faker->text());
+            $productObj->setColorimetry($faker->randomElement(['cold', 'hot']));
 
             $manager->persist($productObj);
         }
@@ -74,6 +76,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
             $productObj->setUnity('kg');
             $productObj->setPrice($faker->randomFloat(2, 1, 10));
             $productObj->setCategory($fruitCategory);
+            $productObj->setDescription($faker->text());
+            $productObj->setColorimetry($faker->randomElement(['cold', 'hot']));
 
             $manager->persist($productObj);
         }
@@ -93,6 +97,8 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface, Fixt
             $productObj->setUnity('bouteille(s)');
             $productObj->setPrice($faker->randomFloat(2, 1, 10));
             $productObj->setCategory($TransformedProductCategory);
+            $productObj->setDescription($faker->text());
+            $productObj->setColorimetry($faker->randomElement(['cold', 'hot']));
 
             $manager->persist($productObj);
         }
