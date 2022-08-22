@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\Back;
 
 use App\Entity\Cart;
 use App\Form\CartType;
