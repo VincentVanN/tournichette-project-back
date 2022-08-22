@@ -29,10 +29,5 @@ class ProductType extends AbstractType
         ]);
     }
 
-    ->add('name',TextType::class,['label' => 'name '])
-            ->add('pa',TextType::class, ['label' => 'Prix Achat : '])
-            ->add('pv',TextType::class, ['label' => 'Prix Vente : '])
-            ->add('tva',TextType::class,['label' => 'Tva : '])
-            ->add('stock',TextType::class,['label' => 'Stock : '])
-            ->add('image' , FileType::class, ['label' => 'Image : '] );
+    
 }
