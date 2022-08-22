@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Poster</th>
+                
                 <th>Title</th>
             </tr>
         </thead>
@@ -18,17 +18,10 @@
         {% for product in products %}
             <tr>
                 <td>{{ product.id }}</td>
-                <td>
-                {% if product.poster != "" %}
-                    <img style="max-width:100px" src="{{ product.poster }}" />
-                {% else %}
-                    <p>Pas d'image définie</p>
-                {% endif %}
-                </td>
-                <td>{{ product.title }}</td>
-                <td>{{ product.duration }}</td>
-                <td>{{ product.releasedAt ? product.releasedAt|date('d/m/Y') : '' }}</td>
-                <td>{{ product.rating }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.quantity }}</td>
+               
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_back_product_show', {'id': product.id}) }}">Voir</a>
                     <a class="btn btn-secondary" href="{{ path('app_back_product_edit', {'id': product.id}) }}">Modifier</a>
