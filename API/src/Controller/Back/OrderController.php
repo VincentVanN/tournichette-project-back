@@ -2,7 +2,7 @@
 
 namespace App\Controller\Back;
 
-use App\EntityOrder;
+use App\Entity\Order;
 use App\Repository\OrderRepository;
 use App\Form\OrderType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
