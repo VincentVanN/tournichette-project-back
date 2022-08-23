@@ -27,8 +27,8 @@
               
             
                 <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('show', {'id': product.id}) }}" class = "btn btn-info">show</a>
+                    <a href="{{ path('edit', {'id': product.id}) }}" class = "btn btn-warning">edit</a>
                 </td>
             </tr>
         {% else %}
