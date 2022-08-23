@@ -6,13 +6,10 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
 
 /**
  * @Route("/back/users", name="app_back_user")
@@ -46,7 +43,7 @@ class UserController extends AbstractController
                 $admins[] = $currenUser;
             }
         }
-        // dump($superAdmins[0]->getRoles(), $admins[0]->getRoles());
+
         return $this->render('back/user/list.html.twig', [
             'users' => $users,
             'superAdmins' => $superAdmins,
@@ -63,7 +60,6 @@ class UserController extends AbstractController
         $user = new User();
         $formUser = $this->createForm(UserType::class, $user);
         $formUser->handleRequest($request);
-        // dump($formUser);
 
         if ($formUser->isSubmitted() && $formUser->isValid()) {
             
@@ -92,52 +88,39 @@ class UserController extends AbstractController
             'user' => $user
         ]);
     }
-    // /**
-    //  * @Route("/{id}", name="app_back_user_show", methods={"GET"})
-    //  */
-    // public function show(User $user): Response
-    // {
-    //     return $this->render('back/user/show.html.twig', [
-    //         'user' => $user,
-    //     ]);
-    // }
 
-    // /**
-    //  * @Route("/{id}/edit", name="app_back_user_edit", methods={"GET", "POST"})
-    //  */
-    // public function edit(Request $request, Security $security, User $user, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
-    // {
-    //     // $this->denyAccessUnlessGranted('ROLE_ADMIN');
-    //     $this->denyAccessUnlessGranted('USER_UPDATE', $user);
+    /**
+     * Edit a user with given ID
+     * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
+     */
+    public function edit(User $user, Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
+    {
+        $formUser = $this->createForm(UserType::class, $user);
+        $formUser->handleRequest($request);
 
-    //     // USER_UPDATE
-    //     // si l'utilisateur que l'on édite a le role manager ou admin
-    //     $form = $this->createForm(UserType::class, $user);
-    //     // $form->remove('password');
+        if ($formUser->isSubmitted()) {
 
-    //     $form->handleRequest($request);
+            $passwordClear = $formUser->get('password')->getData();
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         // est ce qu'un mot de passe a été saisi
+            if(!empty($passwordClear)) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $passwordClear);
+                $user->setPassword($hashedPassword);
+            }
 
-    //         $passwordClear = $form->get('password')->getData();
-    //         if (! empty($passwordClear))
-    //         {
-    //             // si oui alors le hashé et le remplacer dans l'objet user
-    //             $hashedPassword = $passwordHasher->hashPassword($user, $passwordClear);
-    //             $user->setPassword($hashedPassword);
-    //         }
+            
+            $role = $formUser->get('roles')->getData() !== null ? $formUser->get('roles')->getData() : 'ROLE_USER';
+            $user->setRoles([$role]);
 
-    //         $userRepository->add($user, true);
+            $userRepository->add($user, true);
 
-    //         return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
-    //     }
+            return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);
+        }
 
-    //     return $this->renderForm('back/user/edit.html.twig', [
-    //         'user' => $user,
-    //         'form' => $form,
-    //     ]);
-    // }
+        return $this->renderForm('back/user/edit.html.twig', [
+            'user' => $user,
+            'form' => $formUser
+        ]);
+    }
 
     //   /**
     //  * @Route("/{id}", name="app_back_user_delete", methods={"POST"})

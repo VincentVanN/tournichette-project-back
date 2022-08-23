@@ -149,7 +149,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return "Admin";
         }
 
-        return "client";
+        return "Client";
     }
 
     /**

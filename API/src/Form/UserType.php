@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,6 +36,9 @@ class UserType extends AbstractType
                     'Admin' => 'ROLE_ADMIN',
                     'Super Admin' => 'ROLE_SUPER_ADMIN',
                 ],
+                'choice_attr' => [
+                    'Client' => ['checked' => 'checked']
+                ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -50,8 +55,10 @@ class UserType extends AbstractType
             ->add('phone', TelType::class, [
                 'label' => 'Téléphone'
             ])
-            ->add('address')
-        ;
+            ->add('address', TextType::class, [
+                'label' => 'Adresse'
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPresetDatas']);
 
         // $builder->get('roles')
         //     ->addModelTransformer(new CallbackTransformer(
@@ -64,6 +71,46 @@ class UserType extends AbstractType
         //             return [$roleToArray];
         //         }
         //     ));
+    }
+
+    public function onPresetDatas(FormEvent $event)
+    {
+        $user = $event->getData();
+        $form = $event->getForm();
+
+        if (!is_null($user->getId())) {
+            $roleName = $user->getRoleName();
+            $emailUser = $user->getEmail();
+
+            $form->remove('password');
+            $form->remove('roles');
+            $form->remove('email');
+            $form->add('email', EmailType::class, [
+                'invalid_message' => 'Cette adresse e-mail n\'est pas valide.',
+                'label' => 'E-mail'
+            ])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Rôle',
+                'mapped' => false,
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    'Client' => 'ROLE_USER',
+                    'Admin' => 'ROLE_ADMIN',
+                    'Super Admin' => 'ROLE_SUPER_ADMIN',
+                ],
+                'choice_attr' => [
+                    $roleName => ['checked' => 'checked']
+                ]
+            ])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les champs ne sont pas identiques.',
+                'first_options' => ['label' => 'Mot de passe', 'help' => 'Laissez vide si inchangé'],
+                'second_options' => ['label' => 'Répétez le mot de passe'],
+                'mapped' => false
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
