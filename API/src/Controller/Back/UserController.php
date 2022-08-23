@@ -25,7 +25,7 @@ class UserController extends AbstractController
      */
     public function list(UserRepository $userRepository): Response
     {
-        $allUsers = $userRepository->findAllSortBy('firstname');
+        $allUsers = $userRepository->findAllSortBy('lastname');
         $users = [];
         $superAdmins = [];
         $admins = [];
@@ -54,33 +54,44 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * Create un new user
+     * @Route("/new", name="_new", methods={"GET", "POST"})
+     */
+    public function create(Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
+    {
+        $user = new User();
+        $formUser = $this->createForm(UserType::class, $user);
+        $formUser->handleRequest($request);
+        // dump($formUser);
 
-    // /**
-    //  * @Route("/new", name="app_back_user_new", methods={"GET", "POST"})
-    //  */
-    // public function new(Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
-    // {
-    //     $user = new User();
-    //     $form = $this->createForm(UserType::class, $user);
-    //     $form->handleRequest($request);
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
+            $role = $formUser->get('roles')->getData() !== null ? $formUser->get('roles')->getData() : 'ROLE_USER';
+            $user->setRoles([$role]);
+            $userRepository->add($user, true);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $passwordClear = $user->getPassword();
-    //         $hashedPassword = $passwordHasher->hashPassword($user, $passwordClear);
-    //         $user->setPassword($hashedPassword);
+            return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);
+        }
 
-    //         // cette méthode fait le persist et le flush !
-    //         $userRepository->add($user, true);
+        return $this->renderForm('back/user/new.html.twig', [
+            'user' => $user,
+            'form' => $formUser
+        ]);
+    }
 
-    //         return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('back/user/new.html.twig', [
-    //         'user' => $user,
-    //         'form' => $form,
-    //     ]);
-    // }
-
+    /**
+     * Show details of a user with given ID
+     * @Route("/{id<\d+>}", name="_show", methods={"GET"})
+     */
+    public function show(User $user): Response
+    {
+        return $this->render('back/user/show.html.twig', [
+            'user' => $user
+        ]);
+    }
     // /**
     //  * @Route("/{id}", name="app_back_user_show", methods={"GET"})
     //  */

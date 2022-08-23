@@ -3,10 +3,16 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class UserType extends AbstractType
 {
@@ -14,46 +20,50 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'invalid_message' => 'Cette adresse e-mail n\'est pas valide.',
+                'label' => 'E-mail',
+                'help' => 'Obligatoire'
             ])
-            ->add('role', ChoiceType::class, [
+            ->add('roles', ChoiceType::class, [
                 'label' => 'Rôle',
+                'mapped' => false,
+                'multiple' => false,
+                'expanded' => true,
                 'choices' => [
-                    'Administrateur' => 'ROLE_SUPER_ADMIN',
-                    'Manager' => 'ROLE_ADMIN',
-                    'Utilisateur' => 'ROLE_USER',
+                    'Client' => 'ROLE_USER',
+                    'Admin' => 'ROLE_ADMIN',
+                    'Super Admin' => 'ROLE_SUPER_ADMIN',
                 ],
-                "expanded" => true
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'Les champs ne sont pas identiques',
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Resaisissez votre mot de passe'],
+                'invalid_message' => 'Les champs ne sont pas identiques.',
+                'first_options' => ['label' => 'Mot de passe', 'help' => 'obligatoire'],
+                'second_options' => ['label' => 'Répétez le mot de passe']
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetDataPassword'])
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom'
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom'
+            ])
+            ->add('phone', TelType::class, [
+                'label' => 'Téléphone'
+            ])
+            ->add('address')
         ;
-    }
 
-    public function onPreSetDataPassword (FormEvent $event) {
-        $user = $event->getData();
-        $form = $event->getForm();
-
-        // dd($user, $form);
-        if (! is_null($user->getId()))
-        {
-            $form->remove('password');
-            $form->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'Les champs ne sont pas identiques',
-                'first_options'  => [
-                    'label' => 'Mot de passe',
-                    'attr' => ['placeholder' => 'laisser vide si inchangé'],
-                ],
-                'second_options' => ['label' => 'Resaisissez votre mot de passe'],
-                'mapped' => false,
-            ]);
-        }
+        // $builder->get('roles')
+        //     ->addModelTransformer(new CallbackTransformer(
+        //         function ($roleToString) {
+        //             // Transform the array to string
+        //             return $roleToString[0];
+        //         },
+        //         function ($roleToArray) {
+        //             //Transform the string back to array
+        //             return [$roleToArray];
+        //         }
+        //     ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -26,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotNull
-     * @Assert\Email
+     * @Assert\Email(message = "Cette adresse e-mail n'est pas valide.")
      * @Groups({"api_v1_users_show"})
      */
     private $email;
@@ -40,18 +40,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotNull
+     * @Assert\NotNull(message="Le mot de passe est obligatoire")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="Le prénom est obligatoire")
      * @Groups({"api_v1_users_show"})
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="Le nom est obligatoire")
      * @Groups({"api_v1_users_show"})
      */
     private $lastname;
@@ -59,6 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\Length(max=20)
+     * @Assert\Positive
      * @Groups({"api_v1_users_show"})
      */
     private $phone;
@@ -128,6 +131,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): self
     {
+        // if (count($this->getRoles()) === 0) {
+        //     $roles = ['ROLE_USER'];
+        // }
         $this->roles = $roles;
 
         return $this;

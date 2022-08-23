@@ -14,6 +14,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col"></th>
                         <th scope="col">#</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
@@ -25,11 +26,13 @@
                 <tbody>
                 {% for currentUser in users %}
                     <tr>
-                        <td scope="row">{{ currentUser.id }}</td>
+                        <td scope="row"><a href="{{ path('app_back_user_show', {'id': currentUser.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"></i></a></td>
+                        <td>{{ currentUser.id }}</td>
                         <td>{{ currentUser.lastname }}</td>
                         <td>{{ currentUser.firstname }}</td>
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
+                        <td><a class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a><a class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -43,33 +46,39 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col"></th>
                         <th scope="col">#</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">Email</th>
                         <th scope="col">Téléphone</th>
                         <th scope="col">Rôle</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for currentUser in superAdmins %}
                     <tr>
-                        <td scope="row">{{ currentUser.id }}</td>
+                        <td scope="row"><a href="{{ path('app_back_user_show', {'id': currentUser.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"></i></a></td>
+                        <td>{{ currentUser.id }}</td>
                         <td>{{ currentUser.lastname }}</td>
                         <td>{{ currentUser.firstname }}</td>
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
                         <td>{{ currentUser.roleName }}</td>
+                        <td><a href="" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a></td>
                     </tr>
                 {% endfor %}
                 {% for currentUser in admins %}
                     <tr>
-                        <td scope="row">{{ currentUser.id }}</td>
+                        <td scope="row"><a href="{{ path('app_back_user_show', {'id': currentUser.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"></i></a></td>
+                        <td>{{ currentUser.id }}</td>
                         <td>{{ currentUser.lastname }}</td>
                         <td>{{ currentUser.firstname }}</td>
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
                         <td>{{ currentUser.roleName }}</td>
+                        <td><a class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a><a class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -77,8 +86,6 @@
         </div>
     </section>
     </div>
-
-    <a class="btn btn-primary" href="">Modifier</a>
 
     {{ include('back/user/_delete.html.twig') }}
 </div>
