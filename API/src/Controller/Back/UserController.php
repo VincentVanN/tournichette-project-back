@@ -25,7 +25,7 @@ class UserController extends AbstractController
      */
     public function list(UserRepository $userRepository): Response
     {
-        $allUsers = $userRepository->findAllSortByLastname();
+        $allUsers = $userRepository->findAllSortBy('firstname');
         $users = [];
         $superAdmins = [];
         $admins = [];
@@ -46,7 +46,7 @@ class UserController extends AbstractController
                 $admins[] = $currenUser;
             }
         }
-        // dump($allUsers, $users, $superAdmins, $admins);
+        // dump($superAdmins[0]->getRoles(), $admins[0]->getRoles());
         return $this->render('back/user/list.html.twig', [
             'users' => $users,
             'superAdmins' => $superAdmins,

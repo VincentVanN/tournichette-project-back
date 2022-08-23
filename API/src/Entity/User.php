@@ -135,15 +135,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoleName(): string
     {
-        switch($this->roles)
-        {
-            case 'ROLE_SUPER_ADMIN' :
-                return 'Super admin';
-            case 'ROLE_ADMIN' :
-                return 'Administrateur';
-            case 'ROLE_USER' :
-                return 'Client';
+        if (in_array('ROLE_SUPER_ADMIN', $this->getRoles())) {
+            return 'Super admin';
         }
+
+        if(in_array('ROLE_ADMIN', $this->getRoles())) {
+            return "Admin";
+        }
+
+        return "client";
     }
 
     /**

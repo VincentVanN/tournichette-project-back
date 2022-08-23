@@ -57,14 +57,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-    public function findAllSortByLastname()
+    /**
+     * Return all users sort by column given in parameter
+     */
+    public function findAllSortBy($sort)
     {
         $em = $this->getEntityManager();
 
         $query = $em->createQuery(
-            'SELECT u
+            "SELECT u
             FROM App\Entity\User u
-            ORDER BY u.lastname'
+            ORDER BY u.$sort"
         );
 
         return $query->getResult();
