@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/", name="app_back_product_index", methods={"GET"})
+     * @Route("/", name="app_back_product", methods={"GET"})
      */
     public function index(ProductRepository $productRepository): Response
     {
@@ -28,7 +28,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_back_product_new", methods={"GET", "POST"})
+     * @Route("/new", name="product_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ProductRepository $productRepository): Response
     {
@@ -53,7 +53,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_back_product_show", methods={"GET"})
+     * @Route("/{id}", name="product_show", methods={"GET"})
      */
     public function show(Product $product): Response
     {
@@ -63,7 +63,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_back_product_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="product_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
     {
