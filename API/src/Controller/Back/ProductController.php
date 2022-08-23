@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -13,14 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/back/product", name="app_back_")
+ * @Route("/back/product", name="app_back_product")
  */
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/", name="product", methods={"GET"})
+     * @Route("", name="_list", methods={"GET"})
      */
-    public function index(ProductRepository $productRepository): Response
+    public function list(ProductRepository $productRepository): Response
     {
         return $this->render('back/product/index.html.twig', [
             'products' => $productRepository->findAll(),
@@ -28,7 +29,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET", "POST"})
+     * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ProductRepository $productRepository): Response
     {
@@ -37,9 +38,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // plus besoin car on a fait un écouteur d'événements
-            // $product->setSlug($mySlugger->slugify($product->getTitle()));
 
             $productRepository->add($product, true);
 
@@ -53,7 +51,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="_show", methods={"GET"})
      */
     public function show(Product $product): Response
     {
@@ -63,7 +61,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
     {
@@ -85,7 +83,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"POST"})
+     * @Route("/{id}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {
@@ -98,7 +96,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/{id}/record", name="record", methods={"GET", "POST"})
      */
     public function record(?int $id = null)
     {

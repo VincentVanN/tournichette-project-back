@@ -9,26 +9,23 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>category_id</th>
-                <th>product_id</th>
-                <th>name</th>
-                <th>slug</th>
+                <th>Name</th>
                 <th>stock</th>
-                <th>unity</th>
+                <th>unité</th>
             </tr>
         </thead>
         <tbody>
         {% for product in products %}
             <tr>
-               
+               <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.stock }}</td>
                 <td>{{ product.unity }}</td>
               
             
                 <td>
-                    <a href="{{ path('show', {'id': product.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('edit', {'id': product.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('app_back_product_show', {'id': product.id}) }}" class = "btn btn-info">show</a>
+                    <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" class = "btn btn-warning">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -39,6 +36,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('product_new') }}"class = "btn btn-success">Create new</a>
+    <a href="{{ path('app_back_product_new') }}"class = "btn btn-success">Create new</a>
 
 {% endblock %}
