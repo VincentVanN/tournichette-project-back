@@ -4,6 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Form\CategoryType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,12 +12,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+/**
+ * @Route("/back/category", name="app_back_category")
+ */
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/category", name="app_category")
+     * @Route("", name="_list")
      */
-    public function index(): Response
+    public function list(CategoryRepository $categoryRepository): Response
     {
         return $this->render('back/category/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
@@ -24,7 +29,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_back_category_new", methods={"GET", "POST"})
+     * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function new(Request $request, CategoryRepository $categoryRepository): Response
     {
@@ -49,7 +54,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_back_category_show", methods={"GET"})
+     * @Route("/{id}", name="_show", methods={"GET"})
      */
     public function show(Category $category): Response
     {
@@ -59,7 +64,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_back_category_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
@@ -81,7 +86,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_back_category_delete", methods={"POST"})
+     * @Route("/{id}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
