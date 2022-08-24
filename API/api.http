@@ -91,29 +91,19 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjA4MjYzM
 ### Create an order
 POST http://localhost:8000/api/v1/orders/create
 content-type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjA4MjYzMzgsImV4cCI6MTY2MzQxODMzOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidXNlckB1c2VyLmNvbSJ9.JMTmu3475KhOIRbq5eu8vhIqXCux1dIGoec47V4G2ewPUfDL-TNcjd7dIu04jbYtxsYpzWscy5m2JtQi1y1KD0JZ9-Q6CrGTW34HXOskkOEd9KZ_FlRS2YRI7HzqMmY7fncOcAhml-ZVA3wpgKw3KM6RWR4QDa2P3lPAmfq_LYJy00gUdUovOxpJaYQ4Ka1y0MPzLKA_Bwyn2agSP6TP3y_fAR_pJlMIoEk2AwYSNYgiDHr8OIXuAc98CSWxyELscgXrwLbfBloD__tESp0wfaR4hmAGJQU7gWXlLS6u2iDWAiVj6gvskAGcNwnGEH0KZfDPpNYyyV44A4gHR1ar2A
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjEzMzIyMjUsImV4cCI6MTY2MzkyNDIyNSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidXNlckB1c2VyLmNvbSJ9.oUVfhBHMkQO5-KZTctbGU_GQY2axt2-g4TGRN1EO_R_bVJ3h2BIQd74M9g3dvncQfHPceZFVf5eNvUbxOLTOfAAd3xOrUhyklipfY4AJvByr_NPZ--2qmtHXEo_SuLvfJF-9j4R5aThwT2eit00j_TLpKkdozRienpUttdmE-KtkdbmFemboQLBjyNKk7fl6kPIxlweT6P5enWw71pq4k_v1C2bFCwAcPXv490XE_3usiNliLhguZwyy0DE05RK0G15Al9saNEHhGnUzsG1i5tVc808t66EtuptZFqm_dFUEgysJgocDr90F6gikfzPwdFu54PHYOe42MuqVS8SESQ
 
 {
 "price": "13.96",
-"depot": 1,
+"depot": 41,
 "orderProducts": [
     {
     "quantity": "1.000",
-    "id": 9
+    "id": 121
     },
     {
     "quantity": "1.000",
-    "id": 14
-    }
-],
-"cartOrders": [
-    {
-    "quantity": 1,
-    "type_cart": "small"
-    },
-    {
-    "quantity": 1,
-    "type_cart": "big"
+    "id": 122
     }
 ]
 }
