@@ -28,12 +28,14 @@ class CartProduct
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="cartProducts")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_carts_list"})
      */
     private $product;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=3)
      * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_carts_list"})
      */
     private $quantity;
 
