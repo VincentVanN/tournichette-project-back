@@ -15,8 +15,8 @@ class DepotType extends AbstractType
         $builder
             ->add('firstname')
             ->add('lastname')
-           // ->add('slug')
-           ->add('phone')
+            ->add('slug')
+            ->add('phone')
             ->add('address');
     }
 
