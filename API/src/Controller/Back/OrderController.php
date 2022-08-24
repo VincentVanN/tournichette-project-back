@@ -54,7 +54,7 @@ class OrderController extends AbstractController
         return $this->render('back/order/show.html.twig', [
             'order' => $order,
         ]);
-    // }
+    }
 
     // /**
     //  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})

@@ -3,17 +3,30 @@
 {% block title %}Détail commande{% endblock %}
 
 {% block body %}
-    <h1>Order</h1>
+<section class="container-fluid">
+    <h1 class="text-center">Détail de la commande</h1>
 
-    <table class="table">
+    <div class="row justify-content-around">
+        <article class="card col-4">
+            <div class="card-body">
+                <ul>
+                    <li class="list-group-item"><strong class="fw-semibold">Date commande : </strong>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d H:i:s') : '-' }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Prix : </strong>{{ order.price }} €</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Payé ? : </strong>{{ order.paymentStatus == 'yes' ? '✔' : '❌'  }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Date paiement : </strong>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Retiré ? : </strong>{{ order.deliverStatus == 'yes' ? '✔' : '❌' }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Date retrait : </strong>{{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</li>
+                </ul>
+            </div>
+    {# <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <td>{{ order.id }}</td>
             </tr>
             <tr>
-                <th>OrderedAt</th>
-                <td>{{ order.orderedAt ? order.orderedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Date commande</th>
+                <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Price</th>
@@ -36,11 +49,11 @@
                 <td>{{ order.deliveredAt ? order.deliveredAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> #}
 
-    <a href="{{ path('app_back_order_index') }}">back to list</a>
+    {# <a href="{{ path('app_back_order_edit', {'id': order.id}) }}">edit</a> #}
 
-    <a href="{{ path('app_back_order_edit', {'id': order.id}) }}">edit</a>
-
-    {{ include('back/order/_delete_form.html.twig') }}
+    {# {{ include('back/order/_delete_form.html.twig') }} #}
+        </article>
+    </div>
 {% endblock %}
