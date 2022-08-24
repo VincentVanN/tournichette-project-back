@@ -13,12 +13,13 @@ class CartType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateOrder')
-            ->add('paidAt')
-            ->add('paiementStatus')
-            ->add('adress')
-            ->add('user')
-            ->add('deliverSatus')  ;     
+            //->add('dateOrder')
+            //->add('paidAt')
+            //->add('paymentStatus')
+           // ->add('address')
+            //->add('user')
+            ->add('typeCart')
+            ->add('price')  ;     
     }
 
     public function configureOptions(OptionsResolver $resolver): void
