@@ -9,47 +9,82 @@
     <div class="row justify-content-around">
         <article class="card col-4">
             <div class="card-body">
+                <h3 class="card-title">Infos commande</h3>
                 <ul>
                     <li class="list-group-item"><strong class="fw-semibold">Date commande : </strong>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d H:i:s') : '-' }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Prix : </strong>{{ order.price }} €</li>
-                    <li class="list-group-item"><strong class="fw-semibold">Payé ? : </strong>{{ order.paymentStatus == 'yes' ? '✔' : '❌'  }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Payé ? : </strong>{{ order.paymentStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>'  }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Date paiement : </strong>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</li>
-                    <li class="list-group-item"><strong class="fw-semibold">Retiré ? : </strong>{{ order.deliverStatus == 'yes' ? '✔' : '❌' }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Retiré ? : </strong>{{ order.deliverStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Date retrait : </strong>{{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</li>
                 </ul>
             </div>
-    {# <table class="table">
-        <tbody>
-            <tr>
-                <th>#</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>Date commande</th>
-                <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ order.price }}</td>
-            </tr>
-            <tr>
-                <th>Payment_status</th>
-                <td>{{ order.paymentStatus }}</td>
-            </tr>
-            <tr>
-                <th>Deliver_status</th>
-                <td>{{ order.deliverStatus }}</td>
-            </tr>
-            <tr>
-                <th>PaidAt</th>
-                <td>{{ order.paidAt ? order.paidAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DeliveredAt</th>
-                <td>{{ order.deliveredAt ? order.deliveredAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table> #}
+            <div class="card-body">
+                <h3 class="card-title">Infos client</h3>
+                <ul>
+                    <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ order.user.lastname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Prénom : </strong>{{ order.user.firstname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">E-mail : </strong>{{ order.user.email }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ order.user.phone }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ order.user.address }}</li>
+                </ul>
+            </div>
+            <div class="cart-body">
+                <h3 class="card-title">Infos point de retrait</h3>
+                <ul>
+                    <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ order.depot.lastname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Prénom : </strong>{{ order.depot.firstname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ order.depot.phone }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ order.depot.address }}</li>
+                </ul>
+            </div>
+
+    {# <a href="{{ path('app_back_order_edit', {'id': order.id}) }}">edit</a> #}
+
+    {# {{ include('back/order/_delete_form.html.twig') }} #}
+        </article>
+        <article class="card col-6">
+            {% if order.orderProducts is not empty %}
+            <div class="card-body">
+                <h3 class="card-title">Liste des produits</h3>
+                {% for currentProduct in order.orderProducts %}
+                    <ul>
+                        <li class="list-group-item"><strong class="fw-semibold">Produit : </strong>{{ currentProduct.product.name }}</li>
+                        <li class="list-group-item"><strong class="fw-semibold">Quantité : </strong>{{ currentProduct.quantity }} {{ currentProduct.product.unity }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if order.cartOrders is not empty %}
+            <div class="card-body">
+                <h3 class="card-title">Liste des paniers</h3>
+                {% for currentCart in order.cartOrders %}
+                    <ul>
+                        <li class="list-group-item"><strong class="fw-semibold">Type du panier : </strong>{{ currentCart.cart.getTypeCart }}</li>
+                        <li class="list-group-item"><strong class="fw-semibold">Quantité : </strong>{{ currentCart.quantity }} panier(s)</li>
+                    </ul>
+                {% endfor %}
+                {% endif %}
+            </div>
+            {# <div class="card-body">
+                <h3 class="card-title">Infos client</h3>
+                <ul>
+                    <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ order.user.lastname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Prénom : </strong>{{ order.user.firstname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">E-mail : </strong>{{ order.user.email }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ order.user.phone }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ order.user.address }}</li>
+                </ul>
+            </div>
+            <div class="cart-body">
+                <h3 class="card-title">Infos point de retrait</h3>
+                <ul>
+                    <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ order.depot.lastname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Prénom : </strong>{{ order.depot.firstname }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ order.depot.phone }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ order.depot.address }}</li>
+                </ul>
+            </div> #}
 
     {# <a href="{{ path('app_back_order_edit', {'id': order.id}) }}">edit</a> #}
 

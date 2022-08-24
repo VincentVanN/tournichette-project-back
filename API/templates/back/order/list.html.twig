@@ -25,12 +25,12 @@
                 <td scope="row">{{ order.id }}</td>
                 <td>{{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
                 <td>{{ order.price }}</td>
-                <td>{{ order.paymentStatus == 'yes' ? '✔' : '❌' }}</td>
+                <td>{{ order.paymentStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</td>
                 <td>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
-                <td>{{ order.deliverStatus == 'yes' ? '✔' : '❌' }}</td>
+                <td>{{ order.deliverStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</td>
                 <td>{{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</td>
                 <td>
-                    <a href="{{ path('app_back_order_show', {'id': order.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill">Consulter</i></a>
+                    <a href="{{ path('app_back_order_show', {'id': order.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
                 </td>
             </tr>
         {% else %}
