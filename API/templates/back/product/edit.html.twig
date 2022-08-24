@@ -1,4 +1,4 @@
-{% extends 'back/produit/_base.html.twig' %}
+{% extends 'back/product/_base.html.twig' %}
 
 {% block title %}Modifier un produit{% endblock %}
 
@@ -6,8 +6,8 @@
 <div class="container">
     <h1>Modifier un produit</h1>
 
-    {{ include('back/produit/_form.html.twig', {'button_label': 'Modifier'}) }}
+    {{ include('back/product/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    {{ include('back/produit/_delete.html.twig') }}
+    {{ include('back/product/_delete.html.twig') }}
 </div>
 {% endblock %}
