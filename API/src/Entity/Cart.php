@@ -39,6 +39,7 @@ class Cart
     /**
      * @ORM\OneToMany(targetEntity=CartProduct::class, mappedBy="cart")
      * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_carts_list"})
      */
     private $cartProducts;
 
