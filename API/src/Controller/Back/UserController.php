@@ -122,17 +122,16 @@ class UserController extends AbstractController
         ]);
     }
 
-    //   /**
-    //  * @Route("/{id}", name="app_back_user_delete", methods={"POST"})
-    //  */
-    // public function delete(Request $request, User $user, UserRepository $userRepository): Response
-    // {
-    //     if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-    //         $userRepository->remove($user, true);
-    //     }
+      /**
+     * @Route("/{id<\d+>}", name="_delete", methods={"POST"})
+     */
+    public function delete(Request $request, User $user, UserRepository $userRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $userRepository->remove($user, true);
+        }
 
-    //     return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
-    // }
-
+        return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);
+    }
 
 }

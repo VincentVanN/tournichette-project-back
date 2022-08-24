@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{# {% set delete = 'Supprimer' %} #}
+
 <section class="container-fluid">
     <h1 class="text-center">Profil de {{ user.lastname }} {{ user.firstname }}</h1>
 
@@ -21,12 +23,9 @@
         <footer class="d-flex justify-content-evenly">
             <a href="#" class="btn btn-outline-success btn-sm"><i class="bi bi-cart-fill">Voir les commandes</i></a>
             <a href="#" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill">Modifier</i></a>
-            <a href="#" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill">Supprimer</i></a>
+            {% include 'back/user/_delete.html.twig' with {'delete': 'Supprimer'} %}
         </footer>
     </article>
     </div>
-
-
-    {{ include('back/user/_delete.html.twig') }}
 </section>
 {% endblock %}

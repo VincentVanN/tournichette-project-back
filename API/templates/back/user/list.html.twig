@@ -32,7 +32,7 @@
                         <td>{{ currentUser.firstname }}</td>
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
-                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a><a class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill"></i></a></td>
+                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>{% include 'back/user/_delete.html.twig' with {'delete': '', 'user': currentUser} %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -78,7 +78,7 @@
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
                         <td>{{ currentUser.roleName }}</td>
-                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a><a class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill"></i></a></td>
+                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>{% include 'back/user/_delete.html.twig' with {'delete': '', 'user': currentUser} %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -86,7 +86,5 @@
         </div>
     </section>
     </div>
-
-    {{ include('back/user/_delete.html.twig') }}
 </div>
 {% endblock %}
