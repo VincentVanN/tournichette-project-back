@@ -1,14 +1,13 @@
-{% extends 'back/category/_base.html.twig' %}
+{% extends 'back/depot/_base.html.twig' %}
 
-{% block title %}Modifier un lieu de dépôt{% endblock %}
+{% block title %}Modifier un depot{% endblock %}
 
 {% block body %}
 <div class="container">
-    <h1>Modifier un Lieu de dépôt</h1>
+    <h1>Modifier un depot</h1>
 
     {{ include('back/depot/_form.html.twig', {'button_label': 'Modifier'}) }}
 
     {{ include('back/depot/_delete.html.twig') }}
-
 </div>
 {% endblock %}
