@@ -1,14 +1,13 @@
-{% extends 'back/order/_base.html.twig' %}
+<!DOCTYPE html>
 
-{% block title %}Modifier une Commande{% endblock %}
+<title>Edit Order</title>
 
 {% block body %}
-<div class="container">
-    <h1>Modifier une Commande</h1>
+    <h1>Edit Order</h1>
 
-    {{ include('back/order/_form.html.twig', {'button_label': 'Modifier'}) }}
+    {{ include('back/order/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_back_order_index') }}">back to list</a>
 
     {{ include('back/order/_delete_form.html.twig') }}
-
-</div>
 {% endblock %}

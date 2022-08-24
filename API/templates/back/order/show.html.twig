@@ -1,10 +1,8 @@
 {% extends 'back/order/_base.html.twig' %}
 
-{% block title %Order{% endblock %}
+{% block title %}Détail commande{% endblock %}
 
 {% block body %}
-
-<div class="container">
     <h1>Order</h1>
 
     <table class="table">
@@ -14,14 +12,35 @@
                 <td>{{ order.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
-                <td>{{ order.name }}</td>
+                <th>OrderedAt</th>
+                <td>{{ order.orderedAt ? order.orderedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ order.price }}</td>
+            </tr>
+            <tr>
+                <th>Payment_status</th>
+                <td>{{ order.paymentStatus }}</td>
+            </tr>
+            <tr>
+                <th>Deliver_status</th>
+                <td>{{ order.deliverStatus }}</td>
+            </tr>
+            <tr>
+                <th>PaidAt</th>
+                <td>{{ order.paidAt ? order.paidAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeliveredAt</th>
+                <td>{{ order.deliveredAt ? order.deliveredAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('app_back_order_edit', {'id': order.id}) }}">Modifier</a>
+    <a href="{{ path('app_back_order_index') }}">back to list</a>
 
-    {{ include('back/order/_delete.html.twig') }}
-</div>
+    <a href="{{ path('app_back_order_edit', {'id': order.id}) }}">edit</a>
+
+    {{ include('back/order/_delete_form.html.twig') }}
 {% endblock %}

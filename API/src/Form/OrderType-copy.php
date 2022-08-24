@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Order;
+use App\Utils\MySlugger;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,15 +13,12 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('orderedAt')
-            ->add('price')
-            ->add('payment_status')
-            ->add('deliver_status')
+            ->add('dateOrder')
             ->add('paidAt')
-            ->add('deliveredAt')
-            ->add('depot')
+            ->add('paiementStatus')
+            ->add('adress')
             ->add('user')
-        ;
+            ->add('deliverSatus') ;   
     }
 
     public function configureOptions(OptionsResolver $resolver): void
