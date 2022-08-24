@@ -1,9 +1,9 @@
-{% extends 'back/category/_base.html.twig' %}
+{% extends 'back/product/_base.html.twig' %}
 
-{% block title %}category index{% endblock %}
+{% block title %}product index{% endblock %}
 
 {% block body %}
-    <h1>category index</h1>
+    <h1>product index</h1>
 
     <table class="table table-condensed">
         <thead>
@@ -15,13 +15,17 @@
             </tr>
         </thead>
         <tbody>
-        {% for category in categorys %}
+        {% for product in products %}
             <tr>
-               <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
+               <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.unity }}</td>
+              
+            
                 <td>
-                    <a href="{{ path('app_back_category_show', {'id': category.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('app_back_category_edit', {'id': category.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('app_back_product_show', {'id': product.id}) }}" class = "btn btn-info">show</a>
+                    <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" class = "btn btn-warning">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -32,6 +36,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_back_category_new') }}"class = "btn btn-success">Create new</a>
+    <a href="{{ path('app_back_product_new') }}"class = "btn btn-success">Create new</a>
 
 {% endblock %}
+
