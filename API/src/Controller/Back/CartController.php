@@ -45,7 +45,7 @@ class CartController extends AbstractController
 
             $cartRepository->add($cart, true);
 
-            return $this->redirectToRoute('app_back_cart_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/cart/new.html.twig', [
@@ -77,7 +77,7 @@ class CartController extends AbstractController
             // $cart->setSlug($mySlugger->slugify($cart->getTitle()));
             $cartRepository->add($cart, true);
 
-            return $this->redirectToRoute('app_back_cart_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/cart/edit.html.twig', [
@@ -95,7 +95,7 @@ class CartController extends AbstractController
             $cartRepository->remove($cart, true);
         }
 
-        return $this->redirectToRoute('app_back_cart_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
     }
 
     /*

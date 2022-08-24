@@ -81,7 +81,7 @@ class DepotController extends AbstractController
             // $depot->setSlug($mySlugger->slugify($depot->getTitle()));
             $depotRepository->add($depot, true);
 
-            return $this->redirectToRoute('app_back_depot_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/depot/edit.html.twig', [

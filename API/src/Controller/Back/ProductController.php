@@ -38,12 +38,12 @@ class ProductController extends AbstractController
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-
+        
             $productRepository->add($product, true);
 
-            return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/product/new.html.twig', [
@@ -75,7 +75,7 @@ class ProductController extends AbstractController
             // $product->setSlug($mySlugger->slugify($product->getTitle()));
             $productRepository->add($product, true);
 
-            return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/product/edit.html.twig', [
@@ -93,59 +93,30 @@ class ProductController extends AbstractController
             $productRepository->remove($product, true);
         }
 
-        return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
     }
 
 
-    /**
-     * @Route("/{id}/record", name="record", methods={"GET", "POST"})
-     */
-    public function record(?int $id = null)
-    {
-        $product = $id === null ? new Product() : Product::find($id);
-        $product ->setName($name);
-        $product ->setSlug($slug);
-        $product ->setStock($stock);
-        $product ->setUnity($unity);
-        $product ->setPrice($price);
-        $product ->setQuantity($quantity);
-        $product ->setCategory($category);
+    
 
-        //if there is no error
-        if (empty($errors)) {
-            // we saved in BDD
-            if ($category->save()) {
-                if ($id === null) {
-                    // Si la sauvegarde a fonctionné, on redirige vers la liste des catégories.
-                    return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
-                } else {
-                    // Si la sauvegarde a fonctionné, on redirige vers le formulaire d'édition en mode GET
-                    return $this->redirectToRoute('app_back_product_edit', [], Response::HTTP_SEE_OTHER);
-                }
-            } else {
-                $errors[] = "La sauvegarde a échoué";
-            }
-        }
-    }
-
-        /**
-        * @Route("/dash", name="dashboard")
-        */
-        public function dash(Request $request, OrderRepository $order, ProductRepository $product, OrderProduct $orderproduct)
-        {
-            //$session = $request->getSession();
+        // /**
+        // * @Route("/dash", name="dashboard")
+        // */
+        // public function dash(Request $request, OrderRepository $order, ProductRepository $product, OrderProduct $orderproduct)
+        // {
+        //     //$session = $request->getSession();
             
-            $idOrder = count($order->findAll());
-            $stocknumber = 0;
-            $allProducts = $product->findAll();
+        //     $idOrder = count($order->findAll());
+        //     $stocknumber = 0;
+        //     $allProducts = $product->findAll();
             
-            for ($i = 0; $i < count($allProducts); $i++) {
-                $stocknumber = $stocknumber + $allProducts[$i]->getStock();
-            }
-            return $this->render('back/product/index.html.twig', [
+        //     for ($i = 0; $i < count($allProducts); $i++) {
+        //         $stocknumber = $stocknumber + $allProducts[$i]->getStock();
+        //     }
+        //     return $this->render('back/product/index.html.twig', [
                 
-                'idOrder' => $idOrder,
-                'stockNumber' => $stocknumber,
-            ]);
-        }
+        //         'idOrder' => $idOrder,
+        //         'stockNumber' => $stocknumber,
+        //     ]);
+        // }
 }

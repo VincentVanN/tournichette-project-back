@@ -44,7 +44,7 @@ class CategoryController extends AbstractController
 
             $categoryRepository->add($category, true);
 
-            return $this->redirectToRoute('app_back_category_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_category_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/category/new.html.twig', [
@@ -76,7 +76,7 @@ class CategoryController extends AbstractController
             // $category->setSlug($mySlugger->slugify($category->getTitle()));
             $categoryRepository->add($category, true);
 
-            return $this->redirectToRoute('app_back_category_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_category_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/category/edit.html.twig', [
@@ -94,7 +94,7 @@ class CategoryController extends AbstractController
             $categoryRepository->remove($category, true);
         }
 
-        return $this->redirectToRoute('app_back_category_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_category_list', [], Response::HTTP_SEE_OTHER);
     }
 
 }
