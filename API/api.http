@@ -94,16 +94,16 @@ content-type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjA4MjYzMzgsImV4cCI6MTY2MzQxODMzOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidXNlckB1c2VyLmNvbSJ9.JMTmu3475KhOIRbq5eu8vhIqXCux1dIGoec47V4G2ewPUfDL-TNcjd7dIu04jbYtxsYpzWscy5m2JtQi1y1KD0JZ9-Q6CrGTW34HXOskkOEd9KZ_FlRS2YRI7HzqMmY7fncOcAhml-ZVA3wpgKw3KM6RWR4QDa2P3lPAmfq_LYJy00gUdUovOxpJaYQ4Ka1y0MPzLKA_Bwyn2agSP6TP3y_fAR_pJlMIoEk2AwYSNYgiDHr8OIXuAc98CSWxyELscgXrwLbfBloD__tESp0wfaR4hmAGJQU7gWXlLS6u2iDWAiVj6gvskAGcNwnGEH0KZfDPpNYyyV44A4gHR1ar2A
 
 {
-"price": "13.96",
-"depot": 1,
+"price": "13.90",
+"depot": 41,
 "orderProducts": [
     {
     "quantity": "1.000",
-    "id": 9
+    "id": 121
     },
     {
     "quantity": "1.000",
-    "id": 14
+    "id": 122
     }
 ],
 "cartOrders": [

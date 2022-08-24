@@ -147,8 +147,8 @@ class OrderController extends AbstractController
         return $this->prepareResponse(
             $message,
             [],
-            [],
-            true,
+            ['data' => $priceOrder],
+            false,
             Response::HTTP_CREATED
         );
     }
