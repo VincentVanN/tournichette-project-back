@@ -9,7 +9,9 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
+                <th>adresse</th>
+               
             </tr>
         </thead>
         <tbody>
@@ -17,6 +19,9 @@
             <tr>
                <td>{{ depot.id }}</td>
                 <td>{{ depot.firstname }}</td>
+                
+              
+            
                 <td>
                     <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-info">show</a>
                     <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-warning">edit</a>
