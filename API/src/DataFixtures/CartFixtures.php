@@ -33,7 +33,8 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         $smallCart = new Cart;
         $smallCart->setPrice(10);
-        $smallCart->setTypeCart("small");
+        $smallCart->setName("Petit panier");
+        $smallCart->setSlug("petit-panier");
 
         $manager->persist($smallCart);
 
@@ -69,7 +70,8 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         $smallCart = new Cart;
         $smallCart->setPrice(15);
-        $smallCart->setTypeCart("big");
+        $smallCart->setName("Grand panier");
+        $smallCart->setSlug("grand-panier");
 
         $manager->persist($smallCart);
 

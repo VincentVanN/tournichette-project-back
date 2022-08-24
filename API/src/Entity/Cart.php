@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use App\Utils\MySlugger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,6 +43,22 @@ class Cart
      * @Groups({"api_v1_cart_show"})
      */
     private $slug;
+
+    /**
+     * Property asked by front-end
+     * 
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_cart_show"})
+     */
+    private $quantity = 1;
+
+    /**
+     * Property asked by front-end
+     * 
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_cart_show"})
+     */
+    private $parcel = 1;
 
     /**
      * @ORM\OneToMany(targetEntity=CartProduct::class, mappedBy="cart")
@@ -159,5 +176,21 @@ class Cart
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * Get property asked by front-end
+     */ 
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * Get property asked by front-end
+     */ 
+    public function getParcel()
+    {
+        return $this->parcel;
     }
 }

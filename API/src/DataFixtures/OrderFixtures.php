@@ -108,7 +108,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         $cartOrder->setOrders($order);
         
 
-        $cart = $manager->getRepository(Cart::class)->findOneBy(['type_cart' => $this->faker->randomElement(['small', 'big'])]);
+        $cart = $manager->getRepository(Cart::class)->findOneBy(['slug' => $this->faker->randomElement(['grand-panier', 'petit-panier'])]);
         $cartOrder->setCart($cart);
 
         $order->setPrice($priceOrder + $cart->getPrice());
