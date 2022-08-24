@@ -1,6 +1,7 @@
+
 {% extends 'back/depot/_base.html.twig' %}
 
-{% block title %depot{% endblock %}
+{% block title %} depot {% endblock %}
 
 {% block body %}
 
@@ -15,8 +16,11 @@
             </tr>
             <tr>
                 <th>Name</th>
-                <td>{{ depot.name }}</td>
+                <td>{{ depot.firstname }}</td>
             </tr>
+            
+          
+            
         </tbody>
     </table>
 
@@ -25,3 +29,4 @@
     {{ include('back/depot/_delete.html.twig') }}
 </div>
 {% endblock %}
+

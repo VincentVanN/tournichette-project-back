@@ -29,76 +29,76 @@ class DepotController extends AbstractController
        // $allDepots = $depotRepository->findAll();
 
         return $this->render('back/depot/index.html.twig',
-            ['depot' => $depotRepository->findAll(),
+            ['depots' => $depotRepository->findAll(),
         ]);
     }
 
-    // /**
-    //  * 
-    //  * @Route("/{id}", name="_show", methods="GET")
-    //  */
-    // public function show(Depot $depot): Response
-    // {
-    //     return $this->render('back/depot/show.html.twig', [
-    //         'depot' => $depot,
-    //     ]);
-    // }
+    /**
+     * 
+     * @Route("/{id}", name="_show", methods="GET")
+     */
+    public function show(Depot $depot): Response
+    {
+        return $this->render('back/depot/show.html.twig', [
+            'depot' => $depot,
+        ]);
+    }
 
-    // /**
-    //  * @Route("/new", name="_new", methods={"GET", "POST"})
-    //  */
-    // public function new(Request $request, DepotRepository $depotRepository): Response
-    // {
-    //     $depot = new Depot();
-    //     $form = $this->createForm(DepotType::class, $depot);
-    //     $form->handleRequest($request);
+    /**
+     * @Route("/new", name="_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, DepotRepository $depotRepository): Response
+    {
+        $depot = new Depot();
+        $form = $this->createForm(DepotType::class, $depot);
+        $form->handleRequest($request);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             
 
-    //         $depotRepository->add($depot, true);
+            $depotRepository->add($depot, true);
 
-    //         return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
-    //     }
+            return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
+        }
 
-    //     return $this->renderForm('back/depot/edit.html.twig', [
-    //         'depot' => $depot,
-    //         'form' => $form,
-    //     ]);
-    // }
+        return $this->renderForm('back/depot/edit.html.twig', [
+            'depot' => $depot,
+            'form' => $form,
+        ]);
+    }
 
-    // /**
-    //  * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
-    //  */
-    // public function edit(Request $request, Depot $depot, DepotRepository $depotRepository): Response
-    // {
-    //     $form = $this->createForm(DepotType::class, $depot);
-    //     $form->handleRequest($request);
+    /**
+     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
+     */
+    public function edit(Request $request, Depot $depot, DepotRepository $depotRepository): Response
+    {
+        $form = $this->createForm(DepotType::class, $depot);
+        $form->handleRequest($request);
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-    //         // $depot->setSlug($mySlugger->slugify($depot->getTitle()));
-    //         $depotRepository->add($depot, true);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
+            // $depot->setSlug($mySlugger->slugify($depot->getTitle()));
+            $depotRepository->add($depot, true);
 
-    //         return $this->redirectToRoute('app_back_depot_index', [], Response::HTTP_SEE_OTHER);
-    //     }
+            return $this->redirectToRoute('app_back_depot_index', [], Response::HTTP_SEE_OTHER);
+        }
 
-    //     return $this->renderForm('back/depot/edit.html.twig', [
-    //         'depot' => $depot,
-    //         'form' => $form,
-    //     ]);
-    // }
+        return $this->renderForm('back/depot/edit.html.twig', [
+            'depot' => $depot,
+            'form' => $form,
+        ]);
+    }
     
-    // /**
-    //  * @Route("/{id}/delete", name="_delete", methods={"POST"})
-    //  */
-    // public function delete(Request $request, Depot $depot, DepotRepository $depotRepository): Response
-    // {
-    //     if ($this->isCsrfTokenValid('delete'.$depot->getId(), $request->request->get('_token'))) {
-    //         $depotRepository->remove($depot, true);
-    //     }
+    /**
+     * @Route("/{id}/delete", name="_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Depot $depot, DepotRepository $depotRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$depot->getId(), $request->request->get('_token'))) {
+            $depotRepository->remove($depot, true);
+        }
 
-    //     return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
-    // }
+        return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
+    }
     
 }
