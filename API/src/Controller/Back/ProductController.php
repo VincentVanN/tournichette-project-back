@@ -51,6 +51,27 @@ class ProductController extends AbstractController
             'form' => $form,
         ]);
     }
+        // /**
+        // * @Route("/dash", name="_dashboard", methods={"GET"})
+        // */
+        // public function dash(Request $request, OrderRepository $order, ProductRepository $product)
+        // {
+        //     //$session = $request->getSession();
+            
+        //     $idOrder = count($order->findAll());
+        //     $stock = 0;
+        //     $allProducts = $product->findAll();
+            
+        //     for ($i = 0; $i < count($allProducts); $i++) {
+        //         $stock = $stock + $allProducts[$i]->getStock();
+        //     }
+        //     return $this->render('back/product/index.html.twig', [
+                
+        //         'idOrder' => $idOrder,
+        //         'stock' => $stock,
+        //         'products' => $product,
+        //     ]);
+        // }
 
     /**
      * @Route("/{id}", name="_show", methods={"GET"})
@@ -95,28 +116,5 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
     }
-
-
-    
-
-        // /**
-        // * @Route("/dash", name="dashboard")
-        // */
-        // public function dash(Request $request, OrderRepository $order, ProductRepository $product, OrderProduct $orderproduct)
-        // {
-        //     //$session = $request->getSession();
-            
-        //     $idOrder = count($order->findAll());
-        //     $stocknumber = 0;
-        //     $allProducts = $product->findAll();
-            
-        //     for ($i = 0; $i < count($allProducts); $i++) {
-        //         $stocknumber = $stocknumber + $allProducts[$i]->getStock();
-        //     }
-        //     return $this->render('back/product/index.html.twig', [
-                
-        //         'idOrder' => $idOrder,
-        //         'stockNumber' => $stocknumber,
-        //     ]);
-        // }
+        
 }

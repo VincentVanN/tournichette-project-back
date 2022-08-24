@@ -1,0 +1,46 @@
+{% extends 'back/product/_base.html.twig' %}
+
+{% block title %}product index{% endblock %}
+
+{% block body %}
+    <h1>L'épicerie</h1>
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>stock</th>
+                <th>prix</th>
+                <th>catégorie</th>
+                <th>unité</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+               <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.category.name }}</td>
+                <td>{{ product.unity }}</td>
+                
+                <td>
+                    <a href="{{ path('app_back_product_show', {'id': product.id}) }}" class = "btn btn-info">{{ product.name }}</a>
+                    <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" class = "btn btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_back_product_new') }}"class = "btn btn-success">Créer un nouveau produit</a>
+
+{% endblock %}
+
+
