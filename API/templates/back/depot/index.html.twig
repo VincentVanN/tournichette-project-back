@@ -3,14 +3,16 @@
 {% block title %}depot index{% endblock %}
 
 {% block body %}
-    <h1>depot index</h1>
+    <h1>Les dépôts</h1>
 
     <table class="table table-condensed">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>adresse</th>
+                <th>Téléphone</th>
+                <th>Adresse</th>
+                {# <th>Commande</th> #}
                
             </tr>
         </thead>
@@ -19,6 +21,9 @@
             <tr>
                <td>{{ depot.id }}</td>
                 <td>{{ depot.firstname }}</td>
+                <td>{{ depot.phone }}</td>
+                <td>{{ depot.address }}</td>
+                {# <td>{{ depot.orders}}</td> #}
                 
               
             
