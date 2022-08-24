@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CartController extends AbstractController
 {
-    /**
-         * @Route("/", name="_list", methods={"GET"})
+        /**
+         * @Route("", name="_list", methods={"GET"})
          */
     public function list(CartRepository $cartRepository): Response
     {
@@ -101,19 +101,19 @@ class CartController extends AbstractController
     /*
     public function record(?int $id = null)
     {
-        $cart = $id === null ? new Category() : Category::find($id);
+        $cart = $id === null ? new Cart() : Cart::find($id);
         $cart ->setName($name);
         $cart ->setSlug($slug);
         $cart ->setStock($stock);
         $cart ->setUnity($unity);
         $cart ->setPrice($price);
         $cart ->setQuantity($quantity);
-        $cart ->setCategory($category);
+       
 
         //if there is no error
         if (empty($errors)) {
             // we saved in BDD
-            if ($category->save()) {
+            if ($cart->save()) {
                 if ($id === null) {
                     // Si la sauvegarde a fonctionné, on redirige vers la liste des catégories.
                     return $this->redirectToRoute('app_back_cart_index', [], Response::HTTP_SEE_OTHER);

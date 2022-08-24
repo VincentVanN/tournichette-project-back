@@ -14,13 +14,12 @@ class CartType extends AbstractType
     {
         $builder
             //->add('dateOrder')
-            ->add('typeCart')
-            ->add('price');
-            //->add('paidAt');
+            //->add('paidAt')
             //->add('paymentStatus')
            // ->add('address')
             //->add('user')
-            //->add('deliverSatus')  ;     
+            ->add('typeCart')
+            ->add('price')  ;     
     }
 
     public function configureOptions(OptionsResolver $resolver): void
