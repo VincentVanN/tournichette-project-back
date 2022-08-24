@@ -1,6 +1,7 @@
+
 {% extends 'back/product/_base.html.twig' %}
 
-{% block title %product{% endblock %}
+{% block title %} product {% endblock %}
 
 {% block body %}
 
@@ -17,6 +18,18 @@
                 <th>Name</th>
                 <td>{{ product.name }}</td>
             </tr>
+            <tr>
+                <th>category</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td>{{ product.stock }}</td>
+            </tr>
+            <tr>
+                <th>Unity</th>
+                <td>{{ product.unity }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -25,3 +38,4 @@
     {{ include('back/product/_delete.html.twig') }}
 </div>
 {% endblock %}
+

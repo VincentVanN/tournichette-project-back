@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Utils\MySlugger;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,12 +14,17 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('slug')
-            ->add('stock')
-            ->add('unity')
-            ->add('price')
-            ->add('category');
+        ->add('name')
+        ->add('stock')
+        ->add('unity')
+        ->add('price');
+        /*->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+            ]);
+        */
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -27,4 +33,6 @@ class ProductType extends AbstractType
             'data_class' => Product::class,
         ]);
     }
+
+    
 }

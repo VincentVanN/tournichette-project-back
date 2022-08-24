@@ -1,26 +1,29 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Back;
 
 use App\Entity\Product;
+use App\Form\ProductType;
+use App\Entity\OrderProduct;
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 /**
- * @Route("/back/product")
+ * @Route("/back/product", name="app_back_product")
  */
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/", name="app_back_product_index", methods={"GET"})
+     * @Route("", name="_list", methods={"GET"})
      */
-    public function index(ProductRepository $productRepository): Response
+    public function list(ProductRepository $productRepository): Response
     {
         return $this->render('back/product/index.html.twig', [
             'products' => $productRepository->findAll(),
@@ -28,7 +31,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_back_product_new", methods={"GET", "POST"})
+     * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ProductRepository $productRepository): Response
     {
@@ -37,9 +40,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // plus besoin car on a fait un écouteur d'événements
-            // $product->setSlug($mySlugger->slugify($product->getTitle()));
 
             $productRepository->add($product, true);
 
@@ -53,9 +53,9 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_back_product_show", methods={"GET"})
+     * @Route("/{id}", name="_show", methods={"GET"})
      */
-    public function show(product $product): Response
+    public function show(Product $product): Response
     {
         return $this->render('back/product/show.html.twig', [
             'product' => $product,
@@ -63,9 +63,9 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_back_product_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, product $product, ProductRepository $productRepository): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -85,9 +85,9 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_back_product_delete", methods={"POST"})
+     * @Route("/{id}", name="_delete", methods={"POST"})
      */
-    public function delete(Request $request, product $product, ProductRepository $productRepository): Response
+    public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $productRepository->remove($product, true);
@@ -96,9 +96,13 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('app_back_product_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    /**
+     * @Route("/{id}/record", name="record", methods={"GET", "POST"})
+     */
     public function record(?int $id = null)
     {
-        $product = $id === null ? new Category() : Category::find($id);
+        $product = $id === null ? new Product() : Product::find($id);
         $product ->setName($name);
         $product ->setSlug($slug);
         $product ->setStock($stock);
@@ -123,4 +127,25 @@ class ProductController extends AbstractController
             }
         }
     }
+
+        /**
+        * @Route("/dash", name="dashboard")
+        */
+        public function dash(Request $request, OrderRepository $order, ProductRepository $product, OrderProduct $orderproduct)
+        {
+            //$session = $request->getSession();
+            
+            $idOrder = count($order->findAll());
+            $stocknumber = 0;
+            $allProducts = $product->findAll();
+            
+            for ($i = 0; $i < count($allProducts); $i++) {
+                $stocknumber = $stocknumber + $allProducts[$i]->getStock();
+            }
+            return $this->render('back/product/index.html.twig', [
+                
+                'idOrder' => $idOrder,
+                'stockNumber' => $stocknumber,
+            ]);
+        }
 }
