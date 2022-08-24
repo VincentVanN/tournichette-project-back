@@ -3,7 +3,7 @@
 {% block title %}product index{% endblock %}
 
 {% block body %}
-    <h1>product index</h1>
+    <h1>L'épicerie</h1>
 
     <table class="table table-condensed">
         <thead>
@@ -24,8 +24,8 @@
               
             
                 <td>
-                    <a href="{{ path('app_back_product_show', {'id': product.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('app_back_product_show', {'id': product.id}) }}" class = "btn btn-info">{{ product.name }}</a>
+                    <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" class = "btn btn-warning">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -36,7 +36,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_back_product_new') }}"class = "btn btn-success">Create new</a>
+    <a href="{{ path('app_back_product_new') }}"class = "btn btn-success">Créer un nouveau produit</a>
 
 {% endblock %}
 

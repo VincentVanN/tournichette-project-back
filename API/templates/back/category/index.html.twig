@@ -3,7 +3,7 @@
 {% block title %}category index{% endblock %}
 
 {% block body %}
-    <h1>category index</h1>
+    <h1>Les catégories</h1>
 
     <table class="table table-condensed">
         <thead>
@@ -18,8 +18,8 @@
                <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
                 <td>
-                    <a href="{{ path('app_back_category_show', {'id': category.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('app_back_category_edit', {'id': category.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('app_back_category_show', {'id': category.id}) }}" class = "btn btn-info">{{ category.name }}</a>
+                    <a href="{{ path('app_back_category_edit', {'id': category.id}) }}" class = "btn btn-warning">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -30,6 +30,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_back_category_new') }}"class = "btn btn-success">Create new</a>
+    <a href="{{ path('app_back_category_new') }}"class = "btn btn-success">Créer une nouvelle catégorie</a>
 
 {% endblock %}

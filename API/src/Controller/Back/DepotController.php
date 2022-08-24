@@ -33,17 +33,7 @@ class DepotController extends AbstractController
         ]);
     }
 
-    /**
-     * 
-     * @Route("/{id}", name="_show", methods="GET")
-     */
-    public function show(Depot $depot): Response
-    {
-        return $this->render('back/depot/show.html.twig', [
-            'depot' => $depot,
-        ]);
-    }
-
+    
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
@@ -61,14 +51,25 @@ class DepotController extends AbstractController
             return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('back/depot/edit.html.twig', [
+        return $this->renderForm('back/depot/new.html.twig', [
             'depot' => $depot,
             'form' => $form,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
+     * 
+     * @Route("/{id<\d+>}", name="_show", methods="GET")
+     */
+    public function show(Depot $depot): Response
+    {
+        return $this->render('back/depot/show.html.twig', [
+            'depot' => $depot,
+        ]);
+    }
+
+    /**
+     * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Depot $depot, DepotRepository $depotRepository): Response
     {
@@ -90,7 +91,7 @@ class DepotController extends AbstractController
     }
     
     /**
-     * @Route("/{id}/delete", name="_delete", methods={"POST"})
+     * @Route("/delete/{id<\d+>}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Depot $depot, DepotRepository $depotRepository): Response
     {

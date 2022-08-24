@@ -3,7 +3,7 @@
 {% block title %}cart index{% endblock %}
 
 {% block body %}
-    <h1>cart index</h1>
+    <h1>Les Paniers</h1>
 
     <table class="table table-condensed">
         <thead>
@@ -11,21 +11,21 @@
                 <th>Id</th>
                 <th>Version</th>
                 <th>Prix</th>
-                <th>Commande</th>
+                {# <th>Commande</th> #}
             </tr>
         </thead>
         <tbody>
         {% for cart in carts %}
             <tr>
                <td>{{ cart.id }}</td>
-                {# <td>{{ cart.typeCart }}</td> #}
+                <td>{{ cart.typecart }}</td> 
                 <td>{{ cart.price }}</td>
-                {# <td>{{ cart.cartOrders }}</td> #}
+                {# <td>{{ cart.cartorders }}</td>  #}
               
             
                 <td>
-                    <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-info">{{ cart.typecart }}</a>
+                    <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-warning">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -36,6 +36,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_back_cart_new') }}"class = "btn btn-success">Create new</a>
+    <a href="{{ path('app_back_cart_new') }}"class = "btn btn-success">Créer un nouveau panier</a>
 
 {% endblock %}

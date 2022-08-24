@@ -3,6 +3,7 @@
 {% block title %}depot index{% endblock %}
 
 {% block body %}
+ 
     <h1>Les dépôts</h1>
 
     <table class="table table-condensed">
@@ -28,8 +29,8 @@
               
             
                 <td>
-                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-info">show</a>
-                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-warning">edit</a>
+                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-info">{{ depot.firstname }}</a>
+                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-warning">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -40,7 +41,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Create new</a>
+    <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Créer un nouveau dépôt</a>
 
 {% endblock %}
 
