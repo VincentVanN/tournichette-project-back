@@ -21,6 +21,13 @@ class Cart
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_cart_show"})
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
@@ -28,13 +35,13 @@ class Cart
      */
     private $price;
 
+
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=255)
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
-     * @Groups({"api_v1_order_user_show"})
      */
-    private $type_cart;
+    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=CartProduct::class, mappedBy="cart")
@@ -66,18 +73,6 @@ class Cart
     public function setPrice(string $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getTypeCart(): ?string
-    {
-        return $this->type_cart;
-    }
-
-    public function setTypeCart(string $type_cart): self
-    {
-        $this->type_cart = $type_cart;
 
         return $this;
     }
@@ -138,6 +133,30 @@ class Cart
                 $cartOrder->setCart(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
