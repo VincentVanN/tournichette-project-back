@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Back\Back;
+namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
