@@ -54,7 +54,7 @@ class UserController extends AbstractController
 
     /**
      * List all orders of user with given ID
-     * @Route("/{id<\d+>/orders", name="_orders", methods={"GET"})
+     * @Route("/{id<\d+>}/orders", name="_orders", methods={"GET"})
      */
     public function listOrders(User $user): Response
     {

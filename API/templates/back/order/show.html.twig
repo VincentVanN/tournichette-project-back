@@ -60,7 +60,7 @@
                 <h3 class="card-title">Liste des paniers</h3>
                 {% for currentCart in order.cartOrders %}
                     <ul>
-                        <li class="list-group-item"><strong class="fw-semibold">Type du panier : </strong>{{ currentCart.cart.getTypeCart }}</li>
+                        <li class="list-group-item"><strong class="fw-semibold">Nom du panier : </strong>{{ currentCart.cart.name }}</li>
                         <li class="list-group-item"><strong class="fw-semibold">Quantité : </strong>{{ currentCart.quantity }} panier(s)</li>
                     </ul>
                 {% endfor %}
