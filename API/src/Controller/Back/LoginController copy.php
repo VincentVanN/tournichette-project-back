@@ -27,11 +27,10 @@ class LoginController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout", methods={"GET"})
+     * @Route("/logout", name="app_logout")
      */
-    public function logout(): void
+    public function logout(): Response
     {
-        // controller can be blank: it will never be called!
-        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+        throw new \Exception('This will never be reached as component security will manage the route');
     }
 }
