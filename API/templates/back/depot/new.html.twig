@@ -3,8 +3,11 @@
 {% block title %}New depot{% endblock %}
 
 {% block body %}
+ 
+  <a class = "btn btn-success" href="{{ path('app_back_depot_list') }}">Retour à la liste</a>
+ 
 <div class="container">
-    <h1>Create new depot</h1>
+    <h1>Créer un nouveau dépot</h1>
 
     {{ include('back/depot/_form.html.twig') }}
 

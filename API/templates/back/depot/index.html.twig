@@ -1,20 +1,47 @@
-{% extends 'base.html.twig' %}
+{% extends 'back/depot/_base.html.twig' %}
 
-{% block title %}Hello DepotController!{% endblock %}
+{% block title %}depot index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+ 
+    <h1>Les dépôts</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Téléphone</th>
+                <th>Adresse</th>
+                {# <th>Commande</th> #}
+               
+            </tr>
+        </thead>
+        <tbody>
+        {% for depot in depots %}
+            <tr>
+               <td>{{ depot.id }}</td>
+                <td>{{ depot.firstname }}</td>
+                <td>{{ depot.phone }}</td>
+                <td>{{ depot.address }}</td>
+                {# <td>{{ depot.orders}}</td> #}
+                
+              
+            
+                <td>
+                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-info">{{ depot.firstname }}</a>
+                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/Apotheose/projet-tournichette-back/API/src/Controller/DepotController.php'|file_link(0) }}">src/Controller/DepotController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/Apotheose/projet-tournichette-back/API/templates/depot/index.html.twig'|file_link(0) }}">templates/depot/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Créer un nouveau dépôt</a>
+
 {% endblock %}
+

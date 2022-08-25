@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller\Api;
-
 use App\Repository\DepotRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;

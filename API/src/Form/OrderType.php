@@ -15,10 +15,10 @@ class OrderType extends AbstractType
         $builder
             ->add('dateOrder')
             ->add('paidAt')
-            ->add('paiementStatus')
-            ->add('adress')
-            ->add('user')
-            ->add('deliverSatus') ;   
+            ->add('paymentStatus')
+            //->add('depot')
+            //->add('user')
+            ->add('deliverStatus') ;   
     }
 
     public function configureOptions(OptionsResolver $resolver): void

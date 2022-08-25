@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -14,22 +14,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/back/user")
+ * @Route("/back/user", name="app_back_user")
  */
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user", name="app_back_user_index, methods={"GET"})
+     * @Route("/user", name="_list", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function list(UserRepository $userRepository): Response
     {
-        return $this->render('back/user/index.html.twig', [
+        return $this->render('back/user/list.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="app_back_user_new", methods={"GET", "POST"})
+     * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function new(Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
     {
@@ -48,7 +48,7 @@ class UserController extends AbstractController
             // cette méthode fait le persist et le flush !
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/user/new.html.twig', [
@@ -58,7 +58,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_back_user_show", methods={"GET"})
+     * @Route("/{id}", name="_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -68,7 +68,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_back_user_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Security $security, User $user, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
     {
@@ -95,7 +95,7 @@ class UserController extends AbstractController
 
             $userRepository->add($user, true);
 
-            return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('back/user/edit.html.twig', [
@@ -105,7 +105,7 @@ class UserController extends AbstractController
     }
 
       /**
-     * @Route("/{id}", name="app_back_user_delete", methods={"POST"})
+     * @Route("/{id}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
@@ -113,7 +113,7 @@ class UserController extends AbstractController
             $userRepository->remove($user, true);
         }
 
-        return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);
     }
 
 

@@ -1,11 +1,14 @@
+
 {% extends 'back/product/_base.html.twig' %}
 
-{% block title %product{% endblock %}
+{% block title %} product {% endblock %}
 
 {% block body %}
 
+ <a class = "btn btn-success" href="{{ path('app_back_product_list') }}">Retour à la liste</a>
+
 <div class="container">
-    <h1>product</h1>
+    <h1>{{ product.name }}</h1>
 
     <table class="table">
         <tbody>
@@ -17,6 +20,18 @@
                 <th>Name</th>
                 <td>{{ product.name }}</td>
             </tr>
+            <tr>
+                <th>category</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td>{{ product.stock }}</td>
+            </tr>
+            <tr>
+                <th>Unity</th>
+                <td>{{ product.unity }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -25,3 +40,4 @@
     {{ include('back/product/_delete.html.twig') }}
 </div>
 {% endblock %}
+
