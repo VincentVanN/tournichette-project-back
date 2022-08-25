@@ -18,6 +18,8 @@ class Cart
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_cart_show"})
      */
     private $id;
 
