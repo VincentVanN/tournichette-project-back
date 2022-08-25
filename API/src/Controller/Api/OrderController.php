@@ -111,11 +111,11 @@ class OrderController extends AbstractController
             {
                 if (isset($currentCartOrder['quantity']) && $currentCartOrder['quantity'] >= 1) {
                     $cartOrder = $normalizer->denormalize($requestData['cartOrders'], CartOrder::class, 'json');
-                    $cart = $cartRepository->findOneBy(['type_cart' => $currentCartOrder['type_cart']]);
+                    $cart = $cartRepository->find($currentCartOrder['id']);
                     
                     if ($cart === null) {
                         return $this->prepareResponse(
-                            'Cart for this type [' . $currentCartOrder['type_cart'] . '] not found.',
+                            'Cart for this ID [' . $currentCartOrder['id'] . '] not found.',
                             [],
                             [],
                             true,
