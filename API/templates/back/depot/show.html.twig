@@ -1,0 +1,39 @@
+
+{% extends 'back/depot/_base.html.twig' %}
+
+{% block title %} depot {% endblock %}
+
+{% block body %}
+
+ <a class = "btn btn-success" href="{{ path('app_back_depot_list') }}">Retour à la liste</a>
+ 
+<div class="container">
+    <h1>{{ depot.firstname }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ depot.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ depot.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ depot.phone }}</td>
+            </tr>
+             <tr>
+                <th>Adresse</th>
+                <td>{{ depot.address }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_back_depot_edit', {'id': depot.id}) }}">Modifier</a>
+
+    {# {{ include('back/depot/_delete.html.twig') }} #}
+</div>
+{% endblock %}
+

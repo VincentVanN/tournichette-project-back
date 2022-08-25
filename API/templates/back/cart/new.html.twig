@@ -1,0 +1,14 @@
+{% extends 'back/cart/_base.html.twig' %}
+
+{% block title %}New Cart{% endblock %}
+
+{% block body %}
+ <a class = "btn btn-success" href="{{ path('app_back_cart_list') }}">Retour à la liste</a>
+
+<div class="container">
+    <h1>Créer un panier</h1>
+
+    {{ include('back/cart/_form.html.twig') }}
+
+</div>
+{% endblock %}

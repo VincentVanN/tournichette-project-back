@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Back;
+namespace App\Controller\Back\Back;
 
 use App\Entity\Order;
 use App\Form\OrderType;
