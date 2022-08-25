@@ -1,0 +1,46 @@
+{% extends 'back/order/_base-orders.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="text-center">Liste des commandes de {{ }}</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            {% if orders is empty %}
+                <td colspan="8">Aucune commande n'a été trouvé</td>
+            {% else %}
+                <th scope="col">#</th>
+                <th scope="col">Date commande</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Payée ?</th>
+                <th scope="col">Date paiement</th>
+                <th scope="col">Retirée ?</th>
+                <th scope="col">Date retrait</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td scope="row">{{ order.id }}</td>
+                <td>{{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
+                <td>{{ order.price }}</td>
+                <td>{{ order.paymentStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</td>
+                <td>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
+                <td>{{ order.deliverStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</td>
+                <td>{{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</td>
+                <td>
+                    <a href="{{ path('app_back_order_show', {'id': order.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+    {# <a href="{{ path('app_back_order_new') }}">Create new</a> #}
+</div>
+{% endblock %}

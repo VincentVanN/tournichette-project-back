@@ -4,6 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +53,21 @@ class UserController extends AbstractController
     }
 
     /**
-     * Create un new user
+     * List all orders of user with given ID
+     * @Route("/{id<\d+>/orders", name="_orders", methods={"GET"})
+     */
+    public function listOrders(User $user): Response
+    {
+        $allOrders = $user->getOrders();
+
+        return $this->render('back/user/list-orders.html.twig', [
+            'orders' => $allOrders,
+            'user' => $user 
+        ]);
+    }
+
+    /**
+     * Create a new user
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function create(Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
@@ -122,7 +137,7 @@ class UserController extends AbstractController
         ]);
     }
 
-      /**
+    /**
      * @Route("/{id<\d+>}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
