@@ -22,6 +22,7 @@ class CartOrder
      * @ORM\ManyToOne(targetEntity=Cart::class, inversedBy="cartOrders")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $cart;
 
@@ -34,6 +35,7 @@ class CartOrder
     /**
      * @ORM\Column(type="integer")
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $quantity;
 

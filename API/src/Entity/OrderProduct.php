@@ -27,6 +27,7 @@ class OrderProduct
     /**
      * @ORM\Column(type="decimal", precision=6, scale=3)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $quantity;
 
@@ -34,6 +35,7 @@ class OrderProduct
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="orderProducts")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $product;
 

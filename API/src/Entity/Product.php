@@ -31,6 +31,7 @@ class Product
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $name;
 
@@ -42,6 +43,7 @@ class Product
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $slug;
 
@@ -61,6 +63,7 @@ class Product
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $unity;
 
@@ -78,6 +81,7 @@ class Product
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $price;
 
