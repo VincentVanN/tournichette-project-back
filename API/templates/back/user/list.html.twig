@@ -32,7 +32,11 @@
                         <td>{{ currentUser.firstname }}</td>
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
-                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>{% include 'back/user/_delete.html.twig' with {'delete': '', 'user': currentUser} %}</td>
+                        <td>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>{% include 'back/user/_delete.html.twig' with {'delete': '', 'user': currentUser} %}
+                            {% endif %}    
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -66,7 +70,11 @@
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
                         <td>{{ currentUser.roleName }}</td>
-                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a></td>
+                        <td>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 {% for currentUser in admins %}
@@ -78,7 +86,11 @@
                         <td>{{ currentUser.email }}</td>
                         <td>{{ currentUser.phone }}</td>
                         <td>{{ currentUser.roleName }}</td>
-                        <td><a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>{% include 'back/user/_delete.html.twig' with {'delete': '', 'user': currentUser} %}</td>
+                        <td>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('app_back_user_edit', {'id': currentUser.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>{% include 'back/user/_delete.html.twig' with {'delete': '', 'user': currentUser} %}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
