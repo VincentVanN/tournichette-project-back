@@ -41,6 +41,7 @@ class Depot
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $phone;
 
@@ -48,6 +49,7 @@ class Depot
      * @ORM\Column(type="string", length=100)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $address;
 
