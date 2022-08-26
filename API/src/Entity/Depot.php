@@ -19,6 +19,7 @@ class Depot
      * @ORM\Column(type="integer")
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
+     * 
      */
     private $id;
 
@@ -27,6 +28,7 @@ class Depot
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
+     * 
      */
     private $firstname;
 
@@ -34,6 +36,7 @@ class Depot
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
+     * 
      */
     private $lastname;
 
@@ -62,6 +65,7 @@ class Depot
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
+     * 
      */
     private $slug;
 

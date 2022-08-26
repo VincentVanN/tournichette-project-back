@@ -2,29 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\Order;
+use App\Entity\Category;
 use App\Utils\MySlugger;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateOrder')
-            ->add('paidAt')
-            ->add('paiementStatus')
-            ->add('adress')
-            ->add('user')
-            ->add('deliverSatus') ;   
+            ->add('name')
+            ->add('image');
+            //->add('products');
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Order::class,
+            'data_class' => Category::class,
         ]);
     }
 }

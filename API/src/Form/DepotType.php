@@ -16,7 +16,8 @@ class DepotType extends AbstractType
             ->add('firstname')
             ->add('lastname')
             ->add('slug')
-            ->add('adress');
+            ->add('phone')
+            ->add('address');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

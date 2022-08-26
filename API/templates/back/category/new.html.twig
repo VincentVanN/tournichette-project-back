@@ -3,8 +3,11 @@
 {% block title %}New category{% endblock %}
 
 {% block body %}
+
+ <a class = "btn btn-success" href="{{ path('app_back_category_list') }}">Retour à la liste</a>
+
 <div class="container">
-    <h1>Create new category</h1>
+    <h1>Créer une Catégorie</h1>
 
     {{ include('back/category/_form.html.twig') }}
 

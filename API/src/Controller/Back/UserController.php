@@ -4,7 +4,9 @@ namespace App\Controller\Back;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,11 +54,26 @@ class UserController extends AbstractController
     }
 
     /**
-     * Create un new user
+     * List all orders of user with given ID
+     * @Route("/{id<\d+>}/orders", name="_orders", methods={"GET"})
+     */
+    public function listOrders(User $user): Response
+    {
+        $allOrders = $user->getOrders();
+
+        return $this->render('back/user/list-orders.html.twig', [
+            'orders' => $allOrders,
+            'user' => $user 
+        ]);
+    }
+
+    /**
+     * Create a new user
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function create(Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
-    {
+    { 
         $user = new User();
         $formUser = $this->createForm(UserType::class, $user);
         $formUser->handleRequest($request);
@@ -91,6 +108,7 @@ class UserController extends AbstractController
 
     /**
      * Edit a user with given ID
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(User $user, Request $request, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): Response
@@ -122,7 +140,9 @@ class UserController extends AbstractController
         ]);
     }
 
-      /**
+    /**
+     * Delete a user
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/{id<\d+>}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
