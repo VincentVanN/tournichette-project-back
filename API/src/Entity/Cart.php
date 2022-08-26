@@ -27,6 +27,8 @@ class Cart
      * @ORM\Column(type="string", length=255)
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $name;
 
@@ -35,6 +37,7 @@ class Cart
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $price;
 

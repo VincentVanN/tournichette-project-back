@@ -31,18 +31,21 @@ class Order
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $payment_status;
 
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $deliver_status;
 
@@ -50,18 +53,21 @@ class Order
      * @ORM\ManyToOne(targetEntity=Depot::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $depot;
 
     /**
      * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="orders")
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $orderProducts;
 
     /**
      * @ORM\OneToMany(targetEntity=CartOrder::class, mappedBy="orders")
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     private $cartOrders;
 
@@ -94,6 +100,7 @@ class Order
 
     /**
      * @Groups({"api_v1_orders_user"})
+     * @Groups({"api_v1_order_user_show"})
      */
     public function getDateOrder(): ?\DateTimeImmutable
     {
@@ -101,7 +108,6 @@ class Order
     }
 
     /**
-     * @Groups({"api_v1_order_user_show"})
      */
     public function setDateOrder(\DateTimeImmutable $orderedAt): self
     {
@@ -238,6 +244,7 @@ class Order
 
     /**
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     public function getPaidAt(): ?\DateTimeImmutable
     {
@@ -253,6 +260,7 @@ class Order
 
     /**
      * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
      */
     public function getDeliveredAt(): ?\DateTimeImmutable
     {
