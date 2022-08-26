@@ -20,8 +20,10 @@
         </div>
         <footer class="d-flex justify-content-evenly">
             <a href="{{ path('app_back_user_orders', {'id': user.id}) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-cart-fill">Voir les commandes</i></a>
+            {% if is_granted('ROLE_SUPER_AMIN') %}
             <a href="{{ path('app_back_user_edit', {'id': user.id}) }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill">Modifier</i></a>
             {% include 'back/user/_delete.html.twig' with {'delete': 'Supprimer'} %}
+            {% endif %}
         </footer>
     </article>
     </div>
