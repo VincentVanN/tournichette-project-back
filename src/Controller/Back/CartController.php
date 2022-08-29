@@ -4,14 +4,20 @@
 namespace App\Controller\Back;
 
 use App\Entity\Cart;
+use App\Entity\CartProduct;
 use App\Form\CartType;
+use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\CartRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ProductRepository;
+use App\Repository\CartProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 /**
@@ -28,31 +34,55 @@ class CartController extends AbstractController
             'carts' => $cartRepository->findAll(),
         ]);
     }
-
+ 
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CartRepository $cartRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, CartRepository $cartRepository, ProductRepository $productRepository, CartProductRepository $cartProductRepository): Response
     {
-        $cart = new Cart();
-        $form = $this->createForm(CartType::class, $cart);
-        $form->handleRequest($request);
+    $cart = new Cart();
+    $form = $this->createForm(CartType::class, $cart);
+    $cartProduct = New CartProduct ();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // plus besoin car on a fait un écouteur d'événements
-            // $cart->setSlug($mySlugger->slugify($cart->getTitle()));
+    $allProduct = $productRepository->findAll();
 
-            $cartRepository->add($cart, true);
+    $form = $this->createForm( CartType::class, $cart);
+    $form->handleRequest($request);
 
-            return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
-        }
+    if ($form->isSubmitted() && $form->isValid()) {
 
-        return $this->renderForm('back/cart/new.html.twig', [
-            'cart' => $cart,
-            'form' => $form,
-        ]);
+
+        $product = $form->get('product')->getData();
+
+        $productArray = $form->get('product')->getData();
+        $quantityArray= $form->get('quantity')->getData();
+
+    for($i = 0; $i < $productArray; $i++) {
+        $cartProduct->setProduct(Product::find($productArray[$i]));
+        $cartProduct->setQuantity($quantityArray[$i]);
+        $cart-addCartProduct($cartProduct);
+        $entityManager->persist($cartProduct);
+    }   
+        $entityManager->flush();
+
+        $cartProduct->setProduct('product');
+        $cartProduct->setQuantity('quantity');
+
+        $cart->addCartProducts($cartProduct);
+        $cartProductRepository->add($cartProduct, true);
+        $cartRepository->add($cart, true);
+
+       
+        return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('back/cart/new.html.twig', [
+        'cart' => $cart,
+        'form' => $form,
+        'allProduct' => $allProduct,
+        'form' => $form
+    ]);
+}
 
     /**
      * @Route("/{id}", name="_show", methods={"GET"})
@@ -67,10 +97,11 @@ class CartController extends AbstractController
     /**
      * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Cart $cart, CartRepository $cartRepository): Response
+    public function edit(Request $request, Cart $cart, ProductRepository $productRepository, CartRepository $cartRepository): Response
     {
         $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
+        $allProduct = $productRepository->findAll();
 
         if ($form->isSubmitted() && $form->isValid()) {
             // on slugify le titre fournit par le user avant de l'enregistrer en BDD
