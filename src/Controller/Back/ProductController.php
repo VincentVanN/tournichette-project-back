@@ -7,11 +7,13 @@ use App\Form\ProductType;
 use App\Entity\OrderProduct;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Utils\MySlugger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -33,13 +35,30 @@ class ProductController extends AbstractController
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ProductRepository $productRepository): Response
+    public function new(Request $request, ProductRepository $productRepository, MySlugger $mySlugger): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
+        // dd($_SERVER["SERVER_NAME"]);
         
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // dd($product);
+            // $imageFile = $form->get('image')->getData();
+            
+            // if ($imageFile) {
+            //     $imageFileName = $mySlugger->slugify(pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME));
+                
+            //     try {
+            //         $imageFile->move('/images/', $imageFileName . '.' . $imageFile->guessExtension());
+            //         $imageFileURL = 'http://' . $_SERVER["SERVER_NAME"] . '/images/' . $imageFileName . '.' . $imageFile->guessExtension();
+            //         $product->setImage($imageFileURL);
+            //         }
+            //     catch (FileException $e) {
+            //         dd('echec', $imageFileURL);
+            //     };
+            // }
         
             $productRepository->add($product, true);
 
