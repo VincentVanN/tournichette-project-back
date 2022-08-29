@@ -32,12 +32,16 @@
                 <th>Unity</th>
                 <td>{{ product.unity }}</td>
             </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ product.description }}</td>
+            </tr>
         </tbody>
     </table>
 
     <a class="btn btn-primary" href="{{ path('app_back_product_edit', {'id': product.id}) }}">Modifier</a>
 
-    {{ include('back/product/_delete.html.twig') }}
+    {# {{ include('back/product/_delete.html.twig') }} #}
 </div>
 {% endblock %}
 

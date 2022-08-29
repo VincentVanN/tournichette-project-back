@@ -26,7 +26,8 @@ class ProductType extends AbstractType
             'multiple' => false,
             'expanded' => true
             //'mapped' => false,
-        ]);
+        ])
+        ->add('description');
          
     }
 
