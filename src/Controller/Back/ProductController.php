@@ -3,11 +3,13 @@
 namespace App\Controller\Back;
 
 use App\Entity\Product;
+use App\Utils\MySlugger;
 use App\Form\ProductType;
+use App\Utils\GetBaseUrl;
 use App\Entity\OrderProduct;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use App\Utils\MySlugger;
+use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,10 +97,12 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}", name="_show", methods={"GET"})
      */
-    public function show(Product $product): Response
+    public function show(Product $product, GetBaseUrl $baseUrl): Response
     {
+        // dd($this->requesStack->getCurrentRequest()->getBaseUrl());
         return $this->render('back/product/show.html.twig', [
             'product' => $product,
+            'baseUrl' => $baseUrl->getBaseUrl()
         ]);
     }
 

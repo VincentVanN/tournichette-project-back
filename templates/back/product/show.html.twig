@@ -10,7 +10,7 @@
     
     <div class="row justify-content-around mt-2">
         <article class="card col-4">
-            <img class="card-img-top" src="#" alt="Photo de {{ product.name }}">
+            <img class="card-img-top" src="{{ baseUrl ~ asset('images/products/'~ product.image)  }}" alt="Photo de {{ product.name }}">
             <div class="card-body">
                 <ul>
                     <li class="kist-group-item"><strong class="fw semibold">Nom : </strong>{{ product.name }}</li>
