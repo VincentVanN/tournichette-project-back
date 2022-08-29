@@ -68,7 +68,7 @@ class Product
     private $unity;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
