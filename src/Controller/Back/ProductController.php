@@ -42,26 +42,9 @@ class ProductController extends AbstractController
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-        // dd($_SERVER["SERVER_NAME"]);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // dd($product);
-            // $imageFile = $form->get('image')->getData();
-            
-            // if ($imageFile) {
-            //     $imageFileName = $mySlugger->slugify(pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME));
                 
-            //     try {
-            //         $imageFile->move('/images/', $imageFileName . '.' . $imageFile->guessExtension());
-            //         $imageFileURL = 'http://' . $_SERVER["SERVER_NAME"] . '/images/' . $imageFileName . '.' . $imageFile->guessExtension();
-            //         $product->setImage($imageFileURL);
-            //         }
-            //     catch (FileException $e) {
-            //         dd('echec', $imageFileURL);
-            //     };
-            // }
-        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
@@ -99,7 +82,6 @@ class ProductController extends AbstractController
      */
     public function show(Product $product, GetBaseUrl $baseUrl): Response
     {
-        // dd($this->requesStack->getCurrentRequest()->getBaseUrl());
         return $this->render('back/product/show.html.twig', [
             'product' => $product,
             'baseUrl' => $baseUrl->getBaseUrl()
@@ -109,14 +91,13 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository, MySlugger $mySlugger): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // $product->setSlug($mySlugger->slugify($product->getTitle()));
+            $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
