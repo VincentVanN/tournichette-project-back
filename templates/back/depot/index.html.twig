@@ -29,8 +29,8 @@
               
             
                 <td>
-                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-info">{{ depot.firstname }}</a>
-                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-warning">Modifier</a>
+                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" <i class="bi bi-eye"></i></a>
+                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" <i class="bi bi-pencil-fill"></i>
                 </td>
             </tr>
         {% else %}
