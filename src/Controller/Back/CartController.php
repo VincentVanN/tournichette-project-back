@@ -4,8 +4,11 @@
 namespace App\Controller\Back;
 
 use App\Entity\Cart;
+use App\Entity\Category;
 use App\Form\CartType;
 use App\Repository\CartRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,9 +35,15 @@ class CartController extends AbstractController
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CartRepository $cartRepository): Response
+    public function new(Request $request, CartRepository $cartRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
         $cart = new Cart();
+
+        $allCategories = $categoryRepository->findAll();
+        $allFruits = $productRepository->findByCategory('fruits');
+        $allVegetables = $productRepository->findByCategory('legumes');
+        $allGroceries = $productRepository->findByCategory('epicerie');
+
         $form = $this->createForm(CartType::class, $cart);
         $form->handleRequest($request);
 
@@ -47,6 +56,10 @@ class CartController extends AbstractController
 
         return $this->renderForm('back/cart/new.html.twig', [
             'cart' => $cart,
+            'fruits' => $allFruits,
+            'vegetables' => $allVegetables,
+            'groceries' => $allGroceries,
+            'categories' => $allCategories,
             'form' => $form,
         ]);
     }

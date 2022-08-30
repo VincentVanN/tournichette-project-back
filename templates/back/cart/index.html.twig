@@ -11,6 +11,7 @@
             <tr>
             {% if carts is empty %}
                 <td colspan="8">Aucun panier n'a été trouvé</td>
+            </tr>
             {% else %}
                 <th scope="col">#</th>
                 <th scope="col">Nom</th>
@@ -30,13 +31,9 @@
                     <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
                 </td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
         {% endfor %}
-        {% endif %}
         </tbody>
+        {% endif %}
     </table>
 </div>
     
