@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DepotRepository::class)
@@ -25,6 +26,7 @@ class Depot
 
 
     /**
+     * @Assert\Unique(message="le nom est déjà utilisé")
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})

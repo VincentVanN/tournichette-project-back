@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)
@@ -24,6 +25,7 @@ class Cart
     private $id;
 
     /**
+     * @Assert\Unique(message="le nom est déjà utilisé")
      * @ORM\Column(type="string", length=255)
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})

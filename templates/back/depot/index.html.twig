@@ -29,8 +29,8 @@
               
             
                 <td>
-                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" <i class="bi bi-eye"></i></a>
-                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" <i class="bi bi-pencil-fill"></i>
+                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
+                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
                 </td>
             </tr>
         {% else %}
@@ -41,7 +41,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Créer un nouveau dépôt</a>
+    <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Ajouter un nouveau dépôt</a>
 
 {% endblock %}
 
