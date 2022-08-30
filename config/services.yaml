@@ -26,10 +26,6 @@ services:
         bind:
             $baseUrl: '%env(resolve:BASE_URL)%'
     
-    App\Utils\MySlugger:
-        bind:
-            $toLower: '%env(resolve:SLUGIFY_TO_LOWER)%'
-    
     App\EventListener\CartListener:
         tags:
             -
