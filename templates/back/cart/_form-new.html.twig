@@ -2,6 +2,14 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 
+    
+    <button id="product-add" type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-lg">Ajouter un autre produit</i></button><br/>
+    <button class="btn btn-primary mt-3">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}
+
+<!-- Template for add a product -->
+<template id="select-product-template">
+
     <div class="input-group mb-3">
     <span class="input-group-text">Produit</span>
     <select name="products[]" id="" class="form-control form-select" aria-label="form-select-lg example">
@@ -39,9 +47,7 @@
         {% endfor %}
     </select>
     <input type="number" class="form-control" name="quantity[]" placeholder="Quantité" min="0" step="0.01">
-
     </div>
-    <button type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-lg">Ajouter un autre produit</i></button><br/>
-    <button class="btn btn-primary mt-3">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
+
+</template>
 
