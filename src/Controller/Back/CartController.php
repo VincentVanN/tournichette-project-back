@@ -39,10 +39,7 @@ class CartController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // plus besoin car on a fait un écouteur d'événements
-            // $cart->setSlug($mySlugger->slugify($cart->getTitle()));
-
+            
             $cartRepository->add($cart, true);
 
             return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);

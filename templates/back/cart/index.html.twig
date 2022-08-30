@@ -1,16 +1,21 @@
 {% extends 'back/cart/_base.html.twig' %}
 
-{% block title %}cart index{% endblock %}
+{% block title %}Paniers{% endblock %}
 
 {% block body %}
-    <h1>Les Paniers</h1>
+<div class="container-fluid">
+    <h1 class="text-center">Liste des Paniers</h1>
 
     <table class="table table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Version</th>
-                <th>Prix</th>
+            {% if carts is empty %}
+                <td colspan="8">Aucun panier n'a été trouvé</td>
+            {% else %}
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prix</th>
+                <th scope="col"></th>
                 {# <th>Commande</th> #}
             </tr>
         </thead>
@@ -18,14 +23,11 @@
         {% for cart in carts %}
             <tr>
                <td>{{ cart.id }}</td>
-                <td>{{ cart.typecart }}</td> 
-                <td>{{ cart.price }}</td>
-                {# <td>{{ cart.cartorders }}</td>  #}
-              
-            
-                <td>
-                    <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-info">{{ cart.typecart }}</a>
-                    <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-warning">Modifier</a>
+                <td>{{ cart.name }}</td> 
+                <td>{{ cart.price }}</td> 
+               <td>
+                    <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
+                    <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
                 </td>
             </tr>
         {% else %}
@@ -33,9 +35,10 @@
                 <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
+        {% endif %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_back_cart_new') }}"class = "btn btn-success">Créer un nouveau panier</a>
+</div>
+    
 
 {% endblock %}
