@@ -35,7 +35,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         $nbOrders = 50;
         $this->faker = \Faker\Factory::create();
         $faker = $this->faker;
-        $randomUsers = $faker->randomElements($manager->getRepository(User::class)->findAll(), 15);
+        $randomUsers = $faker->randomElements($manager->getRepository(User::class)->findAll(), 50);
         $allDepots = $manager->getRepository(Depot::class)->findAll();
 
         for($i = 0 ; $i<$nbOrders; $i++)

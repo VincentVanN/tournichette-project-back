@@ -62,7 +62,7 @@ class UserFixtures extends Fixture
 
         // ###################
 
-        $nbUser = 30;
+        $nbUser = 100;
 
         for($i = 0; $i < $nbUser; $i++)
         {
