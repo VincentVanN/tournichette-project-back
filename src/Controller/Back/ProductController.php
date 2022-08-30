@@ -82,6 +82,9 @@ class ProductController extends AbstractController
      */
     public function show(Product $product, GetBaseUrl $baseUrl): Response
     {
+        if ($product->getImage() === null) {
+            $product->setImage('placeholder.png');
+        }
         return $this->render('back/product/show.html.twig', [
             'product' => $product,
             'baseUrl' => $baseUrl->getBaseUrl()

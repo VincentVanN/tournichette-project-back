@@ -26,6 +26,10 @@ class ProductController extends AbstractController
 
         foreach($allProducts as $currentProduct)
         {
+            if ($currentProduct->getImage() === null) {
+                $currentProduct->setImage('placeholder.png');
+            }
+
             $currentProduct->setImage($baseUrl->getBaseUrl() . '/images/products/' . $currentProduct->getImage());
         }
 
@@ -55,6 +59,10 @@ class ProductController extends AbstractController
             );
         }
 
+        if ($product->getImage() === null) {
+            $product->setImage('placeholder.png');
+        }
+        
         $product->setImage($baseUrl->getBaseUrl() . '/images/products/' . $product->getImage());
 
         return $this->prepareResponse(
