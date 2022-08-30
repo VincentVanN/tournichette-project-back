@@ -102,9 +102,9 @@ class Order
      * @Groups({"api_v1_orders_user"})
      * @Groups({"api_v1_order_user_show"})
      */
-    public function getDateOrder(): ?\DateTimeImmutable
+    public function getDateOrder()
     {
-        return $this->orderedAt;
+        return date_format($this->orderedAt, 'd-m-Y H:i:s');
     }
 
     /**
@@ -246,9 +246,10 @@ class Order
      * @Groups({"api_v1_order_user_show"})
      * @Groups({"api_v1_orders_user"})
      */
-    public function getPaidAt(): ?\DateTimeImmutable
+    public function getPaidAt()
     {
-        return $this->paidAt;
+        $humanDate = $this->paidAt !== null ? date_format($this->paidAt, 'd-m-Y H:i:s') : $this->paidAt;
+        return $humanDate;
     }
 
     public function setPaidAt(?\DateTimeImmutable $paidAt): self
@@ -262,9 +263,10 @@ class Order
      * @Groups({"api_v1_order_user_show"})
      * @Groups({"api_v1_orders_user"})
      */
-    public function getDeliveredAt(): ?\DateTimeImmutable
+    public function getDeliveredAt()
     {
-        return $this->deliveredAt;
+        $humanDate = $this->deliveredAt !== null ? date_format($this->deliveredAt, 'd-m-Y H:i:s') : $this->deliveredAt;
+        return $humanDate;
     }
 
     public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): self
