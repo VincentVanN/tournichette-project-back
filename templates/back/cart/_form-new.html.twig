@@ -19,7 +19,7 @@
             {% if currentCategory.name == 'Fruits' %}
                 {% if fruits is not empty %}
                     {% for currentFruit in fruits %}
-                        <option value="{{ currentFruit.id }}">{{ currentFruit.name }}</option>
+                        <option value="{{ currentFruit.id }}">{{ currentFruit.name }}.........({{ currentFruit.unity }})</option>
                     {% endfor %}
                 {% else %}
                     <option>-</option>
@@ -28,7 +28,7 @@
             {% if currentCategory.name == 'Légumes' %}
                 {% if vegetables is not empty %}
                     {% for currentVegetable in vegetables %}
-                        <option value="{{ currentVegetable.id }}">{{ currentVegetable.name }}</option>
+                        <option value="{{ currentVegetable.id }}">{{ currentVegetable.name }}.........({{ currentVegetable.unity }})</option>
                     {% endfor %}
                 {% else %}
                     <option>-</option>
@@ -37,7 +37,7 @@
             {% if currentCategory.name == 'Epicerie' %}
                 {% if groceries is not empty %}
                     {% for currentGrocery in groceries %}
-                        <option value="{{ currentGrocery.id }}">{{ currentGrocery.name }}</option>
+                        <option value="{{ currentGrocery.id }}">{{ currentGrocery.name }}.........({{ currentGrocery.unity }})</option>
                     {% endfor %}
                 {% else %}
                     <option>-</option>
