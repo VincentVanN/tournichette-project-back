@@ -3,15 +3,19 @@
 namespace App\Controller\Back;
 
 use App\Entity\Product;
+use App\Utils\MySlugger;
 use App\Form\ProductType;
+use App\Utils\GetBaseUrl;
 use App\Entity\OrderProduct;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -33,14 +37,14 @@ class ProductController extends AbstractController
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ProductRepository $productRepository): Response
+    public function new(Request $request, ProductRepository $productRepository, MySlugger $mySlugger): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-        
+                
         if ($form->isSubmitted() && $form->isValid()) {
-        
+            $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
@@ -76,24 +80,27 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}", name="_show", methods={"GET"})
      */
-    public function show(Product $product): Response
+    public function show(Product $product, GetBaseUrl $baseUrl): Response
     {
+        if ($product->getImage() === null) {
+            $product->setImage('placeholder.png');
+        }
         return $this->render('back/product/show.html.twig', [
             'product' => $product,
+            'baseUrl' => $baseUrl->getBaseUrl()
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository, MySlugger $mySlugger): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // $product->setSlug($mySlugger->slugify($product->getTitle()));
+            $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);

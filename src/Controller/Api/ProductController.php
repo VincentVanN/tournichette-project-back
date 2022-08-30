@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 use App\Repository\DepotRepository;
 use App\Repository\ProductRepository;
+use App\Utils\GetBaseUrl;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,9 +20,18 @@ class ProductController extends AbstractController
     * @Route("", name="_list", methods="GET")
     * @return Response
     */
-    public function list(ProductRepository $productRepository) :Response
+    public function list(ProductRepository $productRepository, GetBaseUrl $baseUrl) :Response
     {
         $allProducts = $productRepository->findAll();
+
+        foreach($allProducts as $currentProduct)
+        {
+            if ($currentProduct->getImage() === null) {
+                $currentProduct->setImage('placeholder.png');
+            }
+
+            $currentProduct->setImage($baseUrl->getBaseUrl() . '/images/products/' . $currentProduct->getImage());
+        }
 
         return $this->prepareResponse(
             'OK',
@@ -34,7 +44,7 @@ class ProductController extends AbstractController
      * Show one product with given slug
      * @Route("/{slug}", name="_show", methods="GET")
      */
-    public function show(string $slug, ProductRepository $productRepository): Response
+    public function show(string $slug, ProductRepository $productRepository, GetBaseUrl $baseUrl): Response
     {
         $product = $productRepository->findOneBy(['slug' => $slug]);
 
@@ -48,6 +58,12 @@ class ProductController extends AbstractController
                 Response::HTTP_NOT_FOUND
             );
         }
+
+        if ($product->getImage() === null) {
+            $product->setImage('placeholder.png');
+        }
+        
+        $product->setImage($baseUrl->getBaseUrl() . '/images/products/' . $product->getImage());
 
         return $this->prepareResponse(
             'OK',

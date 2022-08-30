@@ -22,10 +22,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Utils\GetBaseUrl:
+        bind:
+            $baseUrl: '%env(resolve:BASE_URL)%'
+    
     App\Utils\MySlugger:
         bind:
             $toLower: '%env(resolve:SLUGIFY_TO_LOWER)%'
-            App\EventListener\CartListener:
+    
+    App\EventListener\CartListener:
         tags:
             -
                 # these are the options required to define the entity listener
@@ -34,9 +39,7 @@ services:
                 entity: 'App\Entity\Cart'
                 method: 'slugifyCartName'
 
-        bind:
-            $toLower: '%env(resolve:SLUGIFY_TO_LOWER)%'
-            App\EventListener\CategoryListener:
+    App\EventListener\CategoryListener:
         tags:
             -
                 # these are the options required to define the entity listener
@@ -44,10 +47,8 @@ services:
                 event: 'preFlush'
                 entity: 'App\Entity\Category'
                 method: 'slugifyCategoryName'
-
-        bind:
-            $toLower: '%env(resolve:SLUGIFY_TO_LOWER)%'
-                App\EventListener\DepotListener:
+    
+    App\EventListener\DepotListener:
         tags:
             -
                 # these are the options required to define the entity listener
@@ -56,9 +57,7 @@ services:
                 entity: 'App\Entity\Depot'
                 method: 'slugifyDepotName'
 
-        bind:
-            $toLower: '%env(resolve:SLUGIFY_TO_LOWER)%'
-                App\EventListener\ProductListener:
+    App\EventListener\ProductListener:
         tags:
             -
                 # these are the options required to define the entity listener
@@ -66,5 +65,3 @@ services:
                 event: 'preFlush'
                 entity: 'App\Entity\Product'
                 method: 'slugifyProductName'
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones

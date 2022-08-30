@@ -48,7 +48,7 @@ class Category
     private $image;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="Category")
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
      */
     private $products;
 
