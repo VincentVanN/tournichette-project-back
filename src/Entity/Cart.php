@@ -7,6 +7,7 @@ use App\Utils\MySlugger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -25,6 +26,7 @@ class Cart
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Ce champs ne doit pas être vide")
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_order_user_show"})
@@ -34,6 +36,8 @@ class Cart
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Assert\NotNull(message="Vous devez définir un prix")
+     * @Assert\PositiveOrZero(message="Le prix ne doit pas être négatif")
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_order_user_show"})

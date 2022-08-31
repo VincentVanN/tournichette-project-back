@@ -4,22 +4,16 @@
 namespace App\Controller\Back;
 
 use App\Entity\Cart;
-use App\Entity\Category;
+use App\Entity\CartProduct;
 use App\Form\CartType;
-use App\Entity\Product;
-use App\Form\ProductType;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 /**
@@ -40,7 +34,7 @@ class CartController extends AbstractController
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CartRepository $cartRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    public function new(Request $request, CartRepository $cartRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
         $cart = new Cart();
 
@@ -53,21 +47,37 @@ class CartController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            $cartRepository->add($cart, true);
+            $allFormProducts = $request->get('products');
+            $allFormProducts = filter_var_array($allFormProducts, FILTER_SANITIZE_STRING);
+            $allFormQuantity = filter_var_array($allFormProducts, FILTER_SANITIZE_NUMBER_FLOAT);
+
+            for ($i=0; $i < count($allFormProducts) ; $i++) { 
+                $cartProduct = new CartProduct;
+
+                $insertedProduct = $productRepository->find($allFormProducts[$i]);
+                if ($insertedProduct !== null && $allFormQuantity[$i] > 0) {
+                    $cartProduct->setProduct($insertedProduct);
+                    $cartProduct->setQuantity(($allFormQuantity[$i]));
+                    
+                    $cart->addCartProduct($cartProduct);
+                    $em->persist($cartProduct);
+                }
+                // TODO errors if $insertedProduct is null
+            }
+
+            $em->persist($cart);
+            $em->flush();
 
             return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
         }
 
     return $this->renderForm('back/cart/new.html.twig', [
         'cart' => $cart,
-            'fruits' => $allFruits,
-            'vegetables' => $allVegetables,
-            'groceries' => $allGroceries,
-            'categories' => $allCategories,
+        'fruits' => $allFruits,
+        'vegetables' => $allVegetables,
+        'groceries' => $allGroceries,
+        'categories' => $allCategories,
         'form' => $form,
-        'allProduct' => $allProduct,
-        'form' => $form
     ]);
 }
 
