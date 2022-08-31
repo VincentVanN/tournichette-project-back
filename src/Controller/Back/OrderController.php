@@ -59,14 +59,15 @@ class OrderController extends AbstractController
     /**
      * @Route("/validate/{id}", name="_validate", methods={"GET"})
      */
-    public function orderValidate(Order $order, OrderRepository $orderRepository): Response
+    public function orderValidate(Order $order, OrderRepository $orderRepository, $id): Response
     {
         $order->setPaymentStatus('yes');
         // $order->setDeliverStatus('yes');
         $orderRepository->add($order, true);
 
 
-        return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
+        //return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
 
     /**
@@ -78,10 +79,10 @@ class OrderController extends AbstractController
         $order->setDeliverStatus('yes');
         $orderRepository->add($order, true);
 
-        return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
 }
-
+// td id="{{order.id}}"
 
 // /**
 //  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})
