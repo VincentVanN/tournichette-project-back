@@ -82,7 +82,6 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
 }
-// td id="{{order.id}}"
 
 // /**
 //  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})
