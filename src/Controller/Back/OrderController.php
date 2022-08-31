@@ -47,7 +47,7 @@ class OrderController extends AbstractController
     // }
 
     /**
-     * @Route("/{id<\d+>}", name="_show", methods={"GET"})
+     * @Route("/{id}"), name="_show", methods={"GET"})
      */
     public function show(Order $order): Response
     {
@@ -55,6 +55,31 @@ class OrderController extends AbstractController
             'order' => $order,
         ]);
     }
+
+    /**
+     * @Route("/validate", name="_show", methods={"GET"})
+     */
+    public function orderValidate(Order $order, OrderRepository $orderRepository): Response
+    {
+       $order = new Order;
+
+       $order->setPaymentStatus()->getData() ;
+       $order->setDeliveredStatus()->getData() ;
+       $order->setPaymentStatus(true);
+       $order->setDeliveredStatus(true);
+       $orderRepository->add($order, true);
+     
+
+       return $this->redirectToRoute('back/order/list.html.twig', [], Response::HTTP_SEE_OTHER);
+
+       return $this->render('back/order/list.html.twig', [
+           'order' => $order,
+       ]);
+
+        }
+        
+    }
+
 
     // /**
     //  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})
@@ -87,4 +112,4 @@ class OrderController extends AbstractController
 
     //     return $this->redirectToRoute('app_back_order_index', [], Response::HTTP_SEE_OTHER);
     // }
-}
+
