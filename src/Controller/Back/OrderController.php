@@ -70,14 +70,13 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/validate/{id}", name="_validate", methods={"GET"})
+     * @Route("/delivered/{id}", name="_delivered", methods={"GET"})
      */
-    public function orderDeliverer(Order $order, OrderRepository $orderRepository): Response
+    public function orderDelivered(Order $order, OrderRepository $orderRepository): Response
     {
         //$order->setPaymentStatus('yes');
-         $order->setDeliverStatus('yes');
+        $order->setDeliverStatus('yes');
         $orderRepository->add($order, true);
-
 
         return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
     }

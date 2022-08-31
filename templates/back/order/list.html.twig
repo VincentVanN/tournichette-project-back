@@ -24,20 +24,28 @@
         </thead>
         <tbody>
         {% for order in orders %}
-        {% set validateRoute = path('app_back_order_validate', {'id': order.id}) %}
             <tr>
                 <td scope="row">{{ order.id }}</td>
                 <td>{{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
                 <td>{{ order.price }}</td>
                 <td>
                     {% if order.paymentStatus == 'yes' %}
-                    <button class="bi bi-cash-coin text-success"></button>
+                    <i class="bi bi-cash-coin text-success"></i>
                     {% else %}
                     <a href="{{ path('app_back_order_validate', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-cash-coin text-danger"></a>
                     {% endif %}
                 </td>
                 <td>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
-                <td>{{ order.deliverStatus == 'yes' ? '<button class="bi bi-clipboard2-check text-success"></button>' : '<button class="bi bi-clipboard-x text-danger"></i>' }}</td>
+                <td>
+                {% if order.deliverStatus == 'yes' %}
+                <i class="bi bi-clipboard2-check text-success"></i>
+                {% else %}
+                  {% if order.paymentStatus == 'no' %}
+                  {% else %}
+                <a href="{{ path('app_back_order_delivered', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-clipboard2-check text-danger"></a>
+                    {% endif %}
+                    {% endif %}
+                </td>
                 <td>{{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</td>
                 <td>
                     <a href="{{ path('app_back_order_show', {'id': order.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>

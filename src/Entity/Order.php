@@ -151,6 +151,9 @@ class Order
     public function setDeliverStatus(string $deliver_status): self
     {
         $this->deliver_status = $deliver_status;
+        if ($this->getDeliverStatus() == 'yes') {
+            $this->setDeliveredAt(new \DateTimeImmutable());
+        }
 
         return $this;
     }
