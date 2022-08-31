@@ -49,7 +49,8 @@ class CartController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $allFormProducts = $request->get('products');
             $allFormProducts = filter_var_array($allFormProducts, FILTER_SANITIZE_STRING);
-            $allFormQuantity = filter_var_array($allFormProducts, FILTER_SANITIZE_NUMBER_FLOAT);
+            $allFormQuantity = $request->get('quantity');
+            $allFormQuantity = filter_var_array($allFormQuantity, FILTER_SANITIZE_NUMBER_FLOAT);
 
             for ($i=0; $i < count($allFormProducts) ; $i++) { 
                 $cartProduct = new CartProduct;
