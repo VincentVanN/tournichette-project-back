@@ -83,6 +83,21 @@ class Cart
      */
     private $cartOrders;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $onSale;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $archived;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $archivedAt;
+
     public function __construct()
     {
         $this->cartProducts = new ArrayCollection();
@@ -204,5 +219,41 @@ class Cart
     public function getParcel()
     {
         return $this->parcel;
+    }
+
+    public function isOnSale(): ?bool
+    {
+        return $this->onSale;
+    }
+
+    public function setOnSale(bool $onSale): self
+    {
+        $this->onSale = $onSale;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
+
+    public function getArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTimeImmutable $archivedAt): self
+    {
+        $this->archivedAt = $archivedAt;
+
+        return $this;
     }
 }
