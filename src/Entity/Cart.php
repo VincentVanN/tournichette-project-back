@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use App\Repository\ProductRepository;
 use App\Utils\MySlugger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Migrations\Configuration\EntityManager\ManagerRegistryEntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -241,6 +243,9 @@ class Cart
     public function setArchived(bool $archived): self
     {
         $this->archived = $archived;
+        if ($archived) {
+            $this->setArchivedAt(new \DateTimeImmutable());
+        }
 
         return $this;
     }

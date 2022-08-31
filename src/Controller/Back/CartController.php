@@ -6,10 +6,12 @@ namespace App\Controller\Back;
 use App\Entity\Cart;
 use App\Entity\CartProduct;
 use App\Form\CartType;
+use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -118,13 +120,32 @@ class CartController extends AbstractController
     /**
      * @Route("/{id}", name="_delete", methods={"POST"})
      */
-    public function delete(Request $request, Cart $cart, CartRepository $cartRepository): Response
+    public function delete(Request $request, Cart $cart, CartRepository $cartRepository, CartProductRepository $cartProductRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$cart->getId(), $request->request->get('_token'))) {
-            $cartRepository->remove($cart, true);
+        if ($this->isDeletable($cart)) {
+            if ($this->isCsrfTokenValid('delete'.$cart->getId(), $request->request->get('_token'))) {
+                $cartProductRepository->removeAllFromCart($cart);
+                $cartRepository->remove($cart, true);
+            }
+        } else {
+            $cart->setArchived('1');
+        }
+        // dd($this->isDeletable($cart));
+        return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Verify if a cart is linked with orders
+     */
+    public function isDeletable(?Cart $cart): bool
+    {
+        $cartOrders = $cart->getCartOrders();
+
+        if (count($cartOrders) > 0) {
+            return false;
         }
 
-        return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
+        return true;
     }
 
     /*
