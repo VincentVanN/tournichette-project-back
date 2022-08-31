@@ -136,6 +136,9 @@ class Order
     public function setPaymentStatus(string $payment_status): self
     {
         $this->payment_status = $payment_status;
+        if ($this->getPaymentStatus() == 'yes') {
+            $this->setPaidAt(new \DateTimeImmutable());
+        }
 
         return $this;
     }
