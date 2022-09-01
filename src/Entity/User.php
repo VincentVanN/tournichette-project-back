@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity("name", message="Email invalide")
+ * @UniqueEntity("email", message="Email invalide")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
