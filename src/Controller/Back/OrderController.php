@@ -47,7 +47,7 @@ class OrderController extends AbstractController
     // }
 
     /**
-     * @Route("/{id<\d+>}", name="_show", methods={"GET"})
+     * @Route("/{id}", name="_show", methods={"GET"})
      */
     public function show(Order $order): Response
     {
@@ -56,11 +56,38 @@ class OrderController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})
-    //  */
-    // public function edit(Request $request, Order $order, OrderRepository $orderRepository): Response
-    // {
+    /**
+     * @Route("/validate/{id}", name="_validate", methods={"GET"})
+     */
+    public function orderValidate(Order $order, OrderRepository $orderRepository, $id): Response
+    {
+        $order->setPaymentStatus('yes');
+        // $order->setDeliverStatus('yes');
+        $orderRepository->add($order, true);
+
+
+        //return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
+    }
+
+    /**
+     * @Route("/delivered/{id}", name="_delivered", methods={"GET"})
+     */
+    public function orderDelivered(Order $order, OrderRepository $orderRepository): Response
+    {
+        //$order->setPaymentStatus('yes');
+        $order->setDeliverStatus('yes');
+        $orderRepository->add($order, true);
+
+        return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
+    }
+}
+
+// /**
+//  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})
+//  */
+// public function edit(Request $request, Order $order, OrderRepository $orderRepository): Response
+// {
     //     $form = $this->createForm(Order1Type::class, $order);
     //     $form->handleRequest($request);
 
@@ -74,17 +101,16 @@ class OrderController extends AbstractController
     //         'order' => $order,
     //         'form' => $form,
     //     ]);
-    // }
+// }
 
-    // /**
-    //  * @Route("/{id}", name="app_back_order_delete", methods={"POST"})
-    //  */
-    // public function delete(Request $request, Order $order, OrderRepository $orderRepository): Response
-    // {
+// /**
+//  * @Route("/{id}", name="app_back_order_delete", methods={"POST"})
+//  */
+// public function delete(Request $request, Order $order, OrderRepository $orderRepository): Response
+// {
     //     if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->request->get('_token'))) {
     //         $orderRepository->remove($order, true);
     //     }
 
     //     return $this->redirectToRoute('app_back_order_index', [], Response::HTTP_SEE_OTHER);
-    // }
-}
+// }

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DepotRepository::class)
@@ -25,20 +26,13 @@ class Depot
 
 
     /**
+     * @Assert\Unique(message="le nom est déjà utilisé")
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups({"api_v1_depots_list"})
      * @Groups({"api_v1_depot_show"})
      * 
      */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     * @Groups({"api_v1_depots_list"})
-     * @Groups({"api_v1_depot_show"})
-     * 
-     */
-    private $lastname;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
@@ -60,14 +54,6 @@ class Depot
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="depot")
      */
     private $orders;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"api_v1_depots_list"})
-     * @Groups({"api_v1_depot_show"})
-     * 
-     */
-    private $slug;
 
     public function __construct()
     {
@@ -132,43 +118,7 @@ class Depot
 
         return $this;
     }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(?string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(?string $lastname): self
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
+    
     public function getPhone(): ?string
     {
         return $this->phone;

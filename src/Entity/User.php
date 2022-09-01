@@ -24,6 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @Assert\Unique(message="email invalide")
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotNull
      * @Assert\Email(message = "Cette adresse e-mail n'est pas valide.")

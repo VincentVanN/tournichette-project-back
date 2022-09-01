@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -27,6 +28,7 @@ class Product
     private $id;
 
     /**
+     * @Assert\Unique(message="le nom est déjà utilisé")
      * @ORM\Column(type="string", length=64)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})

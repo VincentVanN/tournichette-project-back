@@ -43,15 +43,6 @@ services:
                 event: 'preFlush'
                 entity: 'App\Entity\Category'
                 method: 'slugifyCategoryName'
-    
-    App\EventListener\DepotListener:
-        tags:
-            -
-                # these are the options required to define the entity listener
-                name: 'doctrine.orm.entity_listener'
-                event: 'preFlush'
-                entity: 'App\Entity\Depot'
-                method: 'slugifyDepotName'
 
     App\EventListener\ProductListener:
         tags:
