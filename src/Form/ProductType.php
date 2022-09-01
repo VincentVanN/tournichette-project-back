@@ -23,7 +23,7 @@ class ProductType extends AbstractType
     {
         $builder
         ->add('name', null, [
-            'label' => 'nom',
+            'label' => 'Nom',
         ])
         ->add('description', TextareaType::class, [
             'label' => 'Description'
@@ -37,11 +37,12 @@ class ProductType extends AbstractType
                 'Lots' => 'lot(s)',
                 'Kg' => 'Kg',
                 'Grammes' => 'g',
-                'Bouteilles' => 'btlle(s)',
-                'Sachets' => 'sachet(s)',
-                'Pots' => 'pot(s)',
-                'Bottes' => 'botte(s)',
-                'Pièce' => 'pièce'
+                'Bouteilles' => 'btlle',
+                'Sachets' => 'sachet',
+                'Pots' => 'pot',
+                'Bottes' => 'botte',
+                'Pièce' => 'pièce',
+                'Barquettes' => 'barquette'
             ]
         ])
         ->add('price', null, [
