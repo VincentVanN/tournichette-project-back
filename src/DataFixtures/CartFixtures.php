@@ -15,7 +15,7 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
     public static function getGroups(): array
     {
-        return ['groupCart'];
+        return ['groupCart', 'devFixtures'];
     }
 
     public function getDependencies()

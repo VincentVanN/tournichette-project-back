@@ -14,7 +14,7 @@ class DepotFixtures extends Fixture implements FixtureGroupInterface
 
     public static function getGroups(): array
     {
-        return ['groupDepot'];
+        return ['groupDepot', 'devFixtures'];
     }
 
     public function __construct(MySlugger $slugger)

@@ -16,6 +16,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class OrderFixtures extends Fixture implements DependentFixtureInterface
 {
+    public static function getGroups(): array
+    {
+        return ['devFixtures'];
+    }
     public function getDependencies()
     {
         return [
