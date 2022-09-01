@@ -113,6 +113,7 @@ class Product
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
      */
     private $description;
@@ -120,6 +121,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Groups({"api_v1_product_show"})
+     * @Groups({"api_v1_products_list"})
      */
     private $colorimetry;
 
