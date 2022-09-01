@@ -30,7 +30,6 @@ class Product
     private $id;
 
     /**
-     * @Assert\Unique(message="le nom est déjà utilisé")
      * @ORM\Column(type="string", length=64)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
@@ -55,7 +54,7 @@ class Product
     private $slug;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @ORM\Column(type="decimal")
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
