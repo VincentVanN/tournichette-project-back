@@ -12,9 +12,10 @@ use App\Entity\CartOrder;
 use App\Entity\OrderProduct;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class OrderFixtures extends Fixture implements DependentFixtureInterface
+class OrderFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public static function getGroups(): array
     {
