@@ -68,6 +68,8 @@ class CartController extends AbstractController
                 // TODO errors if $insertedProduct is null
             }
 
+            $cart->setOnSale(true);
+            $cart->setArchived(false);
             $em->persist($cart);
             $em->flush();
 
@@ -122,13 +124,13 @@ class CartController extends AbstractController
      */
     public function delete(Request $request, Cart $cart, CartRepository $cartRepository, CartProductRepository $cartProductRepository): Response
     {
-        if ($this->isDeletable($cart)) {
+        if ($this->isDeletable($cart) === true) {
             if ($this->isCsrfTokenValid('delete'.$cart->getId(), $request->request->get('_token'))) {
                 $cartProductRepository->removeAllFromCart($cart);
                 $cartRepository->remove($cart, true);
             }
-        } else {
-            $cart->setArchived('1');
+        } elseif ($this->isDeletable($cart) === false) {
+            $cart->setArchived(true);
         }
         // dd($this->isDeletable($cart));
         return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
