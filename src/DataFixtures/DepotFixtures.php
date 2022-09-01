@@ -32,9 +32,8 @@ class DepotFixtures extends Fixture implements FixtureGroupInterface
         for($i = 0; $i < $nbDepots; $i++)
         {
             $depotObj = new Depot;
-            $depotObj->setFirstname($faker->firstName());
-            $depotObj->setLastname($faker->lastName());
-            $depotObj->setSlug($this->slugger->slugify($depotObj->getFirstname() . ' ' . $depotObj->getLastname()));
+            $depotObj->setName($faker->unique()->company());
+            // $depotObj->setSlug($this->slugger->slugify($depotObj->getName()));
             $depotObj->setAddress($faker->unique()->address());
 
             $phoneDepot = $fakerFr->unique()->serviceNumber();

@@ -35,6 +35,8 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
         $smallCart->setPrice(10);
         $smallCart->setName("Petit panier");
         $smallCart->setSlug("petit-panier");
+        $smallCart->setOnSale(true);
+        $smallCart->setArchived(false);
 
         $manager->persist($smallCart);
 
@@ -68,12 +70,14 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
 
         // Big cart
 
-        $smallCart = new Cart;
-        $smallCart->setPrice(15);
-        $smallCart->setName("Grand panier");
-        $smallCart->setSlug("grand-panier");
+        $bigCart = new Cart;
+        $bigCart->setPrice(15);
+        $bigCart->setName("Grand panier");
+        $bigCart->setSlug("grand-panier");
+        $bigCart->setOnSale(true);
+        $bigCart->setArchived(false);
 
-        $manager->persist($smallCart);
+        $manager->persist($bigCart);
 
         $category = 'Fruits';
         $allFruits = $manager->getRepository(Product::class)->findByCategory($category);
@@ -83,7 +87,7 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
         {
             $cartProduct = new CartProduct;
             $cartProduct->setProduct($currentFruit);
-            $cartProduct->setCart($smallCart);
+            $cartProduct->setCart($bigCart);
             $cartProduct->setQuantity(1);
 
             $manager->persist($cartProduct);
@@ -97,7 +101,7 @@ class CartFixtures extends Fixture implements DependentFixtureInterface, Fixture
         {
             $cartProduct = new CartProduct;
             $cartProduct->setProduct($currentVegetable);
-            $cartProduct->setCart($smallCart);
+            $cartProduct->setCart($bigCart);
             $cartProduct->setQuantity(1);
 
             $manager->persist($cartProduct);
