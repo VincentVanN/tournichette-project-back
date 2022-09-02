@@ -28,9 +28,10 @@ class ProductType extends AbstractType
         ->add('description', TextareaType::class, [
             'label' => 'Description'
         ])
-        ->add('stock', null, [
-            'label' => 'Quantité en vente'
-        ])
+        // Désactivé pour le moment
+        // ->add('stock', null, [
+        //     'label' => 'Quantité en vente'
+        // ]) 
         ->add('unity', ChoiceType::class, [
             'label' => 'Unité',
             'choices' => [

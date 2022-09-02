@@ -52,7 +52,6 @@ class CartController extends AbstractController
             $allFormProducts = $request->get('products');
             $allFormProducts = filter_var_array($allFormProducts, FILTER_SANITIZE_STRING);
             $allFormQuantity = $request->get('quantity');
-            $allFormQuantity = filter_var_array($allFormQuantity, FILTER_SANITIZE_NUMBER_FLOAT);
 
             for ($i=0; $i < count($allFormProducts) ; $i++) { 
                 $cartProduct = new CartProduct;
@@ -60,6 +59,8 @@ class CartController extends AbstractController
                 $insertedProduct = $productRepository->find($allFormProducts[$i]);
                 if ($insertedProduct !== null && $allFormQuantity[$i] > 0) {
                     $cartProduct->setProduct($insertedProduct);
+
+                    $allFormQuantity[$i] = filter_var($allFormQuantity[$i], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND);
                     $cartProduct->setQuantity(($allFormQuantity[$i]));
                     
                     $cart->addCartProduct($cartProduct);

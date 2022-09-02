@@ -21,16 +21,9 @@ class CartType extends AbstractType
                 'label' => 'Nom'
             ])
             ->add('price', MoneyType::class, [
-                'label' => 'Prix'
+                'label' => 'Prix',
+                'invalid_message' => 'Veuillez entrer un prix valide'
             ])
-            // ->add('product', EntityType::class, [
-            //     'class' => Product::class,
-            //     'choice_label' => 'name',
-            //     'group_by' => ChoiceList::groupBy($this, 'category'),
-            //     'multiple' => false,
-            //     'expanded' => false,
-            //     'mapped' => false
-            // ])
         ;
     }
 
