@@ -50,7 +50,7 @@ class CartController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $allFormProducts = $request->get('products');
-            $allFormProducts = filter_var_array($allFormProducts, FILTER_SANITIZE_STRING);
+            $allFormProducts = filter_var_array($allFormProducts, FILTER_SANITIZE_NUMBER_INT);
             $allFormQuantity = $request->get('quantity');
 
             for ($i=0; $i < count($allFormProducts) ; $i++) { 
@@ -69,7 +69,9 @@ class CartController extends AbstractController
                 // TODO errors if $insertedProduct is null
             }
 
-            $cart->setOnSale(true);
+            $cart->setOnSale(
+                count($cart->getCartProducts()) === 0 ? false : true
+            );
             $cart->setArchived(false);
             $em->persist($cart);
             $em->flush();
