@@ -245,6 +245,7 @@ class Cart
         $this->archived = $archived;
         if ($archived) {
             $this->setArchivedAt(new \DateTimeImmutable());
+            $this->setOnSale(false);
         }
 
         return $this;

@@ -125,17 +125,17 @@ class CartController extends AbstractController
     /**
      * @Route("/{id}", name="_delete", methods={"POST"})
      */
-    public function delete(Request $request, Cart $cart, CartRepository $cartRepository, CartProductRepository $cartProductRepository): Response
+    public function delete(Request $request, Cart $cart, CartRepository $cartRepository, CartProductRepository $cartProductRepository, EntityManagerInterface $em): Response
     {
         if ($this->isDeletable($cart) === true) {
             if ($this->isCsrfTokenValid('delete'.$cart->getId(), $request->request->get('_token'))) {
                 $cartProductRepository->removeAllFromCart($cart);
                 $cartRepository->remove($cart, true);
             }
-        } elseif ($this->isDeletable($cart) === false) {
+        } else {
             $cart->setArchived(true);
+            $em->flush();
         }
-        // dd($this->isDeletable($cart));
         return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -144,9 +144,7 @@ class CartController extends AbstractController
      */
     public function isDeletable(?Cart $cart): bool
     {
-        $cartOrders = $cart->getCartOrders();
-
-        if (count($cartOrders) > 0) {
+        if (count($cart->getCartOrders()) > 0) {
             return false;
         }
 
