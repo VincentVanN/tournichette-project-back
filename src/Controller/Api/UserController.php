@@ -71,8 +71,14 @@ class UserController extends AbstractController
         $errors = $validator->validate($user);
 
         if (count($errors) > 0) {
-            $errorString = (string) $errors;
-            return $this->prepareResponse($errorString, [], [], true, Response::HTTP_BAD_REQUEST);
+            // $errorString = (string) $errors;
+            // dd($errors);
+            $data = [];
+            foreach($errors as $currentError) {
+                $data[$currentError->getPropertyPath()] = $currentError->getMessage();
+                
+            }
+            return $this->prepareResponse('Bad requests', [], ['data' => $data], true, Response::HTTP_BAD_REQUEST);
         }
 
         $userRepository->add($user, true);
