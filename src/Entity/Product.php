@@ -94,7 +94,7 @@ class Product
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="decimal", precision=7, scale=2)
      * @Assert\NotNull(message="Veuillez définir un prix")
      * @Assert\PositiveOrZero(message="Le prix ne peut pas être négatif")
      * @Groups({"api_v1_category_product"})

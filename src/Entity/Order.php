@@ -29,7 +29,7 @@ class Order
     private $orderedAt;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="decimal", precision=7, scale=2)
      * @Groups({"api_v1_order_user_show"})
      * @Groups({"api_v1_orders_user"})
      */
