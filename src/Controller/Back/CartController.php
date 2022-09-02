@@ -97,28 +97,28 @@ class CartController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Cart $cart, ProductRepository $productRepository, CartRepository $cartRepository): Response
-    {
-        $form = $this->createForm(CartType::class, $cart);
-        $form->handleRequest($request);
-        $allProduct = $productRepository->findAll();
+    // /**
+    //  * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
+    //  */
+    // public function edit(Request $request, Cart $cart, ProductRepository $productRepository, CartRepository $cartRepository): Response
+    // {
+    //     $form = $this->createForm(CartType::class, $cart);
+    //     $form->handleRequest($request);
+    //     $allProduct = $productRepository->findAll();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // $cart->setSlug($mySlugger->slugify($cart->getTitle()));
-            $cartRepository->add($cart, true);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         // on slugify le titre fournit par le user avant de l'enregistrer en BDD
+    //         // $cart->setSlug($mySlugger->slugify($cart->getTitle()));
+    //         $cartRepository->add($cart, true);
 
-            return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
-        }
+    //         return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
+    //     }
 
-        return $this->renderForm('back/cart/edit.html.twig', [
-            'cart' => $cart,
-            'form' => $form,
-        ]);
-    }
+    //     return $this->renderForm('back/cart/edit.html.twig', [
+    //         'cart' => $cart,
+    //         'form' => $form,
+    //     ]);
+    // }
 
     /**
      * @Route("/{id}", name="_delete", methods={"POST"})
@@ -151,33 +151,4 @@ class CartController extends AbstractController
         return true;
     }
 
-    /*
-    public function record(?int $id = null)
-    {
-        $cart = $id === null ? new Cart() : Cart::find($id);
-        $cart ->setName($name);
-        $cart ->setSlug($slug);
-        $cart ->setStock($stock);
-        $cart ->setUnity($unity);
-        $cart ->setPrice($price);
-        $cart ->setQuantity($quantity);
-       
-
-        //if there is no error
-        if (empty($errors)) {
-            // we saved in BDD
-            if ($cart->save()) {
-                if ($id === null) {
-                    // Si la sauvegarde a fonctionné, on redirige vers la liste des catégories.
-                    return $this->redirectToRoute('app_back_cart_index', [], Response::HTTP_SEE_OTHER);
-                } else {
-                    // Si la sauvegarde a fonctionné, on redirige vers le formulaire d'édition en mode GET
-                    return $this->redirectToRoute('app_back_cart_edit', [], Response::HTTP_SEE_OTHER);
-                }
-            } else {
-                $errors[] = "La sauvegarde a échoué";
-            }
-        }
-    }
-    */
 }
