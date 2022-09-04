@@ -16,6 +16,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prix</th>
+                <th scope="col">En vente</th>
                 <th scope="col"></th>
                 {# <th>Commande</th> #}
             </tr>
@@ -25,7 +26,18 @@
             <tr>
                <td>{{ cart.id }}</td>
                 <td>{{ cart.name }}</td> 
-                <td>{{ cart.price }}</td> 
+                <td>{{ cart.price }}</td>
+                <td>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <input type="checkbox" class="form-check-input" id="{{ cart.id }}" name="on-sale"{% if cart.onSale == true %} checked{% endif %}>
+                    {% else %}
+                        {% if cart.onSale == true %}
+                            <i class="bi bi-check-square text-success"></i>
+                        {% else %}
+                            <i class="bi bi-x-square text-danger"></i>
+                        {% endif %}
+                    {% endif %}
+                </td>
                <td>
                     <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
                     {# <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a> #}
@@ -41,4 +53,10 @@
 </div>
     
 
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <script src="{{ asset('scripts/cartIndex.js')}}"></script>
+    {% endif %}
 {% endblock %}

@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 /**
@@ -137,6 +138,22 @@ class CartController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Modify the onSale status of a cart
+     * 
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @Route("/onsale/{id<\d+>}", name="_sale-status", methods={"POST"})
+     */
+    public function changeOnSaleStatus(Cart $cart, EntityManagerInterface $em)
+    {
+        if ($cart !== null) {
+            $cart->setOnSale(!$cart->isOnSale());
+            $em->flush();
+            $data['cartId'] = $cart->getId();
+            return $this->json($data, Response::HTTP_OK);
+        }
     }
 
     /**
