@@ -1,13 +1,13 @@
 const cartIndex = {
     init: function () {
         console.log('Cart-index initialized');
-        checkboxesElements = document.querySelectorAll('.form-check-input');
+        const checkboxesElements = document.querySelectorAll('.form-check-input');
         checkboxesElements.forEach(element => element.addEventListener('change', cartIndex.handleChangeOnsaleStatus));
     },
 
     handleChangeOnsaleStatus: function (event) {
         const fetchOptions = { method: 'POST'};
-        cartTargetId = event.currentTarget.id;
+        const cartTargetId = event.currentTarget.id;
 
         fetch('/back/cart/onsale/' + cartTargetId, fetchOptions)
             .then(
@@ -18,7 +18,6 @@ const cartIndex = {
                     } else {
                         return response.json();
                     }
-                    ;
                 }
             )
             .then(

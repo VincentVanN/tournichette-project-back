@@ -62,7 +62,6 @@ class OrderController extends AbstractController
     public function orderValidate(Order $order, OrderRepository $orderRepository, $id): Response
     {
         $order->setPaymentStatus('yes');
-        // $order->setDeliverStatus('yes');
         $orderRepository->add($order, true);
 
 
@@ -78,6 +77,38 @@ class OrderController extends AbstractController
         //$order->setPaymentStatus('yes');
         $order->setDeliverStatus('yes');
         $orderRepository->add($order, true);
+
+        return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
+    }
+
+    /**
+     * @Route("/validate/{id<\d+>}", name="_validate-ajax", methods={"POST"})
+     */
+    public function orderValidateAjax(Order $order, OrderRepository $orderRepository, $id): Response
+    {
+        if($order !== null) {
+            $order->setPaymentStatus('yes');
+            $orderRepository->add($order, true);
+            $data['orderId'] = $order->getId();
+            $data['paidAt'] = $order->getPaidAt();
+            
+            return $this->json($data, Response::HTTP_OK);
+        }
+    }
+
+     /**
+     * @Route("/delivered/{id<\d+>}", name="_delivered-ajax", methods={"POST"})
+     */
+    public function orderDeliveredAjax(Order $order, OrderRepository $orderRepository): Response
+    {
+        if($order !== null) {
+            $order->setDeliverStatus('yes');
+            $orderRepository->add($order, true);
+            $data['orderId'] = $order->getId();
+            $data['deliveredAt'] = $order->getDeliveredAt();
+
+            return $this->json($data, Response::HTTP_OK);
+        }
 
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }

@@ -29,22 +29,30 @@
                 <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
                 <td> {{ order.price }}</td>
                 <td> 
-                    {% if order.paymentStatus == 'yes' %}
-                    <i class="bi bi-cash-coin text-success"></i>
+                   {% if order.paymentStatus == 'yes' %}
+                        <i class="bi bi-cash-coin text-success"></i>
                     {% else %}
-                    <a href="{{ path('app_back_order_validate', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-cash-coin text-danger"></a>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('app_back_order_validate', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-cash-coin text-danger" data-payment="{{ order.id }}"></a>
+                        {% else %}
+                            <i class="bi bi-cash-coin text-danger"></i>
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td> {{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
                 <td> 
                 {% if order.deliverStatus == 'yes' %}
-                <i class="bi bi-clipboard2-check text-success"></i>
+                    <i class="bi bi-clipboard2-check text-success"></i>
                 {% else %}
-                  {% if order.paymentStatus == 'no' %}
-                  {% else %}
-                <a href="{{ path('app_back_order_delivered', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-clipboard2-check text-danger"></a>
+                    {% if order.paymentStatus == 'no' %}
+                    {% else %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('app_back_order_delivered', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-clipboard2-check text-danger" data-delivery="{{ order.id }}"></a>
+                        {% else %}
+                            <i class="bi bi-clipboard2-check text-danger"></i>
+                        {% endif %}
                     {% endif %}
-                    {% endif %}
+                {% endif %}
                 </td>
                 <td> {{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</td>
                 <td> 
@@ -58,4 +66,10 @@
 
     {# <a href="{{ path('app_back_order_new') }}">Create new</a> #}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <script src="{{ asset('scripts/orderStatus.js')}}"></script>
+    {% endif %}
 {% endblock %}
