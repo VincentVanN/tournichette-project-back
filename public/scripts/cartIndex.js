@@ -6,15 +6,13 @@ const cartIndex = {
     },
 
     handleChangeOnsaleStatus: function (event) {
-        // console.log(event.currentTarget.id);
         const fetchOptions = { method: 'POST'};
         cartTargetId = event.currentTarget.id;
 
-        fetch('/back/cart/onsale/' + event.currentTarget.id, fetchOptions)
+        fetch('/back/cart/onsale/' + cartTargetId, fetchOptions)
             .then(
                 function(response) {
                     if(!response.ok) {
-                        // throw new Error(response.status + ' ' + cartTargetId);
                         document.getElementById(cartTargetId).checked = false;
                         return false;
                     } else {
@@ -29,10 +27,7 @@ const cartIndex = {
                         console.log('statut de vente modifié avec succès');
                     }
                 }
-            )
-            // .catch(function(error) {
-            //     console.log(error.message);
-            // });
+            );
     }
 }
 
