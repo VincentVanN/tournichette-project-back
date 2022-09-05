@@ -7,11 +7,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item m-1">
-                    {# <a class="nav-link text-white btn btn-success" href="{{ path('app_back_depot_new') }}">Ajouter</a> #}
-
-                    {# <a class = "btn btn-success" href="{{ path('app_back_depot_list') }}">Retour à la liste</a> #}
-
+                    <a class = "nav-link text-white btn btn-success" href="{{ path('app_back_depot_list') }}">Retour à la liste</a>
                 </li>
+                {% if is_granted('ROLE_SUPER_ADMIN')%}
+                <li class="nav-item m-1">
+                    <a class="nav-link text-white btn btn-success" href="{{ path('app_back_depot_new') }}">Ajouter un dépôt</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

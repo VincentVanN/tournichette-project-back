@@ -12,7 +12,7 @@
         <thead>
             <tr>
             {% if depots is empty %}
-                <td colspan="8">Aucun produit n'a été trouvé</td>
+                <td colspan="8">Aucun dépôt n'a été trouvé</td>
             {% else %}
                 <th scope="col">#</th>
                 <th scope="col">Nom</th>
@@ -52,9 +52,6 @@
         </tbody>
         {% endif %}
     </table>
-
-    <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Ajouter un nouveau dépôt</a>
-
 </div>
 
 {% endblock %}

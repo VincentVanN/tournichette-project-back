@@ -65,6 +65,7 @@ class DepotController extends AbstractController
      */
     public function show(Depot $depot): Response
     {
+        // dump($depot);
         return $this->render('back/depot/show.html.twig', [
             'depot' => $depot,
         ]);
