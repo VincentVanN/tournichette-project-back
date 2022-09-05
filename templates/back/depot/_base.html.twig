@@ -2,20 +2,27 @@
 
 
 {% block subnav %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-light">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item m-1">
-                    <a class = "nav-link text-white btn btn-success" href="{{ path('app_back_depot_list') }}">Retour à la liste</a>
-                </li>
-                {% if is_granted('ROLE_SUPER_ADMIN')%}
-                <li class="nav-item m-1">
-                    <a class="nav-link text-white btn btn-success" href="{{ path('app_back_depot_new') }}">Ajouter un dépôt</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				{% if app.user %}
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link {{ "list" in app.request.attributes.get('_route') ? " active" : "" }}" href="{{ path('app_back_depot_list') }}">
+								<i class="bi bi-list-ul"> Liste des dépôts</i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {{ "new" in app.request.attributes.get('_route') ? " active" : "" }}" href="{{ path('app_back_depot_new') }}">
+								<i class="bi bi-plus-lg"> Créer un dépôt</i>
+							</a>
+						</li>
+					</ul>
+				{% endif %}
+			</div>
+		</div>
+	</nav>
 {% endblock %}

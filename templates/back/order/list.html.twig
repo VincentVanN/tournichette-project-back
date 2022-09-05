@@ -27,7 +27,7 @@
             <tr>
                 <td id="{{order.id}}" scope="row">{{ order.id }}</td>
                 <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
-                <td> {{ order.price }}</td>
+                <td> {{ order.price }} €</td>
                 <td> 
                    {% if order.paymentStatus == 'yes' %}
                         <i class="bi bi-cash-coin text-success"></i>

@@ -27,7 +27,7 @@
             <tr>
                 <td scope="row">{{ order.id }}</td>
                 <td>{{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
-                <td>{{ order.price }}</td>
+                <td>{{ order.price }} €</td>
                 <td>{{ order.paymentStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</td>
                 <td>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
                 <td>{{ order.deliverStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</td>
