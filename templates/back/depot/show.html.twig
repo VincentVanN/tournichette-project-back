@@ -6,16 +6,18 @@
 {% block body %}
 <section class="container-fluid">
     <h1 class="text-center">Détail du dépôt</h1>
-
     <div class="row justify-content-around mt-2">
         <article class="card col-2">
             <div class="card-body">
                 <h3 class="card-title">Infos depôt</h3>
                 <ul>
                     <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ depot.name }}</li>
-                    <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ depot.address }} €</li>
-                    <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ depot.phone }} €</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ depot.address }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ depot.phone }}</li>
                 </ul>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <a class="btn btn-warning btn-sm" href="{{ path('app_back_depot_edit', {'id': depot.id}) }}"><i class="bi bi-pencil-fill"> Modifier</i></a>
+                {% endif %}
             </div>
         </article>
 
