@@ -1,3 +1,12 @@
+{% block style %}
+    <style>
+        img
+        {
+            max-width: 600px;
+        }
+    </style>
+{% endblock %}
+
 {{ form_start(form, {"attr" : {"novalidate": "novalidate"}}) }}
     {{ form_widget(form) }}
     <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
