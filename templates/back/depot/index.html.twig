@@ -1,6 +1,6 @@
 {% extends 'back/depot/_base.html.twig' %}
 
-{% block title %}depot index{% endblock %}
+{% block title %}Dépôts{% endblock %}
 
 {% block body %}
  
@@ -9,11 +9,10 @@
     <table class="table table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Nom</th>
                 <th>Téléphone</th>
                 <th>Adresse</th>
-                {# <th>Commande</th> #}
                
             </tr>
         </thead>
@@ -24,10 +23,6 @@
                 <td>{{ depot.name }}</td>
                 <td>{{ depot.phone }}</td>
                 <td>{{ depot.address }}</td>
-                {# <td>{{ depot.orders}}</td> #}
-                
-              
-            
                 <td>
                     <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
                     <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
