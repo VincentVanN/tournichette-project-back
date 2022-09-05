@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/back/orders", name="app_back_order")
@@ -58,7 +57,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/validate/{id}", name="_validate", methods={"GET"})
      */
     public function orderValidate(Order $order, OrderRepository $orderRepository, $id): Response
@@ -72,7 +70,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/delivered/{id}", name="_delivered", methods={"GET"})
      */
     public function orderDelivered(Order $order, OrderRepository $orderRepository): Response
@@ -85,7 +82,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/validate/{id<\d+>}", name="_validate-ajax", methods={"POST"})
      */
     public function orderValidateAjax(Order $order, OrderRepository $orderRepository, $id): Response
@@ -101,7 +97,6 @@ class OrderController extends AbstractController
     }
 
      /**
-     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/delivered/{id<\d+>}", name="_delivered-ajax", methods={"POST"})
      */
     public function orderDeliveredAjax(Order $order, OrderRepository $orderRepository): Response
