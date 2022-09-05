@@ -22,11 +22,12 @@ class DepotController extends AbstractController
     public function list(DepotRepository $depotRepository) :Response
     {
         $allDepots = $depotRepository->findAll();
+        $availableDepots = $depotRepository->findBy(['available' => true]);
 
         return $this->prepareResponse(
             'OK',
             ['groups' => 'api_v1_depots_list'],
-            ['data' => $allDepots]
+            ['data' => $availableDepots]
         );
     }
 
