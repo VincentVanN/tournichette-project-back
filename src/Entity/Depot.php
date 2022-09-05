@@ -56,6 +56,11 @@ class Depot
      */
     private $orders;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $available;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -128,6 +133,18 @@ class Depot
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function isAvailable(): ?bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available): self
+    {
+        $this->available = $available;
 
         return $this;
     }

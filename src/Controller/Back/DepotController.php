@@ -5,12 +5,13 @@ namespace App\Controller\Back;
 use App\Entity\Depot;
 use App\Form\DepotType;
 use App\Repository\DepotRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
 
 
 /**
@@ -35,6 +36,7 @@ class DepotController extends AbstractController
 
     
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function new(Request $request, DepotRepository $depotRepository): Response
@@ -69,6 +71,7 @@ class DepotController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Depot $depot, DepotRepository $depotRepository): Response
@@ -91,6 +94,7 @@ class DepotController extends AbstractController
     }
     
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/delete/{id<\d+>}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Depot $depot, DepotRepository $depotRepository): Response
@@ -100,6 +104,22 @@ class DepotController extends AbstractController
         }
 
         return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Modify the available status of a depot
+     * 
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @Route("/available/{id<\d+>}", name="_available-status", methods={"POST"})
+     */
+    public function changeOnSaleStatus(Depot $depot, EntityManagerInterface $em)
+    {
+        if ($depot !== null) {
+            $depot->setAvailable(!$depot->isAvailable());
+            $em->flush();
+            $data['depotId'] = $depot->getId();
+            return $this->json($data, Response::HTTP_OK);
+        }
     }
     
 }

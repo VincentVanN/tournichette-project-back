@@ -3,16 +3,23 @@
 {% block title %}Dépôts{% endblock %}
 
 {% block body %}
- 
-    <h1>Les dépôts</h1>
 
-    <table class="table table-condensed">
+<div class="container-fluid">
+ 
+    <h1 class="text-center">Liste de dépôts</h1>
+
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Nom</th>
-                <th>Téléphone</th>
-                <th>Adresse</th>
+            {% if depots is empty %}
+                <td colspan="8">Aucun produit n'a été trouvé</td>
+            {% else %}
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Disponible</th>
+                <th scope="col"></th>
                
             </tr>
         </thead>
@@ -24,19 +31,37 @@
                 <td>{{ depot.phone }}</td>
                 <td>{{ depot.address }}</td>
                 <td>
-                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
-                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
+                    {% if is_granted('ROLE_SUPER_ADMIN')%}
+                        <input type="checkbox" class="form-check-input" id="{{ depot.id }}" name="available"{% if depot.isAvailable == true %} checked{% endif %}>
+                    {% else %}
+                        {% if depot.isAvailable == true %}
+                            <i class="bi bi-check-square text-success"></i>
+                        {% else %}
+                            <i class="bi bi-x-square text-danger"></i>
+                        {% endif %}
+                    {% endif %}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
+                <td>
+                    <a href="{{ path('app_back_depot_show', {'id': depot.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <a href="{{ path('app_back_depot_edit', {'id': depot.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
+        {% endif %}
     </table>
 
     <a href="{{ path('app_back_depot_new') }}"class = "btn btn-success">Ajouter un nouveau dépôt</a>
 
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <script src="{{ asset('scripts/depotIndex.js')}}"></script>
+    {% endif %}
 {% endblock %}
 
