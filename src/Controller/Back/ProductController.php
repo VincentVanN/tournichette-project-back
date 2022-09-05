@@ -7,7 +7,6 @@ use App\Utils\MySlugger;
 use App\Form\ProductType;
 use App\Utils\GetBaseUrl;
 use App\Entity\OrderProduct;
-use App\Form\ProductEditType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use Symfony\Component\Asset\UrlPackage;
@@ -97,7 +96,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product, ProductRepository $productRepository, MySlugger $mySlugger): Response
     {
-        $form = $this->createForm(ProductEditType::class, $product);
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,8 +108,7 @@ class ProductController extends AbstractController
 
         return $this->renderForm('back/product/edit.html.twig', [
             'product' => $product,
-            'form' => $form,
-            'imageEdit' => false
+            'form' => $form
         ]);
     }
 
