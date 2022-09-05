@@ -1,0 +1,56 @@
+{{ form_start(form, {"attr" : {"novalidate": "novalidate"}}) }}
+    {{ form_widget(form) }}
+
+    
+    <button id="product-add" type="button" class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-lg">Ajouter un autre produit</i></button><br/>
+    <button class="btn btn-primary mt-3">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}
+
+<!-- Template for add a product -->
+<template id="select-product-template">
+
+    <div class="input-group mb-3">
+    <span class="input-group-text">Produit</span>
+    <select name="products[]" id="" class="form-control form-select" aria-label="form-select-lg example">
+        <option selected>Sélectionnez un produit</option>
+        {% for currentCategory in categories %}
+        <optgroup label="{{ currentCategory.name }}">
+            {% if currentCategory.name == 'Fruits' %}
+                {% if fruits is not empty %}
+                    {% for currentFruit in fruits %}
+                        <option value="{{ currentFruit.id }}">{{ currentFruit.name }}.........({{ currentFruit.unity }})</option>
+                    {% endfor %}
+                {% else %}
+                    <option>-</option>
+                {% endif %}
+            {% endif %}
+            {% if currentCategory.name == 'Légumes' %}
+                {% if vegetables is not empty %}
+                    {% for currentVegetable in vegetables %}
+                        <option value="{{ currentVegetable.id }}">{{ currentVegetable.name }}.........({{ currentVegetable.unity }})</option>
+                    {% endfor %}
+                {% else %}
+                    <option>-</option>
+                {% endif %}
+            {% endif %}
+            {% if currentCategory.name == 'Epicerie' %}
+                {% if groceries is not empty %}
+                    {% for currentGrocery in groceries %}
+                        <option value="{{ currentGrocery.id }}">{{ currentGrocery.name }}.........({{ currentGrocery.unity }})</option>
+                    {% endfor %}
+                {% else %}
+                    <option>-</option>
+                {% endif %}
+            {% endif %}
+        </optgroup>
+        {% endfor %}
+    </select>
+    <input type="number" class="form-control" name="quantity[]" placeholder="Quantité" min="0" step="0.01">
+    </div>
+
+</template>
+
+{% block javascripts %}
+		<script src="{{ asset('scripts/cart.js')}}"></script>
+{% endblock %}
+

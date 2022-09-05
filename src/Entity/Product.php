@@ -9,9 +9,12 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
+ * @UniqueEntity("name", message="Ce produit existe déjà")
  * @Vich\Uploadable
  */
 class Product
@@ -28,6 +31,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide", normalizer="trim")
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
@@ -51,7 +55,7 @@ class Product
     private $slug;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @ORM\Column(type="decimal", nullable=true)
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
@@ -60,6 +64,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\NotNull(message="Veuillez sélectionner une unité")
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
@@ -89,7 +94,9 @@ class Product
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="decimal", precision=7, scale=2)
+     * @Assert\NotNull(message="Veuillez définir un prix")
+     * @Assert\PositiveOrZero(message="Le prix ne peut pas être négatif")
      * @Groups({"api_v1_category_product"})
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
@@ -110,6 +117,8 @@ class Product
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank(message="Cette description n'est pas valide", allowNull=true, normalizer="trim")
+     * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
      */
     private $description;
@@ -117,6 +126,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Groups({"api_v1_product_show"})
+     * @Groups({"api_v1_products_list"})
      */
     private $colorimetry;
 
@@ -132,6 +142,7 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Veuillez choisir une catégorie");
      * @Groups({"api_v1_products_list"})
      * @Groups({"api_v1_product_show"})
      */

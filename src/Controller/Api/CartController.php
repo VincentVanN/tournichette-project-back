@@ -15,18 +15,18 @@ class CartController extends AbstractController
 {
 
     /**
-    * List all carts 
+    * List all carts on sale
     * @Route("", name="_list", methods="GET")
     * @return Response
     */
     public function list(CartRepository $cartRepository) :Response
     {
-        $allCarts = $cartRepository->findAll();
+        $cartsOnSale = $cartRepository->findBy(['onSale' => true]);
 
         return $this->prepareResponse(
             'OK',
             ['groups' => 'api_v1_carts_list'],
-            ['data' => $allCarts]
+            ['data' => $cartsOnSale]
         );
     }
 

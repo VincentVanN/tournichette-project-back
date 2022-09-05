@@ -23,25 +23,27 @@ class ProductType extends AbstractType
     {
         $builder
         ->add('name', null, [
-            'label' => 'nom',
+            'label' => 'Nom',
         ])
         ->add('description', TextareaType::class, [
             'label' => 'Description'
         ])
-        ->add('stock', null, [
-            'label' => 'Quantité en vente'
-        ])
+        // Désactivé pour le moment
+        // ->add('stock', null, [
+        //     'label' => 'Quantité en vente'
+        // ]) 
         ->add('unity', ChoiceType::class, [
             'label' => 'Unité',
             'choices' => [
                 'Lots' => 'lot(s)',
                 'Kg' => 'Kg',
                 'Grammes' => 'g',
-                'Bouteilles' => 'btlle(s)',
-                'Sachets' => 'sachet(s)',
-                'Pots' => 'pot(s)',
-                'Bottes' => 'botte(s)',
-                'Pièce' => 'pièce'
+                'Bouteilles' => 'btlle',
+                'Sachets' => 'sachet',
+                'Pots' => 'pot',
+                'Bottes' => 'botte',
+                'Pièce' => 'pièce',
+                'Barquettes' => 'barquette'
             ]
         ])
         ->add('price', null, [

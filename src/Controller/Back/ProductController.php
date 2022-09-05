@@ -44,7 +44,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
                 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product->setSlug($mySlugger->slugify($product->getName()));
+           // $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
@@ -100,7 +100,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product->setSlug($mySlugger->slugify($product->getName()));
+           // $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);

@@ -29,7 +29,7 @@ class Order
     private $orderedAt;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="decimal", precision=7, scale=2)
      * @Groups({"api_v1_order_user_show"})
      * @Groups({"api_v1_orders_user"})
      */
@@ -136,6 +136,9 @@ class Order
     public function setPaymentStatus(string $payment_status): self
     {
         $this->payment_status = $payment_status;
+        if ($this->getPaymentStatus() == 'yes') {
+            $this->setPaidAt(new \DateTimeImmutable());
+        }
 
         return $this;
     }
@@ -148,6 +151,9 @@ class Order
     public function setDeliverStatus(string $deliver_status): self
     {
         $this->deliver_status = $deliver_status;
+        if ($this->getDeliverStatus() == 'yes') {
+            $this->setDeliveredAt(new \DateTimeImmutable());
+        }
 
         return $this;
     }

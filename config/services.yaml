@@ -22,7 +22,33 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
     App\Utils\GetBaseUrl:
         bind:
             $baseUrl: '%env(resolve:BASE_URL)%'
+    
+    App\EventListener\CartListener:
+        tags:
+            -
+                # these are the options required to define the entity listener
+                name: 'doctrine.orm.entity_listener'
+                event: 'preFlush'
+                entity: 'App\Entity\Cart'
+                method: 'slugifyCartName'
+
+    App\EventListener\CategoryListener:
+        tags:
+            -
+                # these are the options required to define the entity listener
+                name: 'doctrine.orm.entity_listener'
+                event: 'preFlush'
+                entity: 'App\Entity\Category'
+                method: 'slugifyCategoryName'
+
+    App\EventListener\ProductListener:
+        tags:
+            -
+                # these are the options required to define the entity listener
+                name: 'doctrine.orm.entity_listener'
+                event: 'preFlush'
+                entity: 'App\Entity\Product'
+                method: 'slugifyProductName'

@@ -3,14 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use App\Repository\ProductRepository;
 use App\Utils\MySlugger;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Migrations\Configuration\EntityManager\ManagerRegistryEntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)
+ * @UniqueEntity("name", message="Ce panier existe déjà")
  */
 class Cart
 {
@@ -25,6 +30,7 @@ class Cart
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Ce champs ne doit pas être vide")
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_order_user_show"})
@@ -34,6 +40,8 @@ class Cart
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Assert\NotNull(message="Vous devez définir un prix")
+     * @Assert\PositiveOrZero(message="Le prix ne doit pas être négatif")
      * @Groups({"api_v1_carts_list"})
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_order_user_show"})
@@ -76,6 +84,21 @@ class Cart
      * @ORM\OneToMany(targetEntity=CartOrder::class, mappedBy="cart")
      */
     private $cartOrders;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $onSale;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $archived;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $archivedAt;
 
     public function __construct()
     {
@@ -198,5 +221,45 @@ class Cart
     public function getParcel()
     {
         return $this->parcel;
+    }
+
+    public function isOnSale(): ?bool
+    {
+        return $this->onSale;
+    }
+
+    public function setOnSale(bool $onSale): self
+    {
+        $this->onSale = $onSale;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
+        if ($archived) {
+            $this->setArchivedAt(new \DateTimeImmutable());
+            $this->setOnSale(false);
+        }
+
+        return $this;
+    }
+
+    public function getArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTimeImmutable $archivedAt): self
+    {
+        $this->archivedAt = $archivedAt;
+
+        return $this;
     }
 }

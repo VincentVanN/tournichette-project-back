@@ -1,29 +1,38 @@
 {% extends 'back/cart/_base.html.twig' %}
 
-{% block title %} Panier{% endblock %}
+{% block title %}Détail panier{% endblock %}
 
 {% block body %}
+<section class="container-fluid">
+    <h1 class="text-center">Détail du panier : {{ cart.name }}</h1>
+    {# <a class="btn btn-outline-warning btn-sm" href="{{ path('app_back_cart_edit', {'id': cart.id}) }}"><i class="bi bi-pencil-fill"> Modifier</i></a> #}
 
- <a class = "btn btn-success" href="{{ path('app_back_depot_list') }}">Retour à la liste</a>
+    <div class="row justify-content-around mt-2">
+        <article class="card col-4">
+            <div class="card-body">
+                <h3 class="card-title">Infos panier</h3>
+                <ul>
+                    <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ cart.name }}</li>
+                    <li class="list-group-item"><strong class="fw-semibold">Prix : </strong>{{ cart.price }} €</li>
+                </ul>
+            </div>
+        </article>
 
-<div class="container">
-    <h1>Panier</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ cart.id }}</td>
-            </tr>
-            <tr>
-                <th>Prix</th>
-                <td>{{ cart.price }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a class="btn btn-primary" href="{{ path('app_back_cart_edit', {'id': cart.id}) }}">Modifier</a>
-
-    {{ include('back/cart/_delete.html.twig') }}
+        <article class="card col-6">
+            {% if cart.cartProducts is not empty %}
+            <div class="card-body">
+                <h3 class="card-title">Liste des produits</h3>
+                {% for currentProduct in cart.cartProducts %}
+                    <ul>
+                        <li class="list-group-item"><strong class="fw-semibold">Produit : </strong>{{ currentProduct.product.name }}</li>
+                        <li class="list-group-item"><strong class="fw-semibold">Quantité : </strong>{{ currentProduct.quantity }} {{ currentProduct.product.unity }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </article>
+    </div>
+    {# {{ include('back/cart/_delete.html.twig') }} #}
 </div>
+</section>
 {% endblock %}

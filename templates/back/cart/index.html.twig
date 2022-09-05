@@ -1,16 +1,23 @@
 {% extends 'back/cart/_base.html.twig' %}
 
-{% block title %}cart index{% endblock %}
+{% block title %}Paniers{% endblock %}
 
 {% block body %}
-    <h1>Les Paniers</h1>
+<div class="container-fluid">
+    <h1 class="text-center">Liste des Paniers</h1>
 
     <table class="table table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Version</th>
-                <th>Prix</th>
+            {% if carts is empty %}
+                <td colspan="8">Aucun panier n'a été trouvé</td>
+            </tr>
+            {% else %}
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prix</th>
+                <th scope="col">En vente</th>
+                <th scope="col"></th>
                 {# <th>Commande</th> #}
             </tr>
         </thead>
@@ -18,24 +25,38 @@
         {% for cart in carts %}
             <tr>
                <td>{{ cart.id }}</td>
-                <td>{{ cart.typecart }}</td> 
+                <td>{{ cart.name }}</td> 
                 <td>{{ cart.price }}</td>
-                {# <td>{{ cart.cartorders }}</td>  #}
-              
-            
                 <td>
-                    <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-info">{{ cart.typecart }}</a>
-                    <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-warning">Modifier</a>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <input type="checkbox" class="form-check-input" id="{{ cart.id }}" name="on-sale"{% if cart.onSale == true %} checked{% endif %}>
+                    {% else %}
+                        {% if cart.onSale == true %}
+                            <i class="bi bi-check-square text-success"></i>
+                        {% else %}
+                            <i class="bi bi-x-square text-danger"></i>
+                        {% endif %}
+                    {% endif %}
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
+               <td>
+                    <a href="{{ path('app_back_cart_show', {'id': cart.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
+                    {# <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a> #}
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            {# <a href="{{ path('app_back_cart_edit', {'id': cart.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a> #}{% include 'back/cart/_delete.html.twig' with {'delete': 'Supprimer', 'cart': cart} %}
+                            {% endif %}  
+                </td>
             </tr>
         {% endfor %}
         </tbody>
+        {% endif %}
     </table>
+</div>
+    
 
-    <a href="{{ path('app_back_cart_new') }}"class = "btn btn-success">Créer un nouveau panier</a>
+{% endblock %}
 
+{% block javascripts %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <script src="{{ asset('scripts/cartIndex.js')}}"></script>
+    {% endif %}
 {% endblock %}

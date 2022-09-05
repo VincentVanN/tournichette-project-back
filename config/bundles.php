@@ -14,9 +14,14 @@ return [
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
+<<<<<<< HEAD
 
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
 
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
      f577d3355f41a76ce78a63fcf58b512597f8b4cb
+=======
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
+    SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
+>>>>>>> a51d7d3f88153e397fa9a605ca905664913d912d
 ];

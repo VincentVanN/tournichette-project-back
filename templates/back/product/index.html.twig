@@ -12,6 +12,7 @@
         <thead>
             <tr>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <th>Id</th>
                 <th>Nom</th>
                 <th>stock</th>
@@ -20,18 +21,23 @@
                 <th>unité</th>
                 <th>decription</th>
 =======
+=======
+>>>>>>> a51d7d3f88153e397fa9a605ca905664913d912d
              {% if products is empty %}
                 <td colspan="8">Aucun produit n'a été trouvé</td>
             {% else %}
                 <th scope="col">#</th>
                 <th scope="col">Nom</th>
-                <th scope="col">stock</th>
-                <th scope="col">prix</th>
-                <th scope="col">unité</th>
-                <th scope="col">catégorie</th>
+                {# <th scope="col">Stock</th> #}
+                <th scope="col">Prix</th>
+                <th scope="col">Unité</th>
+                <th scope="col">Catégorie</th>
                 <th scope="col"></th>
                 
+<<<<<<< HEAD
 >>>>>>> f577d3355f41a76ce78a63fcf58b512597f8b4cb
+=======
+>>>>>>> a51d7d3f88153e397fa9a605ca905664913d912d
             </tr>
         </thead>
         <tbody>
@@ -39,9 +45,10 @@
             <tr>
                <td scope="row">{{ product.id }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.stock }}</td>
+                {# <td>{{ product.stock }}</td> #}
                 <td>{{ product.price }}</td>
                 <td>{{ product.unity }}</td>
+<<<<<<< HEAD
 <<<<<<< HEAD
                 <td>{{ product.description }}</td>
                 
@@ -49,20 +56,23 @@
                     <a href="{{ path('app_back_product_show', {'id': product.id}) }}" <i class="bi bi-eye-fill"> Consulter</i></a>
                     <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" <i class="bi bi-pencil-fill"></i></a>
 =======
+=======
+>>>>>>> a51d7d3f88153e397fa9a605ca905664913d912d
                 <td>{{ product.category.name }}</td>
                 
                 <td>
                     <a href="{{ path('app_back_product_show', {'id': product.id}) }}" class = "btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
                     <a href="{{ path('app_back_product_edit', {'id': product.id}) }}" class = "btn btn-outline-warning btn-sm"><i class="bi bi-pencil-fill"> Modifier</i></a>
+<<<<<<< HEAD
 >>>>>>> f577d3355f41a76ce78a63fcf58b512597f8b4cb
+=======
+>>>>>>> a51d7d3f88153e397fa9a605ca905664913d912d
                 </td>
             </tr>
         {% endfor %}
         {% endif %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_back_product_new') }}"class = "btn btn-success">Créer un nouveau produit</a>
 </div>
 {% endblock %}
 

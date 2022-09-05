@@ -33,7 +33,7 @@ class CartProduct
     private $product;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=3)
+     * @ORM\Column(type="decimal")
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_carts_list"})
      */
@@ -70,7 +70,7 @@ class CartProduct
 
     public function getQuantity(): ?string
     {
-        return $this->quantity;
+        return (float)$this->quantity;
     }
 
     public function setQuantity(string $quantity): self

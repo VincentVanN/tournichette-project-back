@@ -58,7 +58,7 @@ class OrderProduct
 
     public function getQuantity(): ?string
     {
-        return $this->quantity;
+        return (float)$this->quantity;
     }
 
     public function setQuantity(string $quantity): self
