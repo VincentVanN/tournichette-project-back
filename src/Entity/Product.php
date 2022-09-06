@@ -163,6 +163,11 @@ class Product
      */
     private $orderProducts;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $archived;
+
     public function __construct()
     {
         $this->cartProducts = new ArrayCollection();
@@ -404,6 +409,18 @@ class Product
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
 
         return $this;
     }

@@ -22,9 +22,10 @@ class ProductController extends AbstractController
     */
     public function list(ProductRepository $productRepository, GetBaseUrl $baseUrl) :Response
     {
-        $allProducts = $productRepository->findAll();
+        // $allProducts = $productRepository->findAll();
+        $unarchivedProducts = $productRepository->findBy(['archived' => false], ['name' => 'ASC']);
 
-        foreach($allProducts as $currentProduct)
+        foreach($unarchivedProducts as $currentProduct)
         {
             if ($currentProduct->getImage() === null) {
                 $currentProduct->setImage('placeholder.png');
@@ -36,7 +37,7 @@ class ProductController extends AbstractController
         return $this->prepareResponse(
             'OK',
             ['groups' => 'api_v1_products_list'],
-            ['data' => $allProducts]
+            ['data' => $unarchivedProducts]
         );
     }
 

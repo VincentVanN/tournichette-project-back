@@ -1,0 +1,5 @@
+{# {% set user = user is defined ? user : currentUser %} #}
+<form method="post" action="{{ path('app_back_product_delete', {'id': product.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer ce produit ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+    <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill">{{ delete }}</i></button>
+</form>

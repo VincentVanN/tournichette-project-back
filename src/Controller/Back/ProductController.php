@@ -35,6 +35,7 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ProductRepository $productRepository, MySlugger $mySlugger): Response
@@ -92,6 +93,7 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Product $product, ProductRepository $productRepository, MySlugger $mySlugger): Response
@@ -113,12 +115,15 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/{id}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
-            $productRepository->remove($product, true);
+            // $productRepository->remove($product, true);
+            $product->setArchived(true);
+            $productRepository->add($product, true);
         }
 
         return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
