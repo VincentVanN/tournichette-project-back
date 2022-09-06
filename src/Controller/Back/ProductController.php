@@ -29,8 +29,9 @@ class ProductController extends AbstractController
      */
     public function list(ProductRepository $productRepository): Response
     {
+        $unarchivedProducts = $productRepository->findBy(['archived' => false], ['name' => 'ASC']);
         return $this->render('back/product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $productRepository->findBy(['archived' => false], ['name' => 'ASC'])
         ]);
     }
 
