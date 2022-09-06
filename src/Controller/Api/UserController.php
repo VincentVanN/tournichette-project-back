@@ -34,7 +34,7 @@ class UserController extends AbstractController
         if ($user === null)
         {
             return $this->prepareResponse(
-                'No user found',
+                'Cet utilisateur n\'a pas été trouvé',
                 [],
                 [],
                 true,
@@ -106,7 +106,7 @@ class UserController extends AbstractController
 
         if(empty($user)) {
             return $this->prepareResponse(
-                'No user found or token expired',
+                'Pas d\'utilisateur trouvé ou token expiré',
                 [],
                 [],
                 true,
@@ -116,7 +116,7 @@ class UserController extends AbstractController
 
         if (!isset($requestData['currentpassword'])) {
             return $this->prepareResponse(
-                'Current password needed',
+                'Veuillez entrer votre mot de passe',
                 [],
                 [],
                 true,
@@ -126,7 +126,7 @@ class UserController extends AbstractController
         
         if (!$passwordHasher->isPasswordValid($user, $requestData['currentpassword'])) {
             return $this->prepareResponse(
-                'Invalid current password',
+                'Mot de passe invalide',
                 [],
                 [],
                 true,

@@ -41,7 +41,7 @@ class CartController extends AbstractController
         if ($cart === null)
         {
             return $this->prepareResponse(
-                'No cart found for this slug',
+                'Pas de panier trouvé avec ce slug',
                 [],
                 [],
                 true,

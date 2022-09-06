@@ -54,7 +54,7 @@ class OrderController extends AbstractController
 
         if (!isset($requestData['depot']) || $requestData['depot'] == '') {
             return $this->prepareResponse(
-                'Depot must be set.',
+                'Le dépôt doit être sélectionné',
                 [],
                 [],
                 true,
@@ -66,7 +66,7 @@ class OrderController extends AbstractController
 
         if ($depot === null) {
             return $this->prepareResponse(
-                'Depot with ID [' . $requestData['depot'] . '] not found.',
+                'Aucun dépôt trouvé avec cet ID',
                 [],
                 [],
                 true,
@@ -86,7 +86,7 @@ class OrderController extends AbstractController
                     
                     if ($product === null) {
                         return $this->prepareResponse(
-                            'Product for ID [' . $currentOrderProduct['id'] . '] not found.',
+                            'Aucun produit trouvé avec cet ID',
                             [],
                             [],
                             true,
@@ -115,7 +115,7 @@ class OrderController extends AbstractController
                     
                     if ($cart === null) {
                         return $this->prepareResponse(
-                            'Cart for this ID [' . $currentCartOrder['id'] . '] not found.',
+                            'Aucun panier trouvé avec cet ID',
                             [],
                             [],
                             true,
@@ -164,7 +164,7 @@ class OrderController extends AbstractController
 
         if ($user === null) {
             return $this->prepareResponse(
-                'User not connected',
+                'Utilisateur non connecté',
                 [],
                 [],
                 true,
@@ -176,7 +176,7 @@ class OrderController extends AbstractController
 
         if ($userOrder === null) {
             return $this->prepareResponse(
-                'No order found with this ID',
+                'Pas de commande trouvée avec cet ID',
                 [],
                 [],
                 true,
@@ -203,7 +203,7 @@ class OrderController extends AbstractController
 
         if ($user === null) {
             return $this->prepareResponse(
-                'User not connected',
+                'Utilisateur non connecté',
                 [],
                 [],
                 true,
@@ -215,7 +215,7 @@ class OrderController extends AbstractController
 
         if (count($userOrders) == 0) {
             return $this->prepareResponse(
-                'No orders found for this user',
+                'Pas de commande trouvée pour cet utilisateur',
                 [],
                 [],
                 true,

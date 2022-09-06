@@ -52,7 +52,7 @@ class ProductController extends AbstractController
         if ($product === null)
         {
             return $this->prepareResponse(
-                'No product found for this slug',
+                'Pas de produit trouvé avec ce slug',
                 [],
                 [],
                 true,

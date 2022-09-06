@@ -42,7 +42,7 @@ class DepotController extends AbstractController
         if ($depot === null)
         {
             return $this->prepareResponse(
-                'No depot found for this slug',
+                'Pas de dépôt trouvé avec ce slug',
                 [],
                 [],
                 true,
