@@ -64,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Assert\Length(max=20)
      * @Assert\Positive
+     * @Assert\NotNull(message="Le téléphone est obligatoire")
      * @Groups({"api_v1_users_show"})
      */
     private $phone;

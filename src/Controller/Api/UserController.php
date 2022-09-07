@@ -78,7 +78,7 @@ class UserController extends AbstractController
                 $data[$currentError->getPropertyPath()] = $currentError->getMessage();
                 
             }
-            return $this->prepareResponse('Bad requests', [], ['data' => $data], true, Response::HTTP_BAD_REQUEST);
+            return $this->prepareResponse('Email déjà existant', [], ['data' => $data], true, Response::HTTP_BAD_REQUEST);
         }
 
         $userRepository->add($user, true);
