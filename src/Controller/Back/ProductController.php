@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 /**
@@ -57,27 +55,6 @@ class ProductController extends AbstractController
             'form' => $form,
         ]);
     }
-        // /**
-        // * @Route("/dash", name="_dashboard", methods={"GET"})
-        // */
-        // public function dash(Request $request, OrderRepository $order, ProductRepository $product)
-        // {
-        //     //$session = $request->getSession();
-            
-        //     $idOrder = count($order->findAll());
-        //     $stock = 0;
-        //     $allProducts = $product->findAll();
-            
-        //     for ($i = 0; $i < count($allProducts); $i++) {
-        //         $stock = $stock + $allProducts[$i]->getStock();
-        //     }
-        //     return $this->render('back/product/index.html.twig', [
-                
-        //         'idOrder' => $idOrder,
-        //         'stock' => $stock,
-        //         'products' => $product,
-        //     ]);
-        // }
 
     /**
      * @Route("/{id}", name="_show", methods={"GET"})

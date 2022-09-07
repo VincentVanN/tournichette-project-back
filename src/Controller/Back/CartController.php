@@ -100,29 +100,6 @@ class CartController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
-    //  */
-    // public function edit(Request $request, Cart $cart, ProductRepository $productRepository, CartRepository $cartRepository): Response
-    // {
-    //     $form = $this->createForm(CartType::class, $cart);
-    //     $form->handleRequest($request);
-    //     $allProduct = $productRepository->findAll();
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-    //         // $cart->setSlug($mySlugger->slugify($cart->getTitle()));
-    //         $cartRepository->add($cart, true);
-
-    //         return $this->redirectToRoute('app_back_cart_list', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('back/cart/edit.html.twig', [
-    //         'cart' => $cart,
-    //         'form' => $form,
-    //     ]);
-    // }
-
     /**
      * @Route("/{id}", name="_delete", methods={"POST"})
      */

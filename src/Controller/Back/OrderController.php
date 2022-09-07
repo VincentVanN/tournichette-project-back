@@ -25,27 +25,6 @@ class OrderController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/new", name="app_back_order_new", methods={"GET", "POST"})
-    //  */
-    // public function new(Request $request, OrderRepository $orderRepository): Response
-    // {
-    //     $order = new Order();
-    //     $form = $this->createForm(Order1Type::class, $order);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $orderRepository->add($order, true);
-
-    //         return $this->redirectToRoute('app_back_order_index', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('back/order/new.html.twig', [
-    //         'order' => $order,
-    //         'form' => $form,
-    //     ]);
-    // }
-
     /**
      * @Route("/{id}", name="_show", methods={"GET"})
      */
@@ -57,6 +36,7 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/validate/{id}", name="_validate", methods={"GET"})
      */
     public function orderValidate(Order $order, OrderRepository $orderRepository, $id): Response
@@ -70,6 +50,7 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/delivered/{id}", name="_delivered", methods={"GET"})
      */
     public function orderDelivered(Order $order, OrderRepository $orderRepository): Response
@@ -113,35 +94,3 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
 }
-
-// /**
-//  * @Route("/{id}/edit", name="app_back_order_edit", methods={"GET", "POST"})
-//  */
-// public function edit(Request $request, Order $order, OrderRepository $orderRepository): Response
-// {
-    //     $form = $this->createForm(Order1Type::class, $order);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $orderRepository->add($order, true);
-
-    //         return $this->redirectToRoute('app_back_order_index', [], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('back/order/edit.html.twig', [
-    //         'order' => $order,
-    //         'form' => $form,
-    //     ]);
-// }
-
-// /**
-//  * @Route("/{id}", name="app_back_order_delete", methods={"POST"})
-//  */
-// public function delete(Request $request, Order $order, OrderRepository $orderRepository): Response
-// {
-    //     if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->request->get('_token'))) {
-    //         $orderRepository->remove($order, true);
-    //     }
-
-    //     return $this->redirectToRoute('app_back_order_index', [], Response::HTTP_SEE_OTHER);
-// }
