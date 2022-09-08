@@ -196,7 +196,7 @@ class Product
         return $this->stock;
     }
 
-    public function setStock(string $stock): self
+    public function setStock(string $stock = '1'): self
     {
         $this->stock = $stock;
 
