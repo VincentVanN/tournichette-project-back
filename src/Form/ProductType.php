@@ -67,10 +67,10 @@ class ProductType extends AbstractType
         ])
         ->add('colorimetry', ChoiceType::class, [
             'label' => 'Colorimetrie de l\'image',
-            'help' => 'Indiquez si l\'image a plutôt une teinte froide ou chader',
+            'help' => 'Indiquez si l\'image a plutôt une teinte froide (dans les tons verts) ou chaude (dans les tons orange)',
             'choices' => [
-                'chaud' => 'hot',
-                'Froid' => 'cold'
+                'Chaude' => 'hot',
+                'Froide' => 'cold'
             ],
             'multiple' => false,
             'expanded' => true
@@ -82,8 +82,7 @@ class ProductType extends AbstractType
             'multiple' => false,
             'expanded' => true
             //'mapped' => false,
-        ])
-        ->add('description');
+        ]);
          
     }
 
