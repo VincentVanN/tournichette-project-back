@@ -45,6 +45,7 @@ class ProductController extends AbstractController
                 
         if ($form->isSubmitted() && $form->isValid()) {
            // $product->setSlug($mySlugger->slugify($product->getName()));
+           $product->setArchived(false);           
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
