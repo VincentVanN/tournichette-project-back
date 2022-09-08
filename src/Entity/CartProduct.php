@@ -33,7 +33,7 @@ class CartProduct
     private $product;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=6, scale=3)
      * @Groups({"api_v1_cart_show"})
      * @Groups({"api_v1_carts_list"})
      */

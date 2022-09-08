@@ -30,7 +30,7 @@ class CartController extends AbstractController
     public function list(CartRepository $cartRepository): Response
     {
         return $this->render('back/cart/index.html.twig', [
-            'carts' => $cartRepository->findAll(),
+            'carts' => $cartRepository->findBy(['archived' => false], ['name' => 'ASC']),
         ]);
     }
  
