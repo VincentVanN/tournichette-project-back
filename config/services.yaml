@@ -25,6 +25,10 @@ services:
     App\Utils\GetBaseUrl:
         bind:
             $baseUrl: '%env(resolve:BASE_URL)%'
+
+    # App\Utils\SalesStatus:
+    #     arguments:
+    #         $salesEnabled: '%env(resolve:SALES_ENABLED)%'
     
     App\EventListener\CartListener:
         tags:
