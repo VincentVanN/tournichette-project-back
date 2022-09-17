@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Service;
+namespace App\Utils;
 
-// reference the Dompdf namespace
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -16,8 +15,9 @@ class PdfService
 
         $pdfOptions = new Options();
 
-        $pdfOptions->set('defaultFont', 'Garamond');
-
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        $this->domPdf->setPaper('A5', 'landscape');
         $this->domPdf->setOptions($pdfOptions);
     }
 
@@ -25,7 +25,7 @@ class PdfService
     {
         $this->domPdf->loadHtml($html);
         $this->domPdf->render();
-        $this->domPdf->stream("list.pdf", [
+        $this->domPdf->stream("detail.pdf", [
             'Attachement' => true
         ]);
     }
@@ -36,4 +36,26 @@ class PdfService
         $this->domPdf->render();
         $this->domPdf->output();
     }
+
+    /*
+    global
+    lot
+    point dépôt
+    total cumul par produits
+    total produit par dépôt
+    qté global produit par point dépôt
+    nombre de lot par qté vendu
+    client global
+    client par point dépôt
+
+array 
+nom produit
+unity
+prix
+
+commande client
+tel
+nom
+detail
+    */
 }

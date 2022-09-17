@@ -4,7 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\Order;
 use App\Form\OrderType;
-use App\Service\PdfService;
+use App\Utils\PdfService;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,15 +28,6 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/pdf/{id}", name="_Pdf", methods={"GET"})
-     */
-    public function generatePdfOrder(Order $order, PdfService $pdf)
-    {
-        $html = $this->render('back/order/show.html.twig', ['order' => $order]);
-        $pdf->showPdfFile($html);
-    }
-    
-    /**
      * @Route("/{id}", name="_show", methods={"GET"})
      */
     public function show(Order $order): Response
@@ -47,6 +38,16 @@ class OrderController extends AbstractController
     }
 
     /**
+     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     */
+    public function generatePdfOrder(Order $order, PdfService $pdf, $id) 
+    {   
+        //dump($order);
+        $html = $this->render('back/order/detail.html.twig', ['order' => $order] );
+        $pdf->showPdfFile($html);
+    }
+
+    /**
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/validate/{id}", name="_validate", methods={"GET"})
      */
@@ -54,8 +55,6 @@ class OrderController extends AbstractController
     {
         $order->setPaymentStatus('yes');
         $orderRepository->add($order, true);
-
-
         //return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
