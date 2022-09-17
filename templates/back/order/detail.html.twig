@@ -6,40 +6,43 @@
     <h2 class="text-center">Détails des commandes</h2>
 
     <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">client</th>
+                <th scope="col">Date commande</th>
+                <th scope="col">Dépôt</th>
+            </tr>
+        </thead>
+    <tbody>
     <tr>
-        <th>Client</th>
-        <td>{{ order.user.firstname }}</td>
         <td>{{ order.user.lastname }}</td>
-    </tr>
-    </tr>
-
-    <tr>
-        <th>Date Commande </th>
         <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d H:i:s') : '-' }}</td>
-    </tr>
-
-    <tr>
-        <th>Address </th>
-        <td>{{ order.user.address }}</td>
-    </tr>
-
-    <tr>
-        <th>Dépôt</th>
         <td>{{ order.depot.name }}</td>
     </tr>
 
     <tr>
-        <th>Détails produits</th>
-    </tr>
-    <tr>
-    {% for currentProduct in order.orderProducts %}
-        <th>Produits</th>
+    <th scope="col">Produits</th>
+{% for currentProduct in order.orderProducts %}
+        {# <th>Produits</th> #}
             <td>{{ currentProduct.product.name }}</td>
-        <th>quantité</th>
+        {# <th>quantité</th> #}
             <td>{{ currentProduct.quantity }}</td> <td>{{ currentProduct.product.unity }}</td>    
         {% endfor %}
     </tr>
-    {# <tr>
+
+    <tr>
+    <th scope="col">Panier</th>
+{% for currentCart in order.cartOrders %}
+                    <td>{{ currentCart.cart.name }}</td>
+                    <td>{{ currentCart.quantity }}</td>
+                    {# <td>{{ currentCart.cart.product }}</td> #}
+            
+        {% endfor %}
+    </tr>
+    </tbody>
+</table>
+    </div>
+{# <tr>
         {% for currentCart in order.cartOrders %}
                     <ul>
                         <li class="list-group-item"><strong class="fw-semibold">Nom du panier : </strong>{{ currentCart.cart.name }}</li>
@@ -48,8 +51,5 @@
                     </ul>
                 {% endfor %}
     </tr> #}
-    </table>
-    </div>
-
         
 {% endblock %}
