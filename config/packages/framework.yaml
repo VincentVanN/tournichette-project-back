@@ -20,6 +20,8 @@ framework:
     form:
         legacy_error_messages: false
 
+    fragments: { path: /_fragment }
+
 when@test:
     framework:
         test: true

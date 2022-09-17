@@ -46,6 +46,15 @@
 						</ul>
                         {% endif %}
 						<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+											{# <li class="nav-item me-5">
+												<div class="form-check form-switch position-relative">
+													<input class="form-check-input position-absolute start-0" type="checkbox" role="switch" id="flexSwitchCheckChecked salesSwitchStatus" checked>
+													<span class="text-danger d-none" id="salesStatusClose">Ventes fermées</span>
+													<span class="text-success" id="salesStatusOpen">Ventes ouvertes</span>
+												</div>
+
+											</li> #}
+											{{ render(controller('App\\Controller\\Back\\SalesSwitchController::setSalesSwitchPosition'))}}
 						                    <li class="nav-item dropdown">
 						                        {% if app.user %}
 						                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
