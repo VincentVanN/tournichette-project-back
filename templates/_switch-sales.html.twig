@@ -1,6 +1,6 @@
 <li class="nav-item me-5 pt-2">
     <div class="form-check form-switch position-relative">
-        <input class="form-check-input position-absolute start-0" type="checkbox" role="switch" id="flexSwitchCheckChecked salesSwitchStatus" {{ salesStatus == true ? 'checked' : '' }}>
+        <input class="form-check-input position-absolute start-0" type="checkbox" role="switch" id="salesSwitchStatus" {{ is_granted('ROLE_SUPER_ADMIN') ? '' : 'Disabled'}} {{ salesStatus == true ? 'checked' : '' }}>
         <span class="text-danger {{ salesStatus == true ? 'd-none' : '' }}" id="salesStatusClose">Ventes fermées</span>
         <span class="text-success {{ salesStatus == false ? 'd-none' : '' }}" id="salesStatusOpen">Ventes ouvertes</span>
     </div>
