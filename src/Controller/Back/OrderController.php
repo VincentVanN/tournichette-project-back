@@ -4,12 +4,13 @@ namespace App\Controller\Back;
 
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\Service\PdfService;
 use App\Repository\OrderRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/back/orders", name="app_back_order")
@@ -26,6 +27,15 @@ class OrderController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/pdf/{id}", name="_Pdf", methods={"GET"})
+     */
+    public function generatePdfOrder(Order $order, PdfService $pdf)
+    {
+        $html = $this->render('back/order/show.html.twig', ['order' => $order]);
+        $pdf->showPdfFile($html);
+    }
+    
     /**
      * @Route("/{id}", name="_show", methods={"GET"})
      */
@@ -94,4 +104,6 @@ class OrderController extends AbstractController
 
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
+
+    
 }
