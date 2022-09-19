@@ -80,6 +80,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $orders;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paymentInfo;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -264,6 +269,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPaymentInfo(): ?string
+    {
+        return $this->paymentInfo;
+    }
+
+    public function setPaymentInfo(?string $paymentInfo): self
+    {
+        $this->paymentInfo = $paymentInfo;
 
         return $this;
     }

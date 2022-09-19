@@ -15,6 +15,9 @@
                     <li class="list-group-item"><strong class="fw-semibold">Prix : </strong>{{ order.price }} €</li>
                     <li class="list-group-item"><strong class="fw-semibold">Payé ? : </strong>{{ order.paymentStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>'  }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Date paiement : </strong>{{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</li>
+                    {% if order.paymentId %}
+                    <li class="list-group-item"><strong class="fw-semibold">Numéro de transaction CB : </strong>{{ order.paymentId }}</li>
+                    {% endif %}
                     <li class="list-group-item"><strong class="fw-semibold">Retiré ? : </strong>{{ order.deliverStatus == 'yes' ? '<i class="bi bi-check2-square text-success"></i>' : '<i class="bi bi-x-square text-danger"></i>' }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Date retrait : </strong>{{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</li>
                 </ul>
