@@ -37,6 +37,16 @@ class OrderController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/stats", name="_stats", methods={"GET"})
+     */
+    public function orderStats(Order $order) : Response
+    {   
+        return $this->render('back/order/stats.html.twig', [
+            'order' => $order
+            ] );
+    }
+    
     /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
