@@ -80,6 +80,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $orders;
 
+    /**
+     * @ORM\OneToOne(targetEntity=PayementInfo::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $payementInfo;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -264,6 +269,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPayementInfo(): ?PayementInfo
+    {
+        return $this->payementInfo;
+    }
+
+    public function setPayementInfo(PayementInfo $payementInfo): self
+    {
+        // set the owning side of the relation if necessary
+        if ($payementInfo->getUser() !== $this) {
+            $payementInfo->setUser($this);
+        }
+
+        $this->payementInfo = $payementInfo;
 
         return $this;
     }

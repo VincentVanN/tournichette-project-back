@@ -87,6 +87,11 @@ class Order
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $paymentId;
+
     public function __construct()
     {
         $this->orderProducts = new ArrayCollection();
@@ -133,6 +138,9 @@ class Order
         return $this->payment_status;
     }
 
+    /**
+     * @parameter $payement_status = "yes | no"
+     */
     public function setPaymentStatus(string $payment_status): self
     {
         $this->payment_status = $payment_status;
@@ -290,6 +298,18 @@ class Order
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPaymentId(): ?string
+    {
+        return $this->paymentId;
+    }
+
+    public function setPaymentId(?string $paymentId): self
+    {
+        $this->paymentId = $paymentId;
 
         return $this;
     }
