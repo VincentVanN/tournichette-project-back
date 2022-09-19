@@ -85,6 +85,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $paymentInfo;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $apiToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $apiTokenUpdatedAt;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -281,6 +291,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPaymentInfo(?string $paymentInfo): self
     {
         $this->paymentInfo = $paymentInfo;
+
+        return $this;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(?string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    public function getApiTokenUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->apiTokenUpdatedAt;
+    }
+
+    public function setApiTokenUpdatedAt(?\DateTimeImmutable $apiTokenUpdatedAt): self
+    {
+        $this->apiTokenUpdatedAt = $apiTokenUpdatedAt;
 
         return $this;
     }
