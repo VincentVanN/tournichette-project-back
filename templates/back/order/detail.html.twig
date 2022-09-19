@@ -19,15 +19,15 @@
         <td>{{ order.user.lastname }}</td>
          <td>{{ order.user.phone }}</td>
         <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
-        <td>{{ order.depot.name }}</td>
+        <td>{{ order.depot.getName }}</td>
     </tr>
     </tbody>
-<thead>
-    <tr>
-    <th scope="col">Produits</th>
-    <th scope="col">Quantité</th>
-    </tr>
-</thead>
+        <thead>
+             <tr>
+             <th scope="col">Produits</th>
+             <th scope="col">Quantité</th>
+             </tr>
+        </thead>
 <tbody>
 {% for currentProduct in order.orderProducts %}
     <tr>

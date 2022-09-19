@@ -1,0 +1,53 @@
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="text-center">Détails des dépôts</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Commande</th>
+                <th scope="col">Date</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Client</th>
+            </tr>
+        </thead>
+    <tbody>
+    {% for order in depot.orders %}
+    <tr>
+        <td id="{{order.id}}" scope="row">{{ order.id }}</td>    
+        <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y') : '-' }}</td>
+        <td> {{ order.price }}</td>
+        <td> {{ order.user.lastname}}</td>
+    </tr>
+    {% endfor %} 
+    </tbody>
+
+    <thead>
+            <tr>
+                <th scope="col-md-auto">TOTAL</th>
+                <th scope="col">Nombre commande</th>
+                <th scope="col">Total Prix</th>
+                <th scope="col">Nombre Client</th>
+                  <th scope="col">Produits</th>
+            </tr>
+    </thead>
+
+     <thead>
+            <tr>
+                <th scope="col">Produits</th>
+                <th scope="col">Quantité</th>
+            </tr>
+    </thead>
+     {% for order in depot.orders %}
+     {% for product in order.orderProducts %}
+     <tr>
+        <td> {{ product.product.name }}</td> 
+        <td>{{ product.quantity }} {{ product.product.unity }}</td>
+        </tr>
+        {% endfor %}
+         {% endfor %}
+        </table>
+</div>        
+{% endblock %}

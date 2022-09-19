@@ -39,6 +39,9 @@
                 </tr>
             </thead>
             <tbody>
+            {# <pre>
+    {{ dump(depot.orders.orderProducts) }}
+</pre> #}
             {% for order in depot.orders %}
                 {% if order.deliverStatus == 'no' %}
                 <tr>

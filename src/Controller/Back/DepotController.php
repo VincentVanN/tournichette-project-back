@@ -4,6 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\Depot;
 use App\Form\DepotType;
+use App\Utils\PdfService;
 use App\Repository\DepotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,16 @@ class DepotController extends AbstractController
         return $this->render('back/depot/show.html.twig', [
             'depot' => $depot,
         ]);
+    }
+
+     /**
+     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     */
+    public function generatePdfDepot(Depot $depot, PdfService $pdf, $id) 
+    {   
+        $html = $this->render('back/depot/detail.html.twig', ['depot' => $depot] );
+        $pdf->showPdfFile($html);
+       
     }
 
     /**
