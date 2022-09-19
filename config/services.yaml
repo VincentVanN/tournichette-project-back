@@ -26,6 +26,10 @@ services:
         bind:
             $baseUrl: '%env(resolve:BASE_URL)%'
 
+    app.api_custom_authenticator:
+        class: App\Security\ApiCustomAuthenticator
+        parent: lexik_jwt_authentication.security.jwt_authenticator
+
     # App\Utils\SalesStatus:
     #     arguments:
     #         $salesEnabled: '%env(resolve:SALES_ENABLED)%'
