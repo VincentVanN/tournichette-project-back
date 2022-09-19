@@ -81,9 +81,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $orders;
 
     /**
-     * @ORM\OneToOne(targetEntity=PayementInfo::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $payementInfo;
+    private $paymentInfo;
 
     public function __construct()
     {
@@ -273,19 +273,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPayementInfo(): ?PayementInfo
+    public function getPaymentInfo(): ?string
     {
-        return $this->payementInfo;
+        return $this->paymentInfo;
     }
 
-    public function setPayementInfo(PayementInfo $payementInfo): self
+    public function setPaymentInfo(?string $paymentInfo): self
     {
-        // set the owning side of the relation if necessary
-        if ($payementInfo->getUser() !== $this) {
-            $payementInfo->setUser($this);
-        }
-
-        $this->payementInfo = $payementInfo;
+        $this->paymentInfo = $paymentInfo;
 
         return $this;
     }

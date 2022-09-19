@@ -139,7 +139,7 @@ class Order
     }
 
     /**
-     * @parameter $payement_status = "yes | no"
+     * @var $payement_status = "yes | no"
      */
     public function setPaymentStatus(string $payment_status): self
     {

@@ -6,11 +6,12 @@ use App\Entity\CartOrder;
 use App\Entity\Depot;
 use App\Entity\Order;
 use App\Entity\OrderProduct;
+use App\Entity\PaymentInfo;
+use App\Entity\User;
 use App\Repository\CartRepository;
 use App\Repository\DepotRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +49,7 @@ class OrderController extends AbstractController
         $order->resetOrderProducts();
         $order->resetCartOrders();
         $order->setUser($this->getUser());
-        $order->setPaymentStatus('no');
+        // $order->setPaymentStatus('no');
         $order->setDeliverStatus('no');
         $order->setDateOrder(new \DateTimeImmutable());
 
@@ -134,9 +135,20 @@ class OrderController extends AbstractController
             }
         }
 
+        if (isset($requestData['paymentId'])) {
+            $order->setPaymentStatus('yes');
+
+            if (isset($requestData['paymentInfo'])) {
+                $user = $this->getUser();
+                $user->setPaymentInfo($requestData['paymentInfo']);
+            }
+        } else {
+            $order->setPaymentStatus('no');
+        }
+
         $message = 'Order create.';
 
-        if ($priceOrder != $order->getPrice()) {
+        if (($priceOrder != $order->getPrice()) && ($order->getPaymentStatus() != 'yes')) {
             $order->setPrice($priceOrder);
             $message .= ' The price has been adjusted.';
         }
