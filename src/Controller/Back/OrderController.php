@@ -43,7 +43,7 @@ class OrderController extends AbstractController
     public function orderStats(Order $order) : Response
     {   
         return $this->render('back/order/stats.html.twig', [
-            'order' => $order
+            'order' => $order,
             ] );
     }
     

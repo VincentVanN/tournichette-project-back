@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th scope="col">client</th>
+                <th scope="col">tél</th>
                 <th scope="col">Date commande</th>
                 <th scope="col">Dépôt</th>
             </tr>
@@ -16,6 +17,7 @@
     <tbody>
     <tr>
         <td>{{ order.user.lastname }}</td>
+         <td>{{ order.user.phone }}</td>
         <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
         <td>{{ order.depot.name }}</td>
     </tr>

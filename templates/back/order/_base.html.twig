@@ -14,7 +14,7 @@
 							<a class="nav-link {{ "list" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_order_list') }}">
 								<i class="bi bi-list-ul"> Liste des commandes</i>
 							</a>
-							<a class="nav-link {{ "list" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_order_stats') }}">
+							<a class="nav-link {{ "stats" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_order_stats') }}">
 								<i class="bi bi-graph-up">Statistiques</i>
 							</a>
 						</li>
