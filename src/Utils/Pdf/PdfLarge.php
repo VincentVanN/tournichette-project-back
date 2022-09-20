@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Utils;
+namespace App\Utils\Pdf;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-class PdfService
+class PdfLarge
 {
     private $domPdf;
 
@@ -17,7 +17,7 @@ class PdfService
 
         $pdfOptions->set('defaultFont', 'Arial');
         
-        $this->domPdf->setPaper('A5', 'landscape');
+        $this->domPdf->setPaper('A4', 'portrait');
         $this->domPdf->setOptions($pdfOptions);
     }
 

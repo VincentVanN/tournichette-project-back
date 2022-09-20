@@ -4,7 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\Order;
 use App\Form\OrderType;
-use App\Utils\PdfService;
+use App\Utils\Pdf\PdfSticker;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +40,7 @@ class OrderController extends AbstractController
     /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfOrder(Order $order, PdfService $pdf, $id) 
+    public function generatePdfOrder(Order $order, PdfSticker $pdf, $id) 
     {   
         //dump($order);
         $html = $this->render('back/order/detail.html.twig', ['order' => $order] );
