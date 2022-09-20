@@ -15,7 +15,7 @@ class PdfLarge
 
         $pdfOptions = new Options();
 
-        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('defaultFont', 'Courier-Bold');
         
         $this->domPdf->setPaper('A4', 'portrait');
         $this->domPdf->setOptions($pdfOptions);

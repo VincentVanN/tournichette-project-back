@@ -293,4 +293,15 @@ class Order
 
         return $this;
     }
+
+    public function getTotalUsers($user): self
+    {
+        $total = 0;
+        foreach ($this->getUser() as $user
+        ){
+          $total += $user->getUserNumber();
+        }
+        return $total;
+      }
+
 }

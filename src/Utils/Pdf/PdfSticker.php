@@ -15,7 +15,7 @@ class PdfSticker
 
         $pdfOptions = new Options();
 
-        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('defaultFont', 'Courier-Bold');
         
         $this->domPdf->setPaper('A5', 'landscape');
         $this->domPdf->setOptions($pdfOptions);

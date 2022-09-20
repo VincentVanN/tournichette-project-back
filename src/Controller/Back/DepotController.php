@@ -76,7 +76,7 @@ class DepotController extends AbstractController
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
     public function generatePdfDepot(Depot $depot, PdfLarge $pdf, $id) 
-    {   
+    {    
         $html = $this->render('back/depot/detail.html.twig', ['depot' => $depot] );
         $pdf->showPdfFile($html);
     }
