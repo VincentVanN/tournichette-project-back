@@ -19,6 +19,17 @@ class ApiAuthenticator extends AbstractAuthenticator
 {
     private $userRepository;
 
+    /**
+     * Array of API routes that don't need token
+     */
+    private $apiRoutesTokenException = [
+        '/api/login',
+        '/api/login_check',
+        '/api/doc',
+        '/api/v1/users/create',
+        '/api/v1/sales',
+    ];
+
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -26,17 +37,9 @@ class ApiAuthenticator extends AbstractAuthenticator
     
     public function supports(Request $request): ?bool
     {
-        // $apiRoute = strpos($request->getPathInfo(), '/api/', 0);
-        // dd($apiRoute);
-        $apiRoute = explode('/', $request->getPathInfo());
-        
-        $auth = explode(' ', $request->headers->get(('Authorization')));
-        // if ($auth[0] == 'Bearer') {
-        //     return true;
-        // }
 
-        return $auth[0] == 'Bearer' && $apiRoute[1] == 'api';
-        
+        return !in_array($request->getPathInfo(), $this->apiRoutesTokenException);
+                
     }
 
     public function authenticate(Request $request): Passport
@@ -44,7 +47,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         $auth = $request->headers->get(('Authorization'));
         $apiToken = substr($auth, 7);
 
-        if ($apiToken === null) {
+        if (!$apiToken) {
             throw new CustomUserMessageAuthenticationException('Token not found in headers');
         }
 
@@ -78,9 +81,4 @@ class ApiAuthenticator extends AbstractAuthenticator
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
-
-   public function start(Request $request, AuthenticationException $authException = null): Response
-   {
-       return new JsonResponse('Vous devez être identifier', Response::HTTP_UNAUTHORIZED);
-   }
 }
