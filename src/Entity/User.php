@@ -43,8 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
-     * @Assert\NotNull(message="Le mot de passe est obligatoire")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -84,8 +83,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"api_v1_users_show"})
      */
-    private $paymentInfo;
+    private $stripeCutomerId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -96,6 +96,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $apiTokenUpdatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $sub;
 
     public function __construct()
     {
@@ -175,7 +180,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -285,14 +290,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPaymentInfo(): ?string
+    public function getStripeCutomerId(): ?string
     {
-        return $this->paymentInfo;
+        return $this->stripeCutomerId;
     }
 
-    public function setPaymentInfo(?string $paymentInfo): self
+    public function setStripeCutomerId(?string $stripeCutomerId): self
     {
-        $this->paymentInfo = $paymentInfo;
+        $this->stripeCutomerId = $stripeCutomerId;
 
         return $this;
     }
@@ -318,6 +323,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setApiTokenUpdatedAt(?\DateTimeImmutable $apiTokenUpdatedAt): self
     {
         $this->apiTokenUpdatedAt = $apiTokenUpdatedAt;
+
+        return $this;
+    }
+
+    public function getSub(): ?string
+    {
+        return $this->sub;
+    }
+
+    public function setSub(?string $sub): self
+    {
+        $this->sub = $sub;
 
         return $this;
     }

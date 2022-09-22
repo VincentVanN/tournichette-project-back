@@ -14,11 +14,26 @@ security:
             entity:
                 class: App\Entity\User
                 property: apiToken
+        api_google_provider:
+            entity:
+                class: App\Entity\User
+                property: sub
     
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        google:
+            lazy: true
+            pattern: ^/api/login_google
+            provider: api_google_provider
+            json_login:
+                check_path: google_login
+                username_path: email
+                password_path: sub
+            custom_authenticator:
+                - App\Security\ApiGoogleAuthenticator
 
         api:
             lazy: true
@@ -38,9 +53,9 @@ security:
                 check_path: app_login
                 default_target_path: app_back_order_list
                 enable_csrf: true
-            json_login:
-                check_path: api_login
-                login_path: api_login
+            # json_login:
+            #     check_path: api_login
+            #     login_path: api_login
             logout:
                 path: app_logout
                 target: app_login

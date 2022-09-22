@@ -25,6 +25,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     private $apiRoutesTokenException = [
         '/api/login',
         '/api/login_check',
+        '/api/login_google',
         '/api/doc',
         '/api/v1/users/create',
         '/api/v1/sales',

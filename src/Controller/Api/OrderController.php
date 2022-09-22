@@ -135,12 +135,12 @@ class OrderController extends AbstractController
             }
         }
 
-        if (isset($requestData['paymentId'])) {
+        if (isset($requestData['stripeCutomerId'])) {
             $order->setPaymentStatus('yes');
 
-            if (isset($requestData['paymentInfo'])) {
+            if (isset($requestData['stripeCutomerId'])) {
                 $user = $this->getUser();
-                $user->setPaymentInfo($requestData['paymentInfo']);
+                $user->setStripeCutomerId($requestData['stripeCutomerId']);
             }
         } else {
             $order->setPaymentStatus('no');
