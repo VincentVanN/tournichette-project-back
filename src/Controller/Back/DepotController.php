@@ -20,7 +20,6 @@ use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
  */
 class DepotController extends AbstractController
 {
-
     /**
     * List all depots 
     * @Route("", name="_list", methods="GET")
@@ -35,7 +34,6 @@ class DepotController extends AbstractController
         ]);
     }
 
-    
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/new", name="_new", methods={"GET", "POST"})
@@ -47,8 +45,7 @@ class DepotController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-
+        
             $depotRepository->add($depot, true);
 
             return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);

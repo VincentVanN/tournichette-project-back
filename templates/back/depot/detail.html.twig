@@ -47,13 +47,20 @@
             </tr>
             {% for order in depot.orders %}
             <tr>
+            {% set somme = 0 %}
+                {% set sumProduct = 0 %}
+                {% for product in order.orderProducts %}
+                    {% set somme %}
+             
                 <td scope="col-md-auto">#</td>
-                <td scope="col">#</td>
+                <td scope="col">{{somme}}</td>
                 <td scope="col-md-auto">#</td>
-                <td scope="col">{{ order.getTotalUsers }} </td>
+         
+                <td scope="col"># </td>
                 <td scope="col-md-auto">#</td>
             </tr>
-             {% endfor %}
+         {% endfor %}
+         {% endfor %}
     </thead>
         </tbody>
         </table>

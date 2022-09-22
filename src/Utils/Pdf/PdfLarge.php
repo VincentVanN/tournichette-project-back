@@ -15,7 +15,8 @@ class PdfLarge
 
         $pdfOptions = new Options();
 
-        $pdfOptions->set('defaultFont', 'Courier-Bold');
+        $pdfOptions->setDefaultFont('Courier-Bold');
+
         
         $this->domPdf->setPaper('A4', 'portrait');
         $this->domPdf->setOptions($pdfOptions);
@@ -24,10 +25,11 @@ class PdfLarge
     public function showPdfFile($html)
     {
         $this->domPdf->loadHtml($html);
-        $this->domPdf->render();
+        $this->domPdf->render($html);
         $this->domPdf->stream("detail.pdf", [
-            'Attachement' => true
+            'Attachement' => false
         ]);
+        $this->domPdf->output();
     }
 
     public function generateBinaryPDF($html)
