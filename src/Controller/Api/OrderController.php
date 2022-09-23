@@ -135,7 +135,7 @@ class OrderController extends AbstractController
             }
         }
 
-        if (isset($requestData['stripeCutomerId'])) {
+        if (isset($requestData['paymentId'])) {
             $order->setPaymentStatus('yes');
 
             if (isset($requestData['stripeCutomerId'])) {
