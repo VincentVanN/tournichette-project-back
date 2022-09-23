@@ -85,7 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"api_v1_users_show"})
      */
-    private $stripeCutomerId;
+    private $stripeCustomerId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -290,12 +290,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getStripeCutomerId(): ?string
+    public function getStripeCustomerId(): ?string
     {
         return $this->stripeCutomerId;
     }
 
-    public function setStripeCutomerId(?string $stripeCutomerId): self
+    public function setStripeCustomerId(?string $stripeCutomerId): self
     {
         $this->stripeCutomerId = $stripeCutomerId;
 
