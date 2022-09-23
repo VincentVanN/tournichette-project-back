@@ -15,7 +15,7 @@ class SalesStatus
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id = 1;
+    private $id;
 
     /**
      * @ORM\Column(type="boolean")
@@ -31,6 +31,11 @@ class SalesStatus
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $endAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
 
     public function getId(): ?int
     {
@@ -69,6 +74,18 @@ class SalesStatus
     public function setEndAt(?\DateTimeImmutable $endAt): self
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

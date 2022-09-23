@@ -39,6 +39,7 @@ class DepotFixtures extends Fixture implements FixtureGroupInterface
             $phoneDepot = $fakerFr->unique()->serviceNumber();
             $phoneNoSpaceDepot = str_replace(' ', '', $phoneDepot);
             $depotObj->setPhone($phoneNoSpaceDepot);
+            $depotObj->setAvailable(true);
 
             $manager->persist($depotObj);
         }

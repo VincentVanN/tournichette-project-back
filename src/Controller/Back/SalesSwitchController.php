@@ -36,7 +36,7 @@ class SalesSwitchController extends AbstractController
         $status
     ): Response
     {
-        $salesStatus = $salesStatusRepository->find(1);
+        $salesStatus = $salesStatusRepository->findOneBy(['name' => 'status']);
         $status = $status == 'enable' ? true : false;
         
         if($salesStatus !== null) {

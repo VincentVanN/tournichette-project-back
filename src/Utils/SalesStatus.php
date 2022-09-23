@@ -18,6 +18,6 @@ class SalesStatus
 
     public function isSalesEnabled()
     {
-        return $this->salesStatusRepository->find(1)->isEnable();
+        return $this->salesStatusRepository->findOneBy(['name' => 'status'])->isEnable();
     }
 }
