@@ -140,7 +140,7 @@ class OrderController extends AbstractController
 
             if (isset($requestData['stripeCustomerId'])) {
                 $user = $this->getUser();
-                $user->setStripeCutomerId($requestData['stripeCustomerId']);
+                $user->setStripeCustomerId($requestData['stripeCustomerId']);
             }
         } else {
             $order->setPaymentStatus('no');

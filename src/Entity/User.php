@@ -292,12 +292,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getStripeCustomerId(): ?string
     {
-        return $this->stripeCutomerId;
+        return $this->stripeCustomerId;
     }
 
-    public function setStripeCustomerId(?string $stripeCutomerId): self
+    public function setStripeCustomerId(?string $stripeCustomerId): self
     {
-        $this->stripeCutomerId = $stripeCutomerId;
+        $this->stripeCustomerId = $stripeCustomerId;
 
         return $this;
     }
