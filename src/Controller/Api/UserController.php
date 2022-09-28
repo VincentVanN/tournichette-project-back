@@ -2,19 +2,22 @@
 
 namespace App\Controller\Api;
 
+use DateTime;
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Utils\TokenCreator;
 use Doctrine\ORM\EntityManager;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
 /** @Route("/api/v1/users", name="api_v1_users" )
  * 
@@ -59,13 +62,16 @@ class UserController extends AbstractController
         SerializerInterface $serializer,
         UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface $validator,
-        UserRepository $userRepository): Response
+        UserRepository $userRepository,
+        TokenCreator $tokenCreator): Response
     {
         $data = $request->getContent();
 
         $user = $serializer->deserialize($data, User::class, 'json');
-        $hashPassword = $passwordHasher->hashPassword($user, $user->getPassword());
-        $user->setPassword($hashPassword);
+        if ($user->getPassword() !== null) {
+            $hashPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashPassword);
+        }
         $user->setRoles(["ROLE_USER"]);
 
         $errors = $validator->validate($user);
@@ -82,6 +88,20 @@ class UserController extends AbstractController
         }
 
         $userRepository->add($user, true);
+
+        if ($user->getSub() !== null) {
+            $currentDateTime = new DateTime();
+
+            // A custom token is created if not exists or if it's expired
+            if (($user->getApiToken() === null) || ($currentDateTime->getTimestamp() - $user->getApiTokenUpdatedAt()->getTimeStamp() >= $tokenCreator->getTokenExpiredTime())) {
+                $user->setApiToken($tokenCreator->create($user->getUserIdentifier(), $user->getSub()));
+                $userRepository->add($user, true);
+            }
+
+            return $this->json([
+                'token' => $user->getApiToken()
+            ]);
+        }
 
         return $this->prepareResponse('User Create', [], [], false, Response::HTTP_CREATED);
     }

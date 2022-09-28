@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -64,10 +65,7 @@ class ApiGoogleAuthenticator extends AbstractAuthenticator
                 $user = $this->userRepository->findOneBy(['sub' => $sub]);
                 
                 if (!$user) {
-                    $user = $this->createGoogleUser->create($this->jsonRequest);
-                    if(!$user instanceof User) {
-                        throw new CustomUserMessageAuthenticationException('Erreur lors de la création du compte', $user, Response::HTTP_BAD_REQUEST);
-                    }
+                    throw new CustomUserMessageAccountStatusException("User not registered with Google. Please register it with 'firstname', 'lastname', 'email', 'phone' and 'sub'.", [], Response::HTTP_NOT_FOUND);
                 }
                 return $user;
             })
@@ -95,7 +93,7 @@ class ApiGoogleAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return new JsonResponse(['message' => $exception->getMessageKey(), 'data' => $exception->getMessageData()], $exception->getCode());
+        return new JsonResponse(['message' => $exception->getMessageKey()], $exception->getCode());
     }
 
 //    public function start(Request $request, AuthenticationException $authException = null): Response

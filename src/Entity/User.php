@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity("email", message="Email déjà existant")
  * @UniqueEntity("apiToken", message="Token déjà existant")
+ * @UniqueEntity("sub", message="Sub déjà existant")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
