@@ -1,4 +1,13 @@
 {% block title %}Commandes{% endblock %}
+{% block stylesheets %}
+    <link href="{{ public/css/style.css }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+    {# {% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/webshome/css/main.css') }}" rel="stylesheet">
+{% endblock %} #}
 
 {% block body %}
 <div class="container-fluid">
@@ -47,20 +56,20 @@
             </tr>
             {% for order in depot.orders %}
             <tr>
-            {% set somme = 0 %}
+            {# {% set somme = 0 %}
                 {% set sumProduct = 0 %}
                 {% for product in order.orderProducts %}
-                    {% set somme %}
+                    {% set somme %} #}
              
                 <td scope="col-md-auto">#</td>
-                <td scope="col">{{somme}}</td>
+                {# <td scope="col">{{somme}}</td> #}
                 <td scope="col-md-auto">#</td>
          
                 <td scope="col"># </td>
                 <td scope="col-md-auto">#</td>
             </tr>
          {% endfor %}
-         {% endfor %}
+        
     </thead>
         </tbody>
         </table>

@@ -13,6 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
+// use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+// use Knp\Bundle\SnappyBundle\Snappy;
+// use Knp\Snappy\Pdf;
+// use Knp\Bundle\SnappyBundle\DependencyInjection;
 
 
 /**
@@ -69,14 +73,37 @@ class DepotController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
     public function generatePdfDepot(Depot $depot, PdfLarge $pdf, $id) 
-    {    
+    {   
+        //dump($depot);
         $html = $this->render('back/depot/detail.html.twig', ['depot' => $depot] );
         $pdf->showPdfFile($html);
     }
+     /**
+     * Export to PDF
+     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     */
+    // public function pdfAction(Depot $depot, $id) : Response
+    // {
+    //     $html = $this->renderView('back/depot/detail.html.twig',  ['depot' => $depot]);
+
+    //     $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+
+    //     return new Response(
+    //     // $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+    //         $snappy = $this->get('knp_snappy.pdf'),
+    //         $snappy->getOuptutFromHTLM($html),
+            
+    //         200,
+    //         [
+    //             'Content-Type'        => 'application/pdf',
+    //             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+    //         ]
+    //     );
+    // }
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
