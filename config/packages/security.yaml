@@ -51,7 +51,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: app_back_order_list
+                default_target_path: app_back_homepage
                 enable_csrf: true
             # json_login:
             #     check_path: api_login

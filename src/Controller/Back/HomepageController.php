@@ -9,13 +9,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AbstractController
 {
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/", name="app_back_homepage")
      */
     public function index(): Response
     {
-        return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_TEMPORARY_REDIRECT);
-        // return $this->render('homepage/index.html.twig', [
-        //     'controller_name' => 'HomepageController',
-        // ]);
+        // return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_TEMPORARY_REDIRECT);
+        return $this->render('back/homepage/homepage.html.twig', [
+            'controller_name' => 'HomepageController',
+        ]);
     }
 }
