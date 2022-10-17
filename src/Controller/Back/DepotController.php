@@ -13,10 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
-// use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-// use Knp\Bundle\SnappyBundle\Snappy;
-// use Knp\Snappy\Pdf;
-// use Knp\Bundle\SnappyBundle\DependencyInjection;
+
 
 
 /**
@@ -78,8 +75,8 @@ class DepotController extends AbstractController
      */
     public function generatePdfDepot(Depot $depot, PdfLarge $pdf, $id) 
     {   
-        //dump($depot);
         $html = $this->render('back/depot/detail.html.twig', ['depot' => $depot] );
+        $html .= '<link type="text/css" href="/absolute/path/to/pdf.css" rel="stylesheet" />';
         $pdf->showPdfFile($html);
     }
      /**

@@ -1,52 +1,59 @@
 {% block title %}Commandes{% endblock %}
 {% block stylesheets %}
-    <link href="{{ public/css/style.css }}" type="text/css" rel="stylesheet" />
+    <link href="{{ asset('public/css/style.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
-
-    {# {% block stylesheets %}
-    {{ parent() }}
-
-    <link href="{{ asset('bundles/webshome/css/main.css') }}" rel="stylesheet">
-{% endblock %} #}
 
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center">Détails des dépôts</h2>
 
-    <table class="table table-bordered">
+    <table class="table table-border">
         <thead>
             <tr>
                 <th scope="col">Commande</th>
                 <th scope="col">Date</th>
+            </tr>
+        </thead>
+    <tbody>
+        {% for order in depot.orders %}
+    <tr>
+        <td id="{{order.id}}" scope="row">{{ order.id }}</td>    
+        <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y') : '-' }}</td>
+    </tr>
+    </tbody>
+
+        <thead>
+            <tr>
                 <th scope="col">Prix</th>
                 <th scope="col">Client</th>
             </tr>
         </thead>
-    <tbody>
-    {% for order in depot.orders %}
-    <tr>
-        <td id="{{order.id}}" scope="row">{{ order.id }}</td>    
-        <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y') : '-' }}</td>
+        <tbdoy>
+     <tr>
         <td> {{ order.price }}</td>
         <td> {{ order.user.lastname}}</td>
     </tr>
-    {% endfor %} 
-    
-     <thead>
+    </tbody>
+     {# <thead>
             <tr>
-                <th>Produits</th>
-                <th>Quantité</th>
+                <th scope="col">Produits</th>
+                <th scope="col">Quantité</th>
             </tr>
     </thead>
-     {% for order in depot.orders %}
+    <tbody>
+    <tr>
+        {% for order in depot.orders %}
      {% for product in order.orderProducts %}
-     <tr>
         <td> {{ product.product.name }}</td> 
         <td>{{ product.quantity }} {{ product.product.unity }}</td>
         </tr>
+       </tbody>
          {% endfor %}
          {% endfor %}
-         <thead>
+     #}
+    {% endfor %} 
+     
+         {# <thead>
             <tr>
                 <th scope="col-md-auto">TOTAL</th>
                 <th scope="col">Nb commande</th>
@@ -55,23 +62,23 @@
                 <th scope="col">Nb Produits</th>
             </tr>
             {% for order in depot.orders %}
-            <tr>
+            <tr> #}
             {# {% set somme = 0 %}
                 {% set sumProduct = 0 %}
                 {% for product in order.orderProducts %}
                     {% set somme %} #}
              
-                <td scope="col-md-auto">#</td>
+                {# <td scope="col-md-auto">#</td> #}
                 {# <td scope="col">{{somme}}</td> #}
-                <td scope="col-md-auto">#</td>
+                {# <td scope="col-md-auto">#</td>
          
                 <td scope="col"># </td>
                 <td scope="col-md-auto">#</td>
             </tr>
          {% endfor %}
-        
-    </thead>
-        </tbody>
+         #}
+    {# </thead> #}
+        {# </tbody> #}
         </table>
         
 </div>        
