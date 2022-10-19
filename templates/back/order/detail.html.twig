@@ -1,10 +1,24 @@
 
 {% block title %}Commandes{% endblock %}
-
+{% block stylesheets %}
+<style type="text/css">
+        table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        }
+        body {
+        font-family: 'Courier';
+        margin: 0;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center">Détails des commandes</h2>
-
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -26,6 +40,7 @@
              <tr>
              <th scope="col">Produits</th>
              <th scope="col">Quantité</th>
+              <th scope="col">Prix</th>
              </tr>
         </thead>
 <tbody>
@@ -33,22 +48,31 @@
     <tr>
         <td scope="col">{{ currentProduct.product.name }}</td>     
         <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td> 
+        <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td> 
     </tr>
      {% endfor %}
 
     <thead>
         <tr>
         <th scope="col">Panier</th>
+        <th scope="col">Quantité</th>
+          <th scope="col">Prix</th>
     </thead>
 
 {% for currentCart in order.cartOrders %}
             <tr>
                     <td>{{ currentCart.cart.name }}</td>
                     <td>{{ currentCart.quantity }}</td>
-                    {# <td>{{ currentCart.cart.product }}</td> #}
+                    <td>{{ currentCart.cart.price }}</td>
             </tr>
     {% endfor %}
-                 
+    <thead>
+        <tr>
+          <th scope="col">TOTAL Prix</th>
+    </thead> 
+     <tr>              
+        {# <td scope="col">{{ order.getTotalPriceOrder}}</td> #}
+    </tr>
             </tbody>
         </table>
 </div>

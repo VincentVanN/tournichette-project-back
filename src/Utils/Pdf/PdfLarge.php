@@ -15,7 +15,7 @@ class PdfLarge
 
         $pdfOptions = new Options();
 
-        $pdfOptions->setDefaultFont('Courier-Bold');
+        $pdfOptions->set('defaultfont', 'Courier');
 
         
         $this->domPdf->setPaper('A4', 'portrait');
@@ -33,7 +33,7 @@ class PdfLarge
     }
 
     public function generateBinaryPDF($html)
-    {
+    {   
         $this->domPdf->loadHtml($html);
         $this->domPdf->render();
         $this->domPdf->output();

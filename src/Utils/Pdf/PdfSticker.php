@@ -15,23 +15,23 @@ class PdfSticker
 
         $pdfOptions = new Options();
 
-        $pdfOptions->set('defaultFont', 'Courier-Bold');
+        $pdfOptions->set('defaultFont', 'Courier');
         
         $this->domPdf->setPaper('A5', 'landscape');
         $this->domPdf->setOptions($pdfOptions);
     }
 
     public function showPdfFile($html)
-    {
+    {   
         $this->domPdf->loadHtml($html);
         $this->domPdf->render();
         $this->domPdf->stream("detail.pdf", [
-            'Attachement' => true
+            'Attachement' => false
         ]);
     }
 
     public function generateBinaryPDF($html)
-    {
+    {   
         $this->domPdf->loadHtml($html);
         $this->domPdf->render();
         $this->domPdf->output();

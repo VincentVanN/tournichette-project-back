@@ -39,7 +39,6 @@ class DepotRepository extends ServiceEntityRepository
         }
     }
 
-    
 
 //    /**
 //     * @return Depot[] Returns an array of Depot objects

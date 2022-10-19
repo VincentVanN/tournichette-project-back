@@ -4,6 +4,8 @@ namespace App\Controller\Back;
 
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\vendor\dompdf\dompdf;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Utils\Pdf\PdfSticker;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,11 +42,17 @@ class OrderController extends AbstractController
     /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfOrder(Order $order, PdfSticker $pdf, $id) 
+    public function generatePdfOrder(Order $order, PdfSticker $dompdf, $id) 
     {   
         //dump($order);
-        $html = $this->render('back/order/detail.html.twig', ['order' => $order] );
-        $pdf->showPdfFile($html);
+        // $repository = $doctrine->getRepository(Order::class);
+        // $totalPrice = $repository->totalPrice
+        
+        // Order($order);
+        // return $this->render('back/order/detail.html.twig', ['order' => $order] );
+        
+        $html = $this->renderview('back/order/detail.html.twig', ['order' => $order] );
+        $dompdf->showPdfFile($html);
     }
 
     /**

@@ -56,6 +56,34 @@ class OrderRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function totalOrder(Order $entity) 
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+        '
+        SELECT SUM(o.id) AS order_id
+        FROM order
+        '
+        )
+        ->setParameter('order', $entity);
+    
+           return $query->getResult();
+    
+     }
+
+    // public function totalPriceOrder(Order $entity) 
+    // {
+    //     return $this->createQueryBuilder(
+    //     '
+    //     SELECT SUM(o.price) AS price_total
+    //     FROM order
+    //     '
+    //     )
+    //     ->setParameter('order', $entity);
+    //     // ->getResult();
+    // }
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */

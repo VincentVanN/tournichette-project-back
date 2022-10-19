@@ -1,46 +1,51 @@
-{% block title %}Commandes{% endblock %}
+{% block title %}Dépôts{% endblock %}
 {% block stylesheets %}
-    <link href="{{ asset('public/css/style.css') }}" type="text/css" rel="stylesheet" />
+    <style type="text/css">
+        table {
+        table-layout: fixed;
+        width: 100%;
+        border-collapse: collapse;
+        }
+        body {
+        font-family: 'Courier';
+        margin: 0;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center">Détails des dépôts</h2>
 
-    <table class="table table-border">
+    <table class="table table-condensed">
         <thead>
             <tr>
-                <th scope="col">Commande</th>
                 <th scope="col">Date</th>
-            </tr>
-        </thead>
-    <tbody>
-        {% for order in depot.orders %}
-    <tr>
-        <td id="{{order.id}}" scope="row">{{ order.id }}</td>    
-        <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y') : '-' }}</td>
-    </tr>
-    </tbody>
-
-        <thead>
-            <tr>
+                <th scope="col">Commande</th>
                 <th scope="col">Prix</th>
                 <th scope="col">Client</th>
             </tr>
         </thead>
-        <tbdoy>
-     <tr>
+    <tbody>
+        {% for order in depot.orders %}
+    <tr>    
+        <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y') : '-' }}</td>
+        <td id="{{order.id}}" scope="row">{{ order.id }}</td>
         <td> {{ order.price }}</td>
         <td> {{ order.user.lastname}}</td>
     </tr>
     </tbody>
-     {# <thead>
+
+      {# <thead>
             <tr>
                 <th scope="col">Produits</th>
                 <th scope="col">Quantité</th>
-            </tr>
-    </thead>
-    <tbody>
+             </tr>
+    </thead>  #}
+    {# <tbody>
     <tr>
         {% for order in depot.orders %}
      {% for product in order.orderProducts %}
@@ -49,37 +54,32 @@
         </tr>
        </tbody>
          {% endfor %}
-         {% endfor %}
-     #}
+         {% endfor %} #}
+     
     {% endfor %} 
      
-         {# <thead>
+          <thead>
             <tr>
-                <th scope="col-md-auto">TOTAL</th>
+                <th scope="col"></th>
                 <th scope="col">Nb commande</th>
                 <th scope="col">Total Prix</th>
                 <th scope="col">Nb Client</th>
-                <th scope="col">Nb Produits</th>
             </tr>
-            {% for order in depot.orders %}
-            <tr> #}
-            {# {% set somme = 0 %}
-                {% set sumProduct = 0 %}
-                {% for product in order.orderProducts %}
-                    {% set somme %} #}
-             
-                {# <td scope="col-md-auto">#</td> #}
-                {# <td scope="col">{{somme}}</td> #}
-                {# <td scope="col-md-auto">#</td>
-         
-                <td scope="col"># </td>
-                <td scope="col-md-auto">#</td>
-            </tr>
-         {% endfor %}
-         #}
-    {# </thead> #}
-        {# </tbody> #}
-        </table>
-        
+        </thead>
+
+         <tbody>
+        {# {% for price in total %} #}
+        {% for order in depot.orders %}
+        {# {% for order in total %}  #}
+    {# <tr>    
+         <td scope="col">{{ order.total.order}}</td>
+         <td scope="col">{{ order.total.price}}</td>
+         <td>{{ order.user.lastname}}</td> 
+    </tr> #}
+     {% endfor %}
+      {# {% endfor %} #}
+
+    </tbody>
+        </table>  
 </div>        
 {% endblock %}

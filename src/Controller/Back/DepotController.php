@@ -3,9 +3,11 @@
 namespace App\Controller\Back;
 
 use App\Entity\Depot;
+use App\Entity\Order;
 use App\Form\DepotType;
 use App\Utils\Pdf\PdfLarge;
 use App\Repository\DepotRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
-
-
 
 /**
  * @Route("/back/depot", name="app_back_depot")
@@ -73,11 +73,14 @@ class DepotController extends AbstractController
     /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfDepot(Depot $depot, PdfLarge $pdf, $id) 
+    public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id) 
     {   
-        $html = $this->render('back/depot/detail.html.twig', ['depot' => $depot] );
-        $html .= '<link type="text/css" href="/absolute/path/to/pdf.css" rel="stylesheet" />';
-        $pdf->showPdfFile($html);
+        $html = $this->renderView(('back/depot/detail.html.twig'), ['depot' => $depot]);
+        // $repository = $doctrine->getRepository(Order::class);
+        // $totalOrder = $repository->totalOrder($order);
+        // return $this->render('back/depot/detail.html.twig', ['order' => $order] );
+        // $html .= '<link type="text/css" href="/absolute/path/to/pdf.css" rel="stylesheet" />';
+        $dompdf->showPdfFile($html);
     }
      /**
      * Export to PDF
