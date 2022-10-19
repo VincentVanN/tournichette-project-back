@@ -28,6 +28,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         '/api/login_google',
         '/api/doc',
         '/api/v1/users/create',
+        '/api/v1/users/google_update',
         '/api/v1/sales',
     ];
 

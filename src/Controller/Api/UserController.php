@@ -173,6 +173,86 @@ class UserController extends AbstractController
         return $this->prepareResponse('User edited', [], [], false, Response::HTTP_OK);
     }
 
+    /**
+     * Update a user with sub Google account
+     * @Route("/google_update", name="_update_google", methods="PATCH")
+     */
+    public function googleUpdate(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        TokenCreator $tokenCreator,
+        EntityManagerInterface $em,
+        UserRepository $userRepository): Response
+    {
+        $data = $request->getContent();
+        // $user = $this->getUser();
+        // $currentPassword = $user->getPassword();
+
+        $requestData = \json_decode($request->getContent(), true);
+
+        if (!isset($requestData['password'])) {
+            return $this->prepareResponse(
+                'Veuillez entrer votre mot de passe',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        if (!isset($requestData['sub'])) {
+            return $this->prepareResponse(
+                'Le sub Google doit être renseigné',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $user = $userRepository->findOneBy(['email' => $requestData['email']]);
+
+        if(empty($user)) {
+            return $this->prepareResponse(
+                'Pas d\'utilisateur trouvé',
+                [],
+                [],
+                true,
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        
+        if (!$passwordHasher->isPasswordValid($user, $requestData['password'])) {
+            return $this->prepareResponse(
+                'Mot de passe invalide',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        // $serializer->deserialize($data, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
+
+        $user->setSub($requestData['sub']);
+
+        $currentDateTime = new DateTime();
+
+        // A custom token is created if not exists or if it's expired
+        if (($user->getApiToken() === null) || ($currentDateTime->getTimestamp() - $user->getApiTokenUpdatedAt()->getTimeStamp() >= $tokenCreator->getTokenExpiredTime())) {
+            $user->setApiToken($tokenCreator->create($user->getUserIdentifier(), $user->getPassword()));
+            $em->flush();
+        }
+
+        $em->flush();
+
+
+
+        return $this->json([
+            'token' => $user->getApiToken()
+        ]);
+    }
+
     private function prepareResponse(
         string $message, 
         array $options = [], 
