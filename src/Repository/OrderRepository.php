@@ -40,6 +40,108 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function getOrdersByDateStart(string $startDate)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            '
+            SELECT o
+            FROM App\Entity\Order o
+            WHERE o.orderedAt > :startDate
+            ORDER BY o.orderedAt
+            '
+        )->setParameter('startDate', $startDate);
+
+        return $query->getResult();
+    }
+
+    public function getOrdersByDateInterval(string $startDate, string $endDate = null, string $orderBy = 'orderedAt', string $sort = 'ASC')
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sort = $sort !== 'ASC' && $sort !== 'DESC' ? 'ASC' : $sort;
+
+        // $query = $entityManager->createQuery(
+        //     '
+        //     SELECT o
+        //     FROM App\Entity\Order o
+        //     JOIN App\Entity\User u
+        //     WHERE o.orderedAt BETWEEN :startDate AND :endDate
+        //     ORDER BY u.' . $orderBy . '
+        //     '
+        // )->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
+
+        $query = $entityManager->createQueryBuilder();
+        $query  ->select('o')
+                ->from('App\Entity\Order', 'o');
+
+        if ($endDate !== null) {
+            $query->where('o.orderedAt BETWEEN :startDate AND :endDate')
+                  ->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
+        } else {
+            $query->where('o.orderedAt > :startDate')
+                  ->setParameter('startDate', $startDate);
+        }
+
+        if ($orderBy !== 'ordered') {
+            switch ($orderBy) {
+                case 'user':
+                    $query->join('App\Entity\User', 'u')
+                          ->orderBy('u.lastname', $sort);
+                    break;
+                case 'paiement':
+                    $query->orderBy('o.paidAt', $sort);
+                    break;
+                case 'delivered':
+                    $query->orderBy('o.deliveredAt', $sort);
+                    break;                
+                default:
+                    $query->orderBy('o.orderedAt', $sort);
+                    break;
+            }
+        } else {
+            $query->orderBy('o.orderedAt', $sort);
+        }
+
+                // dd($query->getDQL());
+        return $query->getQuery()->getResult();
+    }
+
+    public function getSortedOrders(string $orderBy, string $sort = 'ASC')
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sort = $sort !== 'ASC' && $sort !== 'DESC' ? 'ASC' : $sort;
+
+        $query = $entityManager->createQueryBuilder();
+        $query  ->select('o')
+                ->from('App\Entity\Order', 'o');
+
+        if ($orderBy !== 'ordered') {
+            switch ($orderBy) {
+                case 'user':
+                    $query->join('App\Entity\User', 'u')
+                            ->orderBy('u.lastname', $sort);
+                    break;
+                case 'paiement':
+                    $query->orderBy('o.paidAt', $sort);
+                    break;
+                case 'delivered':
+                    $query->orderBy('o.deliveredAt', $sort);
+                    break;                
+                default:
+                    $query->orderBy('o.orderedAt', $sort);
+                    break;
+            }
+        } else {
+            $query->orderBy('o.orderedAt', $sort);
+        }
+
+                // dd($query->getDQL());
+        return $query->getQuery()->getResult();
+    }
+
     public function getPriceCartOrder(Order $entity): Integer
     {
         $entityManager = $this->getEntityManager();
