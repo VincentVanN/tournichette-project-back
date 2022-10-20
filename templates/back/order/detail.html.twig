@@ -2,10 +2,10 @@
 {# {% block title %}Commandes{% endblock %} #}
 {% block stylesheets %}
 <style type="text/css">
+
         table {
-        table-layout: fixed;
+         table-layout: fixed;
         width: 100%;
-        border: solid 1px;
         }
         body {
         font-family: 'Courier';
@@ -46,6 +46,7 @@
                         <th scope="col">Produits</th>
                         <th scope="col">Quantité</th>
                         <th scope="col">Prix</th>
+                        <th scope="col"></th>
                         </tr>
                     </thead>
             <tbody>
@@ -76,8 +77,10 @@
                     <th scope="col">TOTAL Prix</th>
                     <th scope="col">Commande payée ?</th>
                 </thead> 
+                
                 <tr>              
                     <td scope="col">{{ order.price}}</td>
+                    <td scope="col">{{ order.getPaymentStatus}}</td>
                 </tr>
         </tbody>
     </table>

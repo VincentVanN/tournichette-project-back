@@ -28,7 +28,7 @@
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center">Détails des dépôts</h2>
-    <img class="logo" src="../../public/images/logo.jpg" alt="logo">
+    {# <img class="logo" src="../../public/images/logo.jpg" alt="logo"> #}
 
     <table class="table table-condensed">
         <thead>
@@ -46,46 +46,25 @@
         <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
     </tr>
     </tbody>
-
-      {# <thead>
-            <tr>
-                <th scope="col">Produits</th>
-                <th scope="col">Quantité</th>
-             </tr>
-    </thead>  #}
-    {# <tbody>
-    <tr>
-        {% for order in depot.orders %}
-     {% for product in order.orderProducts %}
-        <td> {{ product.product.name }}</td> 
-        <td>{{ product.quantity }} {{ product.product.unity }}</td>
-        </tr>
-       </tbody>
-         {% endfor %}
-         {% endfor %} #}
-     
-    {% endfor %} 
-     
           <thead>
             <tr>
                 <th scope="col">Nb commande</th>
                 <th scope="col">Total Prix</th>
                 <th scope="col">Nb Client</th>
+
+
+
+
             </tr>
         </thead>
 
-         <tbody>
-        {# {% for price in total %} #}
-        {% for order in depot.orders %}
-        {# {% for order in total %}  #}
-    {# <tr>    
-         <td scope="col">{{ order.total.order}}</td>
-         <td scope="col">{{ order.total.price}}</td>
-         <td>{{ order.user.lastname}}</td> 
-    </tr> #}
+         <tbody>  
+     <tr>    
+         {# <td scope="col">{{ order.total.order}}</td> #}
+         <td scope="col">{{ order.}}</td>
+         {# <td>{{ order.user.lastname}}</td>  #}
+    </tr> 
      {% endfor %}
-      {# {% endfor %} #}
-
     </tbody>
         </table>  
 </div>        

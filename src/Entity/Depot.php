@@ -148,6 +148,9 @@ class Depot
 
         return $this;
     }
-
+    public function totalPriceOrder(): ?int
+    {
+        
+    }
     
 }
