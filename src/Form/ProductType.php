@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -32,6 +33,9 @@ class ProductType extends AbstractType
         // ->add('stock', null, [
         //     'label' => 'Quantité en vente'
         // ]) 
+        ->add('quantityUnity', IntegerType::class, [
+            'label' => 'Vendu par'
+        ])
         ->add('unity', ChoiceType::class, [
             'label' => 'Unité',
             'choices' => [
@@ -47,7 +51,7 @@ class ProductType extends AbstractType
             ]
         ])
         ->add('price', null, [
-            'label' => 'Prix (à l\'unité)'
+            'label' => 'Prix'
         ])
         ->add('imageFile', VichImageType::class, [
             'label' => 'Image du produit',

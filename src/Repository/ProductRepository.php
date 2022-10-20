@@ -39,6 +39,24 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    public function findNbProducts(string $name, int $quantityUnity, string $unity)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT(p.id) total
+            FROM App\Entity\Product p
+            WHERE p.name = :name AND p.quantityUnity = :quantityUnity AND p.unity = :unity
+            '
+        )->setParameters([
+            'name' => $name,
+            'quantityUnity' => $quantityUnity,
+            'unity' => $unity
+        ]);
+
+        return $query->getSingleResult();
+    }
+
     public function findByCategory($slug): array
     {
         $entityManager = $this->getEntityManager();

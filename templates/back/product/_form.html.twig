@@ -1,4 +1,18 @@
 {{ form_start(form, {"attr" : {"novalidate": "novalidate"}}) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    <div class="mb-3 row">
+    {{ form_errors(form.unity)}}
+        <div class="col-auto">
+            {{ form_label(form.quantityUnity) }}
+        </div>
+        <div class="col-auto">
+            {{ form_widget(form.quantityUnity) }}
+        </div>
+        <div class="col-auto">
+            {{ form_widget(form.unity) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
     <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @UniqueEntity("name", message="Ce produit existe déjà")
  * @Vich\Uploadable
  */
 class Product
