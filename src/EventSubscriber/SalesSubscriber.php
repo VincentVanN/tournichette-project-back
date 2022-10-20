@@ -23,7 +23,6 @@ class SalesSubscriber implements EventSubscriberInterface
         'api_v1_orders_user',
         'api_v1_products_list',
         'api_v1_products_show',
-        'api_v1_users_update'
     ];
 
     private $salesStatus;

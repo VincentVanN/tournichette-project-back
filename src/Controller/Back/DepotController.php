@@ -3,8 +3,10 @@
 namespace App\Controller\Back;
 
 use App\Entity\Depot;
+use DateTimeImmutable;
 use App\Form\DepotType;
 use App\Repository\DepotRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,11 +65,42 @@ class DepotController extends AbstractController
      * 
      * @Route("/{id<\d+>}", name="_show", methods="GET")
      */
-    public function show(Depot $depot): Response
+    public function show(Depot $depot, OrderRepository $orderRepository, Request $request): Response
     {
-        // dump($depot);
+        $orderBy = $request->query->get('order') ? $request->query->get('order') : 'ordered';
+        $sort = $request->query->get('sort') ? $request->query->get('sort') : 'ASC';
+        $startDate = null;
+        $endDate = null;
+        $orderedSort = ($orderBy === 'ordered' && $sort === 'ASC') ? 'DESC' : 'ASC';
+        $userSort = ($orderBy === 'user' && $sort === 'ASC') ? 'DESC' : 'ASC';
+        $paiementSort = ($orderBy === 'paiement' && $sort === 'ASC') ? 'DESC' : 'ASC';
+        $deliveredSort = ($orderBy === 'delivered' && $sort === 'ASC') ? 'DESC' : 'ASC';
+        
+        if ($request->query->get('startDate')) {
+            $startDate = new DateTimeImmutable($request->query->get('startDate'));
+            $startDate = $startDate->format('Y-m-d');
+
+            if ($request->query->get('endDate')) {
+                $endDate = new DateTimeImmutable($request->query->get('endDate'));
+                $endDate = $endDate->format('Y-m-d');
+            }
+
+            $orders = $orderRepository->findWithMultiFilters($startDate, $endDate, $orderBy, $sort, $depot);
+        }
+
+        if ($startDate === null) {
+            $orders = $orderRepository->getSortedOrders($orderBy, $sort, $depot);
+        }
+        
         return $this->render('back/depot/show.html.twig', [
             'depot' => $depot,
+            'orders' => $orders,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'orderedSort' => $orderedSort,
+            'userSort' => $userSort,
+            'paiementSort' => $paiementSort,
+            'deliveredSort' => $deliveredSort
         ]);
     }
 

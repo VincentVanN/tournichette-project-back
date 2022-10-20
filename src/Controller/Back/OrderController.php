@@ -22,24 +22,14 @@ class OrderController extends AbstractController
      */
     public function list(OrderRepository $orderRepository, Request $request): Response
     {
-        // $orders = $orderRepository->findAll();
-
-        // dd($request->query->get('startDate'));
-
-        // $startDate = $request->query->get('startDate') ? new DateTimeImmutable($request->query->get('startDate')) : null;
-        // $endDate = $request->query->get('endDate') ? new DateTimeImmutable($request->query->get('endDate')) : null;
         $orderBy = $request->query->get('order') ? $request->query->get('order') : 'ordered';
         $sort = $request->query->get('sort') ? $request->query->get('sort') : 'ASC';
         $startDate = null;
         $endDate = null;
-        $criteria = null;
         $orderedSort = ($orderBy === 'ordered' && $sort === 'ASC') ? 'DESC' : 'ASC';
         $userSort = ($orderBy === 'user' && $sort === 'ASC') ? 'DESC' : 'ASC';
         $paiementSort = ($orderBy === 'paiement' && $sort === 'ASC') ? 'DESC' : 'ASC';
         $deliveredSort = ($orderBy === 'delivered' && $sort === 'ASC') ? 'DESC' : 'ASC';
-
-
-        // dd($startDate, $endDate);
 
         if ($request->query->get('startDate')) {
             $startDate = new DateTimeImmutable($request->query->get('startDate'));
@@ -50,7 +40,7 @@ class OrderController extends AbstractController
                 $endDate = $endDate->format('Y-m-d');
             }
 
-            $orders = $orderRepository->getOrdersByDateInterval($startDate, $endDate, $orderBy, $sort);
+            $orders = $orderRepository->findWithMultiFilters($startDate, $endDate, $orderBy, $sort);
             // dd($orders);
         }
 

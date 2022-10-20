@@ -6,13 +6,7 @@
 <div class="container-fluid">
     <h1 class="text-center">Liste des commandes</h1>
 
-    <form action="" method="get">
-        <label for="startDate">Date début : </label>
-        <input type="date" name="startDate" id="startDate">
-        <label for="endDate">Date fin : </label>
-        <input type="date" name="endDate" id="endDate">
-        <input type="submit" value="Afficher">
-    </form>
+    {{ include('back/_form-date-filter.twig') }}
 
     <table class="table table-striped">
         <thead>
@@ -21,7 +15,7 @@
                 <td colspan="8">Aucune commande n'a été trouvé</td>
             {% else %}
                 <th scope="col">#</th>
-                <th scope="col"><a href="{{ path('app_back_order_list', {'order': 'ordered', 'sort': orderedSort, 'startDate': startDate, 'endDate': endDate}) }}">Date commande</th>
+                <th scope="col"><a href="{{ path('app_back_order_list', {'order': 'ordered', 'sort': orderedSort, 'startDate': startDate, 'endDate': endDate}) }}">Date commande</a></th>
                 <th scope="col"><a href="{{ path('app_back_order_list', {'order': 'user', 'sort': userSort, 'startDate': startDate, 'endDate': endDate}) }}">Nom Client</a></th>
                 <th scope="col">Prix</th>
                 <th scope="col">Payée ?</th>

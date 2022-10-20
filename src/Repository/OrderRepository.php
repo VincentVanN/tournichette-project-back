@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Depot;
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,37 +41,21 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function getOrdersByDateStart(string $startDate)
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            '
-            SELECT o
-            FROM App\Entity\Order o
-            WHERE o.orderedAt > :startDate
-            ORDER BY o.orderedAt
-            '
-        )->setParameter('startDate', $startDate);
-
-        return $query->getResult();
-    }
-
-    public function getOrdersByDateInterval(string $startDate, string $endDate = null, string $orderBy = 'orderedAt', string $sort = 'ASC')
+    /**
+     * Find orders with filters in parameters
+     * 
+     * @param string $startDate The start date
+     * @param string $endDate The final date
+     * @param string $orderBy The ordering parameter
+     * @param string $sort The 'ASC or 'DESC' sorting parameter
+     * @param Depot $depot The depot of orders
+     * 
+     */
+    public function findWithMultiFilters(string $startDate, string $endDate = null, string $orderBy = 'orderedAt', string $sort = 'ASC', Depot $depot = null)
     {
         $entityManager = $this->getEntityManager();
 
         $sort = $sort !== 'ASC' && $sort !== 'DESC' ? 'ASC' : $sort;
-
-        // $query = $entityManager->createQuery(
-        //     '
-        //     SELECT o
-        //     FROM App\Entity\Order o
-        //     JOIN App\Entity\User u
-        //     WHERE o.orderedAt BETWEEN :startDate AND :endDate
-        //     ORDER BY u.' . $orderBy . '
-        //     '
-        // )->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
 
         $query = $entityManager->createQueryBuilder();
         $query  ->select('o')
@@ -82,6 +67,11 @@ class OrderRepository extends ServiceEntityRepository
         } else {
             $query->where('o.orderedAt > :startDate')
                   ->setParameter('startDate', $startDate);
+        }
+
+        if ($depot !== null) {
+            $query->andWhere('o.depot = :depot')
+                  ->setParameter('depot', $depot);
         }
 
         if ($orderBy !== 'ordered') {
@@ -108,7 +98,15 @@ class OrderRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function getSortedOrders(string $orderBy, string $sort = 'ASC')
+    /**
+     * Find orders with filters in parameters
+     * 
+     * @param string $orderBy The ordering parameter
+     * @param string $sort The 'ASC or 'DESC' sorting parameter
+     * @param Depot $depot The depot of orders
+     * 
+     */
+    public function getSortedOrders(string $orderBy, string $sort = 'ASC', Depot $depot = null)
     {
         $entityManager = $this->getEntityManager();
 
@@ -117,6 +115,11 @@ class OrderRepository extends ServiceEntityRepository
         $query = $entityManager->createQueryBuilder();
         $query  ->select('o')
                 ->from('App\Entity\Order', 'o');
+
+        if ($depot !== null) {
+            $query->andWhere('o.depot = :depot')
+                  ->setParameter('depot', $depot);
+        }
 
         if ($orderBy !== 'ordered') {
             switch ($orderBy) {
