@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use App\Entity\Depot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Integer;
@@ -56,32 +57,17 @@ class OrderRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function totalOrder(Order $entity) 
+    public function findTotalPriceOrder(Depot $depot) 
     {
         $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
+        $query = $entityManager->createQuery (
         '
-        SELECT SUM(o.id) AS order_id
-        FROM order
+        SELECT SUM(o.price) price, COUNT(o.id) orders
+        FROM App\Entity\Order o
+        WHERE o.depot = :depot
         '
-        )
-        ->setParameter('order', $entity);
-    
-           return $query->getResult();
-     }
-
-    public function totalPriceOrder(Order $entity) 
-    {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery(
-        '
-        SELECT SUM(o.price) AS order_price
-        FROM order
-        '
-        )
-        ->setParameter('order', $entity);
-            return $query->getResult();
+        )->setParameter('depot', $depot);
+            return $query->getSingleResult();
         }
 
 //    /**
@@ -108,4 +94,5 @@ class OrderRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

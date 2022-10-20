@@ -49,23 +49,23 @@
           <thead>
             <tr>
                 <th scope="col">Nb commande</th>
-                <th scope="col">Total Prix</th>
+                {# <th scope="col">Total Prix</th> #}
                 <th scope="col">Nb Client</th>
-
-
-
-
             </tr>
         </thead>
 
          <tbody>  
      <tr>    
          {# <td scope="col">{{ order.total.order}}</td> #}
-         <td scope="col">{{ order.}}</td>
+         
          {# <td>{{ order.user.lastname}}</td>  #}
     </tr> 
+
      {% endfor %}
+        
     </tbody>
         </table>  
+         <p>Prix total : {{total}}</p>
+         <p> {{nborders}}</p>
 </div>        
 {% endblock %}

@@ -24,11 +24,12 @@
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center">Détails des commandes</h2>
+    <p>Commande n°{{ order.id }}</p>
     <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">client</th>
-                            <th scope="col">tél</th>
+                            <th scope="col">Client</th>
+                            <th scope="col">Tél</th>
                             <th scope="col">Date commande</th>
                             <th scope="col">Dépôt</th>
                         </tr>

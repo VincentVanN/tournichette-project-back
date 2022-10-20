@@ -282,6 +282,7 @@ class Order
         return $this;
     }
 
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -294,5 +295,11 @@ class Order
         return $this;
     }
 
-
+    public function getTotalPriceOrder(int $depotId) 
+    {   $total = 0;
+        foreach ($this->getPrice() as $price){
+        $total += $price->totalPriceOrder();
+        }
+         return $total;
+    }
 }

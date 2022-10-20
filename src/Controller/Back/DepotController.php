@@ -73,13 +73,21 @@ class DepotController extends AbstractController
     /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id) 
+    public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id, OrderRepository $orderRepository) 
     {   
-        $html = $this->renderView(('back/depot/detail.html.twig'), ['depot' => $depot]);
-        // $repository = $doctrine->getRepository(Order::class);
-        // $totalOrder = $repository->totalOrder($order);
-        // return $this->render('back/depot/detail.html.twig', ['order' => $order] );
-        // $html .= '<link type="text/css" href="/absolute/path/to/pdf.css" rel="stylesheet" />';
+        $orders = $orderRepository->findTotalPriceOrder($depot);
+        //$nborders = $orderRepository->findTotalOrder($depot->getId());
+
+         //dd($orders);
+        $total=$orders['price'];
+        $nborders=$orders['orders'];
+        
+        $html = $this->renderview('back/depot/detail.html.twig', 
+        ['depot'=>$depot,
+        'total'=>$total,
+        'nborders'=>$nborders
+        ] 
+    );
         $dompdf->showPdfFile($html);
     }
      /**
@@ -158,3 +166,10 @@ class DepotController extends AbstractController
     }
     
 }
+// foreach ($orders as $value) {
+        //     foreach ($value as $currentvalue) {
+        //         $total += (int)$currentvalue;
+        //     };
+        //}
+        // $total=$total['total'];
+        //dd($total);

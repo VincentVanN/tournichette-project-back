@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DepotRepository;
+use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -148,9 +149,12 @@ class Depot
 
         return $this;
     }
-    public function totalPriceOrder(): ?int
-    {
-        
-    }
+
+    // public function getTotalPriceOrder(OrderRepository $orderRepository): ?int
+    // {
+    //    $total = $orderRepository->findTotalPriceOrder($this);
+
+
+    // }
     
 }

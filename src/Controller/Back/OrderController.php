@@ -42,16 +42,16 @@ class OrderController extends AbstractController
     /**
      * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfOrder(Order $order, PdfSticker $dompdf, $id) 
+    public function generatePdfOrder(Order $order, PdfSticker $dompdf, $id, OrderRepository $orderRepository) 
     {   
         //dump($order);
         // $repository = $doctrine->getRepository(Order::class);
-        // $totalPrice = $repository->totalPrice
-        
-        // Order($order);
-        // return $this->render('back/order/detail.html.twig', ['order' => $order] );
-        
-        $html = $this->renderview('back/order/detail.html.twig', ['order' => $order] );
+        $total = $orderRepository->totalPriceOrder();
+        $html = $this->renderview('back/order/detail.html.twig', 
+        ['order'=>$order,
+        'total'=>$total
+        ] 
+    );
         $dompdf->showPdfFile($html);
     }
 
