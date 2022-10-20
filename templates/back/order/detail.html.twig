@@ -5,7 +5,7 @@
         table {
         table-layout: fixed;
         width: 100%;
-        border-collapse: collapse;
+        border: solid 1px;
         }
         body {
         font-family: 'Courier';
@@ -13,6 +13,11 @@
         }
         td {
             text-align: center;
+            padding: 10px;
+        }
+        th {
+            border-radius: bold 5px grey;
+            background-color: #40b5e7;
         }
     </style>
 {% endblock %}
@@ -20,61 +25,62 @@
 <div class="container-fluid">
     <h2 class="text-center">Détails des commandes</h2>
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th scope="col">client</th>
-                <th scope="col">tél</th>
-                <th scope="col">Date commande</th>
-                <th scope="col">Dépôt</th>
-            </tr>
-        </thead>
-    <tbody>
-    <tr>
-        <td>{{ order.user.lastname }}</td>
-         <td>{{ order.user.phone }}</td>
-        <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
-        <td>{{ order.depot.name }}</td>
-    </tr>
-    </tbody>
-        <thead>
-             <tr>
-             <th scope="col">Produits</th>
-             <th scope="col">Quantité</th>
-              <th scope="col">Prix</th>
-             </tr>
-        </thead>
-<tbody>
-{% for currentProduct in order.orderProducts %}
-    <tr>
-        <td scope="col">{{ currentProduct.product.name }}</td>     
-        <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td> 
-        <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td> 
-    </tr>
-     {% endfor %}
+                    <thead>
+                        <tr>
+                            <th scope="col">client</th>
+                            <th scope="col">tél</th>
+                            <th scope="col">Date commande</th>
+                            <th scope="col">Dépôt</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                <tr>
+                    <td>{{ order.user.firstname }} {{ order.user.lastname }}</td>
+                    <td>{{ order.user.phone }}</td>
+                    <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
+                    <td>{{ order.depot.name }}</td>
+                </tr>
+                </tbody>
+                    <thead>
+                        <tr>
+                        <th scope="col">Produits</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix</th>
+                        </tr>
+                    </thead>
+            <tbody>
+            {% for currentProduct in order.orderProducts %}
+                <tr>
+                    <td scope="col">{{ currentProduct.product.name }}</td>     
+                    <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td> 
+                    <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td> 
+                </tr>
+                {% endfor %}
 
-    <thead>
-        <tr>
-        <th scope="col">Panier</th>
-        <th scope="col">Quantité</th>
-          <th scope="col">Prix</th>
-    </thead>
+                <thead>
+                    <tr>
+                    <th scope="col">Panier</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Prix</th>
+                </thead>
 
-{% for currentCart in order.cartOrders %}
-            <tr>
-                    <td>{{ currentCart.cart.name }}</td>
-                    <td>{{ currentCart.quantity }}</td>
-                    <td>{{ currentCart.cart.price }}</td>
-            </tr>
-    {% endfor %}
-    <thead>
-        <tr>
-          <th scope="col">TOTAL Prix</th>
-    </thead> 
-     <tr>              
-        {# <td scope="col">{{ order.price.order}}</td> #}
-    </tr>
-            </tbody>
-        </table>
+            {% for currentCart in order.cartOrders %}
+                        <tr>
+                                <td>{{ currentCart.cart.name }}</td>
+                                <td>{{ currentCart.quantity }}</td>
+                                <td>{{ currentCart.cart.price }}</td>
+                        </tr>
+                {% endfor %}
+                <thead>
+                    <tr>  
+                    <th scope="col">TOTAL Prix</th>
+                    <th scope="col">Commande payée ?</th>
+                </thead> 
+                <tr>              
+                    <td scope="col">{{ order.price}}</td>
+                </tr>
+        </tbody>
+    </table>
 </div>
 {# <tr>
         {% for currentCart in order.cartOrders %}

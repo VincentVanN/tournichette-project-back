@@ -1,9 +1,10 @@
 {# {% block title %}Dépôts{% endblock %} #}
 {% block stylesheets %}
-    <style type="text/css">
+   <style type="text/css">
         table {
         table-layout: fixed;
         width: 100%;
+        border: solid 1px;
         border-collapse: collapse;
         }
         body {
@@ -12,10 +13,15 @@
         }
         td {
             text-align: center;
+            padding: 10px;
+            border: solid 1px;
+            
         }
-        .logo {
-            width: 250px;
+        th {
+            border-radius: bold 5px grey;
+            background-color: #40b5e7;
         }
+    </style>
     </style>
 {% endblock %}
 
@@ -37,7 +43,7 @@
     <tr>    
         <td id="{{order.id}}" scope="row">{{ order.id }}</td>
         <td> {{ order.price }}</td>
-        <td> {{ order.user.lastname}}</td>
+        <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
     </tr>
     </tbody>
 
@@ -62,7 +68,6 @@
      
           <thead>
             <tr>
-                <th scope="col"></th>
                 <th scope="col">Nb commande</th>
                 <th scope="col">Total Prix</th>
                 <th scope="col">Nb Client</th>
