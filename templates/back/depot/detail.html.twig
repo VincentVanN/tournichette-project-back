@@ -13,17 +13,20 @@
         td {
             text-align: center;
         }
+        .logo {
+            width: 250px;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
     <h2 class="text-center">Détails des dépôts</h2>
+    <img class="logo" src="../../public/images/logo.jpg" alt="logo">
 
     <table class="table table-condensed">
         <thead>
             <tr>
-                <th scope="col">Date</th>
                 <th scope="col">Commande</th>
                 <th scope="col">Prix</th>
                 <th scope="col">Client</th>
@@ -32,7 +35,6 @@
     <tbody>
         {% for order in depot.orders %}
     <tr>    
-        <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y') : '-' }}</td>
         <td id="{{order.id}}" scope="row">{{ order.id }}</td>
         <td> {{ order.price }}</td>
         <td> {{ order.user.lastname}}</td>
