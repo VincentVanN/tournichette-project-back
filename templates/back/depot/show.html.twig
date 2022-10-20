@@ -22,58 +22,62 @@
         </article>
 
         <article class="card col-9">
+            {{ include('back/_form-date-filter.twig') }}
+
             <table class="table table-striped">
             <thead>
                 <tr>
-                {% if depot.orders is empty %}
+                {% if orders is empty %}
                     <td colspan="8">Aucune commande n'a été trouvé</td>
                 {% else %}
                     <th scope="col">#</th>
-                    <th scope="col">Date commande</th>
+                    <th scope="col"><a href="{{ path('app_back_depot_show', {'id': depot.id, 'order': 'ordered', 'sort': orderedSort, 'startDate': startDate, 'endDate': endDate}) }}">Date commande</a></th>
+                    <th scope="col"><a href="{{ path('app_back_depot_show', {'id': depot.id, 'order': 'user', 'sort': userSort, 'startDate': startDate, 'endDate': endDate}) }}">Nom Client</a></th>
                     <th scope="col">Prix</th>
                     <th scope="col">Payée ?</th>
-                    <th scope="col">Date paiement</th>
+                    <th scope="col"><a href="{{ path('app_back_depot_show', {'id': depot.id, 'order': 'paiement', 'sort': paiementSort, 'startDate': startDate, 'endDate': endDate}) }}">Date paiement</a></th>
                     <th scope="col">Retirée ?</th>
-                    <th scope="col">Date retrait</th>
+                    <th scope="col"><a href="{{ path('app_back_depot_show', {'id': depot.id, 'order': 'delivered', 'sort': deliveredSort, 'startDate': startDate, 'endDate': endDate}) }}">Date retrait</a></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-            {% for order in depot.orders %}
-                {% if order.deliverStatus == 'no' %}
+            {% for currentOrder in orders %}
+                {% if currentOrder.deliverStatus == 'no' %}
                 <tr>
-                    <td id="{{order.id}}" scope="row">{{ order.id }}</td>
-                    <td> {{ order.getDateOrder ? order.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
-                    <td> {{ order.price }}</td>
+                    <td id="{{currentOrder.id}}" scope="row">{{ currentOrder.id }}</td>
+                    <td> {{ currentOrder.getDateOrder ? currentOrder.getDateOrder|date('d-m-Y H:i:s') : '-' }}</td>
+                    <td> {{ currentOrder.user.lastname }}</td>
+                    <td> {{ currentOrder.price }}</td>
                     <td> 
-                    {% if order.paymentStatus == 'yes' %}
+                    {% if currentOrder.paymentStatus == 'yes' %}
                             <i class="bi bi-cash-coin text-success"></i>
                         {% else %}
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <a href="{{ path('app_back_order_validate', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-cash-coin text-danger" data-payment="{{ order.id }}"></a>
+                                <a href="{{ path('app_back_order_validate', {'id': currentOrder.id}) }}" class="btn btn-outline-danger bi bi-cash-coin text-danger" data-payment="{{ currentOrder.id }}"></a>
                             {% else %}
                                 <i class="bi bi-cash-coin text-danger"></i>
                             {% endif %}
                         {% endif %}
                     </td>
-                    <td> {{ order.paidAt ? order.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
+                    <td> {{ currentOrder.paidAt ? currentOrder.paidAt|date('d-m-Y H:i:s') : '-' }}</td>
                     <td> 
-                    {% if order.deliverStatus == 'yes' %}
+                    {% if currentOrder.deliverStatus == 'yes' %}
                         <i class="bi bi-clipboard2-check text-success"></i>
                     {% else %}
-                        {% if order.paymentStatus == 'no' %}
+                        {% if currentOrder.paymentStatus == 'no' %}
                         {% else %}
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <a href="{{ path('app_back_order_delivered', {'id': order.id}) }}" class="btn btn-outline-danger bi bi-clipboard2-check text-danger" data-delivery="{{ order.id }}"></a>
+                                <a href="{{ path('app_back_order_delivered', {'id': currentOrder.id}) }}" class="btn btn-outline-danger bi bi-clipboard2-check text-danger" data-delivery="{{ currentOrder.id }}"></a>
                             {% else %}
                                 <i class="bi bi-clipboard2-check text-danger"></i>
                             {% endif %}
                         {% endif %}
                     {% endif %}
                     </td>
-                    <td> {{ order.deliveredAt ? order.deliveredAt|date('d-m-Y H:i:s') : '-' }}</td>
+                    <td> {{ currentOrder.deliveredAt ? currentOrder.deliveredAt|date('d-m-Y H:i:s') : '-' }}</td>
                     <td> 
-                        <a href="{{ path('app_back_order_show', {'id': order.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
+                        <a href="{{ path('app_back_order_show', {'id': currentOrder.id}) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill"> Consulter</i></a>
                     </td>
                 </tr>
                 {% endif %}
