@@ -168,6 +168,19 @@ class Product
      */
     private $archived;
 
+    /**
+     * @ORM\Column(type="integer", options={"default" : 1})
+     * @Assert\NotNull(message="Veuillez sélectionner une quantité de base pour ce lot")
+     * @Groups({"api_v1_category_product"})
+     * @Groups({"api_v1_products_list"})
+     * @Groups({"api_v1_product_show"})
+     * @Groups({"api_v1_cart_show"})
+     * @Groups({"api_v1_carts_list"})
+     * @Groups({"api_v1_order_user_show"})
+     * @Groups({"api_v1_orders_user"})
+     */
+    private $quantityUnity;
+
     public function __construct()
     {
         $this->cartProducts = new ArrayCollection();
@@ -421,6 +434,18 @@ class Product
     public function setArchived(bool $archived): self
     {
         $this->archived = $archived;
+
+        return $this;
+    }
+
+    public function getQuantityUnity(): ?int
+    {
+        return $this->quantityUnity;
+    }
+
+    public function setQuantityUnity(int $quantityUnity = 1): self
+    {
+        $this->quantityUnity = $quantityUnity;
 
         return $this;
     }
