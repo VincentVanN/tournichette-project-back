@@ -4,7 +4,7 @@
 
         table {
          table-layout: fixed;
-        width: 100%;
+         width: 100%;
         }
         body {
         font-family: 'Courier';
@@ -60,46 +60,46 @@
                     <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
                     <td>{{ order.depot.name }}</td>
                 </tr>
-                </tbody>
                     <thead>
                         <tr>
-                            <th scope="col=4">Produits</th>
-                            <th scope="col">Quantité</th>
-                            <th scope="col">Prix</th>
+                            <th colspan="2">Produits</th>
+                            <th colspan="1">Quantité</th>
+                            <th colspan="1">Prix</th>
                         </tr>
                     </thead>
-            <tbody>
+            
             {% for currentProduct in order.orderProducts %}
                 <tr>
-                    <td scope="col">{{ currentProduct.product.name }}</td>     
-                    <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td> 
-                    <td scope="col">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td> 
+                    <td colspan="2">{{ currentProduct.product.name }}</td>     
+                    <td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td> 
+                    <td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td> 
                 </tr>
                 {% endfor %}
 
                 <thead>
                     <tr>
-                    <th scope="col">Panier</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Prix</th>
+                    <th colspan="2">Panier</th>
+                    <th colspan="1">Quantité</th>
+                    <th colspan="1">Prix</th>
                 </thead>
 
             {% for currentCart in order.cartOrders %}
                 <tr>
-                    <td>{{ currentCart.cart.name }}</td>
+                    <td colspan="2">{{ currentCart.cart.name }}</td>
                     <td>{{ currentCart.quantity }}</td>
                     <td>{{ currentCart.cart.price }}</td>
                 </tr>
                 {% endfor %}
                 <thead>
                     <tr>  
-                    <th scope="col">TOTAL Prix</th>
-                    <th scope="col">Commande payée ?</th>
+                        <th colspan="2">TOTAL PRIX</th>
+                        <th colspan="2">Commande payée ?</th>
+                    </tr>
                 </thead> 
                 
                 <tr>              
-                    <td scope="col">{{ order.price}}</td>
-                    <td scope="col">{{ order.getPaymentStatus}}</td>
+                    <td colspan="2">{{ order.price}}</td>
+                    <td colspan="2">{{ order.getPaymentStatus}}</td>
                 </tr>
         </tbody>
     </table>

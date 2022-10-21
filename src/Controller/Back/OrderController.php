@@ -8,6 +8,7 @@ use App\vendor\dompdf\dompdf;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Utils\Pdf\PdfSticker;
 use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

@@ -14,8 +14,7 @@
         td {
             text-align: center;
             padding: 10px;
-            border: solid 1px;
-            
+            border: solid 1px; 
         }
         th {
             color: white;
@@ -55,25 +54,31 @@
         <thead>
             <tr>
                 <th scope="col">Commande</th>
-                <th scope="col">Prix</th>
                 <th scope="col">Client</th>
+                 <th scope="col">Prix</th>
             </tr>
         </thead>
-    <tbody>
+    
         {% for order in depot.orders %}
-    <tr>    
-        <td id="{{order.id}}" scope="row">{{ order.id }}</td>
-        <td> {{ order.price }}</td>
-        <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
-    </tr>
-    </tbody>
+            <tr>    
+                <td id="{{order.id}}" scope="row">{{ order.id }}</td>
+                <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
+                <td> {{ order.price }}</td>
+            </tr>
+    
      {% endfor %}
-        
-    </tbody>
-        </table>  
-        <div class="total">
-            <p class="total-order">Commande total: {{nborders}}</p>
-            <p class="total-facture">Prix total : {{total}} €</p>
-        </div>
+
+         <thead>
+            <tr>  
+                <th colspan="2">Nombre de Commande: </th>
+                <th colspan="2">TOTAL</th>
+            </tr>
+        </thead> 
+                
+            <tr>              
+                <td colspan="2">{{nborders}}</td>
+                <td colspan="2">{{total}} €</td>
+            </tr>
+    </table>  
        
 {% endblock %}
