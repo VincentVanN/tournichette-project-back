@@ -18,18 +18,39 @@
             
         }
         th {
+            color: white;
             border-radius: bold 5px grey;
-            background-color: #40b5e7;
+            background-color: black;
+        }
+        .name {
+            color: #125733;
+            font-style: bold;
+        }
+        .total-facture, .total-order {
+            color: #125733;
+            font-style: bold;
+        }
+        .first-lign {
+            height: 5px;
+            width: 100%;
+            background-color: #125733;
+        }
+        .second-lign {
+            height: 5px;
+            width: 100%;
+            background-color: #d6c873;
+            margin-bottom: 20px;
         }
     </style>
-    </style>
+    
 {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
-    <h2 class="text-center">Détails des dépôts</h2>
-    {# <img class="logo" src="../../public/images/logo.jpg" alt="logo"> #}
-
+    <h2 class="name">{{ depot.name }}</h2>
+    <div class="first-lign"></div>
+    <div class="second-lign"></div>
+ 
     <table class="table table-condensed">
         <thead>
             <tr>
@@ -46,26 +67,11 @@
         <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
     </tr>
     </tbody>
-          <thead>
-            <tr>
-                <th scope="col">Nb commande</th>
-                {# <th scope="col">Total Prix</th> #}
-                <th scope="col">Nb Client</th>
-            </tr>
-        </thead>
-
-         <tbody>  
-     <tr>    
-         {# <td scope="col">{{ order.total.order}}</td> #}
-         
-         {# <td>{{ order.user.lastname}}</td>  #}
-    </tr> 
-
      {% endfor %}
         
     </tbody>
         </table>  
-         <p>Prix total : {{total}}</p>
-         <p> {{nborders}}</p>
+         <p class="total-facture">Prix total : {{total}} €</p>
+         <p class="total-order">Commande total: {{nborders}}</p>
 </div>        
 {% endblock %}

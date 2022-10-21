@@ -76,9 +76,6 @@ class DepotController extends AbstractController
     public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id, OrderRepository $orderRepository) 
     {   
         $orders = $orderRepository->findTotalPriceOrder($depot);
-        //$nborders = $orderRepository->findTotalOrder($depot->getId());
-
-         //dd($orders);
         $total=$orders['price'];
         $nborders=$orders['orders'];
         

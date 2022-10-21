@@ -16,15 +16,35 @@
             padding: 10px;
         }
         th {
+            color: white;
             border-radius: bold 5px grey;
-            background-color: #40b5e7;
+            background-color: black;
         }
+        .nborder {
+            color: #125733;
+            font-style: bold;
+        }
+        .first-lign {
+            height: 5px;
+            width: 100%;
+            background-color: #125733;
+        }
+        .second-lign {
+            height: 5px;
+            width: 100%;
+             background-color: #d6c873;
+            margin-bottom: 20px;
+        }
+        
     </style>
 {% endblock %}
+
 {% block body %}
 <div class="container-fluid">
-    <h2 class="text-center">Détails des commandes</h2>
-    <p>Commande n°{{ order.id }}</p>
+    <h2 class="nborder">Commande n°{{ order.id }}</h2>
+    <div class="first-lign"></div>
+    <div class="second-lign"></div>
+    
     <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -85,15 +105,5 @@
                 </tr>
         </tbody>
     </table>
-</div>
-{# <tr>
-        {% for currentCart in order.cartOrders %}
-                    <ul>
-                        <li class="list-group-item"><strong class="fw-semibold">Nom du panier : </strong>{{ currentCart.cart.name }}</li>
-                        <li class="list-group-item"><strong class="fw-semibold">Quantité : </strong>{{ currentCart.quantity }} panier(s)</li>
-                         <li class="list-group-item"><strong class="fw-semibold">Produits : </strong>{{ currentCart.cart.product }} panier(s)</li>
-                    </ul>
-                {% endfor %}
-    </tr> #}
-        
+</div>        
 {% endblock %}

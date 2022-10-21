@@ -46,10 +46,8 @@ class OrderController extends AbstractController
     {   
         //dump($order);
         // $repository = $doctrine->getRepository(Order::class);
-        $total = $orderRepository->totalPriceOrder();
         $html = $this->renderview('back/order/detail.html.twig', 
         ['order'=>$order,
-        'total'=>$total
         ] 
     );
         $dompdf->showPdfFile($html);
