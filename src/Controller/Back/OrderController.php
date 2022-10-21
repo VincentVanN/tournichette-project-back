@@ -44,11 +44,8 @@ class OrderController extends AbstractController
      */
     public function generatePdfOrder(Order $order, PdfSticker $dompdf, $id, OrderRepository $orderRepository) 
     {   
-        //dump($order);
-        // $repository = $doctrine->getRepository(Order::class);
         $html = $this->renderview('back/order/detail.html.twig', 
-        ['order'=>$order,
-        ] 
+        ['order'=>$order,] 
     );
         $dompdf->showPdfFile($html);
     }
@@ -109,6 +106,4 @@ class OrderController extends AbstractController
 
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
-
-    
 }
