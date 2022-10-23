@@ -180,10 +180,13 @@ class Product
      */
     private $quantityUnity;
 
+    private $totalProducts;
+
     public function __construct()
     {
         $this->cartProducts = new ArrayCollection();
         $this->orderProducts = new ArrayCollection();
+        // $this->totalProducts = $this->getTotalProducts();
     }
 
     public function getId()
@@ -445,6 +448,36 @@ class Product
     public function setQuantityUnity(int $quantityUnity = 1): self
     {
         $this->quantityUnity = $quantityUnity;
+
+        return $this;
+    }
+
+    public function getTotalProducts()
+    {
+        $totalProduct = 0;
+        $allOrders = $this->orderProducts;
+        foreach ($allOrders as $currentOrder)
+        {
+            $totalProduct += $this->quantityUnity * $currentOrder->getQuantity();
+        }
+
+        return $totalProduct;
+    }
+
+    /**
+     * Set the value of totalProducts
+     *
+     * @return  self
+     */ 
+    public function setTotalProducts($totalProducts)
+    {
+        $totalProduct = 0;
+        $allOrders = $this->orderProducts;
+        foreach ($allOrders as $currentOrder)
+        {
+            $totalProduct += $this->quantityUnity * $currentOrder->getQuantity;
+        }
+
 
         return $this;
     }

@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\OrderProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +39,43 @@ class OrderProductRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getTotalQuantityByProducts()
+    {
+        $em = $this->getEntityManager();
+
+        // $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        // $rsm->addRootEntityFromClassMetadata('App\\Entity\\Product', 'p', ['total_product' => 'total']);
+
+        // $sql = "SELECT *,  SUM(op.quantity * p.quantity_unity) AS total_product
+        // FROM `order_product` op
+        // JOIN `product` p ON op.product_id = p.id
+        // GROUP BY p.name, p.unity";
+
+        // $query = $em->createNativeQuery('
+        // SELECT *,  SUM(op.quantity * p.quantity_unity) AS total_product
+        // FROM `order_product` op
+        // JOIN `product` p ON op.product_id = p.id
+        // GROUP BY p.name, p.unity
+        // ', $rsm);
+        
+        $query = $em->createQueryBuilder();
+        $query->select(['p'])
+              ->from('App\Entity\Product', 'p')
+              ->groupBy('p.name');
+
+        // dd($query->getQuery());
+
+        // $query = $em->createQuery(
+        //     'SELECT p.name, SUM(op.quantity * p.quantityUnity) AS total
+        //     FROM App\Entity\OrderProduct op
+        //     JOIN App\Entity\Product p
+        //     GROUP BY p.name, p.unity
+        //     ');
+
+            // dd($query->getQuery()->getResult());
+              return $query->getQuery()->getResult();
     }
 
 //    /**

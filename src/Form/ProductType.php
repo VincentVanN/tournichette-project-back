@@ -39,7 +39,7 @@ class ProductType extends AbstractType
         ->add('unity', ChoiceType::class, [
             'label' => 'Unité',
             'choices' => [
-                'Lots' => 'lot(s)',
+                'Lots' => 'lot',
                 'Kg' => 'Kg',
                 'Grammes' => 'g',
                 'Bouteilles' => 'btlle',

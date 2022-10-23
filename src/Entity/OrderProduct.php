@@ -79,4 +79,10 @@ class OrderProduct
 
         return $this;
     }
+
+    public function getTotalQuantity ()
+    {
+        $result = $this->getQuantity() * ($this->product->getQuantityUnity());
+        return $result;
+    }
 }

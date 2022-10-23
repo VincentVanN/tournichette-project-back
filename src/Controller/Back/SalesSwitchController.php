@@ -38,9 +38,17 @@ class SalesSwitchController extends AbstractController
     {
         $salesStatus = $salesStatusRepository->findOneBy(['name' => 'status']);
         $status = $status == 'enable' ? true : false;
+        $date = new \DateTimeImmutable();
         
         if($salesStatus !== null) {
             $salesStatus->setEnable($status);
+
+            if($salesStatus->isEnable()) {
+                $salesStatus->setStartAt($date);
+            } else {
+                $salesStatus->setEndAt($date);
+            }
+            
             $em->flush();
 
             // Verifying if success

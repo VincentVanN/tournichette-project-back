@@ -80,4 +80,9 @@ class CartOrder
 
         return $this;
     }
+
+    // public function getTotalProductQuantity()
+    // {
+    //     $result = $this->getQuantity() *
+    // }
 }
