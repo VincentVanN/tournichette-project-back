@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\Entity\OrderProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * @extends ServiceEntityRepository<OrderProduct>
@@ -39,6 +41,23 @@ class OrderProductRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByDate(string $date = null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQueryBuilder();
+        $query->select('op')
+              ->from('App\Entity\OrderProduct', 'op');
+        
+        if ($date !== null) {
+            $query->innerJoin('op.orders', 'o')
+                  ->where('o.orderedAt > :date')
+                  ->setParameters(['date' => $date]);
+        }
+
+        return $query->getQuery()->getResult();
+
     }
 
     public function getTotalQuantityByProducts()

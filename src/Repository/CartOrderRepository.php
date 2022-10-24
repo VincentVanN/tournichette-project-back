@@ -39,6 +39,38 @@ class CartOrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByDate(string $date = null)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQueryBuilder();
+        $query->select('co')
+              ->from('App\Entity\CartOrder', 'co');
+        
+        if ($date !== null) {
+            $query->innerJoin('co.orders', 'o')
+                  ->where('o.orderedAt > :date')
+                  ->setParameters(['date' => $date]);
+        }
+
+        return $query->getQuery()->getResult();
+
+    }
+
+    public function findAllProducts()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            '
+            SELECT co, p
+            FROM App\Entity\CartOrder co
+            JOIN App\Entity\CartProduct cp
+            JOIN App\Entity\Product p
+        ');
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return CartOrder[] Returns an array of CartOrder objects
 //     */

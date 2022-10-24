@@ -2,6 +2,7 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Order;
 use App\Repository\CartOrderRepository;
 use App\Repository\CartProductRepository;
 use App\Repository\DepotRepository;
@@ -20,19 +21,19 @@ class HarvestController extends AbstractController
     /**
      * @Route("/", name="_home")
      */
-    public function index(OrderProductRepository $orderProductRepository, CartOrderRepository $cartOrderRepository ): Response
+    public function index(OrderProductRepository $orderProductRepository, CartOrderRepository $cartOrderRepository): Response
     {
 
         // $allOrderProducts = $orderProductRepository->findAll();
 
         // $allProducts = $orderProductRepository->getTotalQuantityByProducts();
         // $allOrderProducts = $orderProductRepository->findAll();
-        $allProducts = $orderProductRepository->findAll();
-        $allCarts = $cartOrderRepository->findAll();
+        // $allProducts = $orderProductRepository->findAll();
+        $allProducts = $orderProductRepository->findByDate();
+        // dd($allProducts);
+        $allCarts = $cartOrderRepository->findByDate();
 
-        // dd($allCarts);
-
-
+        
         // foreach ($allDepots as $currentDepot) {
         //     dd($currentDepot->getOrders());
         // }
@@ -44,7 +45,8 @@ class HarvestController extends AbstractController
             $totalQuantity = $currentProduct->getTotalQuantity();
 
             if ($currentProduct->getProduct()->getUnity() === 'g') {
-                $totalQuantity = $totalQuantity * 1000;
+                $totalQuantity = $totalQuantity / 1000;
+                $currentProduct->getProduct()->setUnity('Kg');
             }
 
             // Creation of $productArray
@@ -79,38 +81,66 @@ class HarvestController extends AbstractController
                     }
                 }
             }
+        }
 
-            foreach ($allCarts as $currentCart) {
-                $allCartProduct = $currentCart->getCart()->getCartProducts();
-                $cartQuantity = $currentCart->getQuantity();
-                foreach ($allCartProduct as $currentCartProduct) {
-                    $productQuantity = $currentCartProduct->getTotalQuantity() * $cartQuantity;
-                    // dd($productQuantity);
+        $tempProductsArray = $productsArray;
+        $tempDepotArray = $depotArray;
+
+        foreach ($allCarts as $currentCart) {
+            
+            $allProductsInCurrentCart = $currentCart->getTotalProductsQuantity();
+            $depotCurrentCartID = $currentCart->getOrders()->getDepot()->getId();
+            $depotCurrentCartName = $currentCart->getOrders()->getDepot()->getName();
+            // dd($currentCart->getTotalProductsQuantity());
+            // dd($allProductsInCurrentCart);
+
+            // Add to $productArray
+            foreach ($allProductsInCurrentCart as $productName => $currentProduct) {
+                // dd($currentProduct);
+                if (!isset($productsArray[$productName])) {
+                    $productsArray[$productName] = $currentProduct;
+                } else {
+                    foreach ($currentProduct as $unity => $totalQuantity) {
+                        if (isset($productsArray[$productName][$unity])) {
+                            $productsArray[$productName][$unity] += $totalQuantity;
+                        } else {
+                            $productsArray[$productName][$unity] = $totalQuantity;
+                        }
+                    }
                 }
             }
 
-            // if (isset($productsArray[$currentProduct->getProduct()->getName()])) {
-            //     $productsArray[$currentProduct->getProduct()->getName()]['total'] += $totalQuantity;
-            // } else {
-            //     $productsArray[$currentProduct->getProduct()->getName()]['total'] = $totalQuantity;
-            // }
+            // Add to $depotArray
 
-            // $orderProductsArray = [];
-            // foreach ($currentProduct->getOrderProducts() as $currentOrderProduct) {
-            //     // $orderProductsArray [] = $currentOrderProduct->getOrders()->getDepot()->getId();
-            //     if (isset($depotsArray[$currentOrderProduct->getOrders()->getDepot()->getId()][$currentProduct->getId()])) {
-            //         $depotsArray[$currentOrderProduct->getOrders()->getDepot()->getId()][$currentProduct->getId()]['total'] += $currentOrderProduct->getQuantity() + $currentProduct->getQuantityUnity();
-            //     } else {
-            //         $depotsArray[$currentOrderProduct->getOrders()->getDepot()->getId()]['depot'] = $currentOrderProduct->getOrders()->getDepot()->getName();
-            //         $depotsArray[$currentOrderProduct->getOrders()->getDepot()->getId()][$currentProduct->getId()]['product'] = $currentProduct->getName();
-            //         $depotsArray[$currentOrderProduct->getOrders()->getDepot()->getId()][$currentProduct->getId()]['total'] = $currentOrderProduct->getQuantity() + $currentProduct->getQuantityUnity();
-            //     }
-            // }
-            // dd($orderProductsArray);
+            foreach ($allProductsInCurrentCart as $productName => $currentProduct) {
 
-            // if (isset($depotsArray[$currentProduct->getOrderProducts()->getOrders()->getDepot()->getName()]))
+                if (!isset($depotArray[$depotCurrentCartID])) {
+                    $depotArray[$depotCurrentCartID] = [
+                            $depotCurrentCartName => [$productName => $currentProduct]
+                        ];
+                } else {
+                    if (isset($depotArray[$depotCurrentCartID][$depotCurrentCartName])) {
+                        foreach ($currentProduct as $unity => $totalQuantity) {
+
+                            if(!isset($depotArray[$depotCurrentCartID][$depotCurrentCartName][$productName])) {
+                                $depotArray[$depotCurrentCartID][$depotCurrentCartName][$productName] = [$unity => $totalQuantity];
+                            } else {
+                                if (isset($depotArray[$depotCurrentCartID][$depotCurrentCartName][$productName][$unity])) {
+                                    $depotArray[$depotCurrentCartID][$depotCurrentCartName][$productName][$unity] += $totalQuantity;
+                                } else {
+                                    $depotArray[$depotCurrentCartID][$depotCurrentCartName][$productName][$unity] = $totalQuantity;
+                                }
+                            }
+                        
+                        }
+                    }
+                }
+            }
+
+            
         }
 
+        dd($tempProductsArray, $tempDepotArray, $productsArray, $depotArray);
         // foreach ($allOrders as $currentOrder) {
         //     if (isset($depotsArray[$currentOrder->getDepot()->getId()][$currentOrder->getP])) {
 
