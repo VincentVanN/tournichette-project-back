@@ -45,6 +45,7 @@ class SalesSwitchController extends AbstractController
 
             if($salesStatus->isEnable()) {
                 $salesStatus->setStartAt($date);
+                $salesStatus->setEndAt(null);
             } else {
                 $salesStatus->setEndAt($date);
             }

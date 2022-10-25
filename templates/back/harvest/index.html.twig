@@ -1,20 +1,83 @@
-<!DOCTYPE html>
+{% extends 'base-back.html.twig' %}
 
-<title>Hello HarvestController!</title>
+{% block title %}Journal de récolte{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container-fluid">
+    <h1 class="text-center">Journal de récolte</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <p>Produits à récolter pour les commandes du <strong><em>{{ startDate ? startDate|format_date('short', locale='fr') : '01/01/1970' }}</em></strong> au <strong><em>{{ endDate|format_date('short', locale='fr') }}</em></strong></p>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/Tournichette/projet-tournichette-back/src/Controller/Back/HarvestController.php'|file_link(0) }}">src/Controller/Back/HarvestController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/Tournichette/projet-tournichette-back/templates/back/harvest/index.html.twig'|file_link(0) }}">templates/back/harvest/index.html.twig</a></code></li>
-    </ul>
+    {{ include('back/_form-date-filter.twig') }}
+
+    {% if products is empty %}
+        <div class="text-bg-info">Aucune commande n'a été trouvé pour cette période</div>
+    {% else %}
+
+    <div class="row justify-content-around">
+        <article class="card col-4">
+            <div class="card-body">
+                <h3 class="card-title">Liste des produits</h3>
+                <table class="table table-striped justify-content-center">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        {% for productName, quantityList in products %}
+                            {% for unity, quantity in quantityList %}
+                                <tr>
+                                    <td class="col-2">{{ productName }} :</td>
+                                    <td class="col-1">{{ quantity ~ ' ' ~ unity }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="card col-6">
+            <div class="card-body">
+                <h3 class="card-title">Répartition par dépôt</h3>
+                
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                {% for currentDepot in depots %}
+                    {% set accordeonItem = loop.index %}
+                    {% for depotName, productsList in currentDepot %}
+                        <div class="accordion-item">
+                            <h4 class="accordion-header" id="panelsStayOpen-heading{{ accordeonItem }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ accordeonItem }}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ accordeonItem }}">
+                                {{ depotName }}
+                            </button>
+                            </h4>
+                            <div id="panelsStayOpen-collapse{{ accordeonItem }}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading{{ accordeonItem }}">
+                            <div class="accordion-body">
+                                    <table class="table table-striped justify-content-center">
+                                        <tbody>
+                                            {% for productName, quantityList in productsList %}
+                                                {% for unity, quantity in quantityList %}
+                                                    <tr>
+                                                        <td class="col-2">{{ productName }} :</td>
+                                                        <td class="col-1">{{ quantity ~ ' ' ~ unity }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                {% endfor %}
+                
+                </div>
+                
+                
+            </div>
+            
+        </article>
+    </div>
+
+    {% endif %}
 </div>
 {% endblock %}

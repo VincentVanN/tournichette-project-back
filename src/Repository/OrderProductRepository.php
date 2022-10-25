@@ -43,17 +43,31 @@ class OrderProductRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByDate(string $date = null)
+    public function findByDate(string $startDate = null, string $endDate = null): array
     {
         $em = $this->getEntityManager();
         $query = $em->createQueryBuilder();
         $query->select('op')
-              ->from('App\Entity\OrderProduct', 'op');
+              ->from('App\Entity\OrderProduct', 'op')
+              ->innerJoin('op.product', 'p')
+              ->orderBy('p.name', 'ASC');
         
-        if ($date !== null) {
+        if ($startDate !== null && $endDate === null) {
             $query->innerJoin('op.orders', 'o')
-                  ->where('o.orderedAt > :date')
-                  ->setParameters(['date' => $date]);
+                  ->where('o.orderedAt > :startDate')
+                  ->setParameters(['startDate' => $startDate]);
+        }
+
+        if ($startDate === null && $endDate !== null) {
+            $query->innerJoin('op.orders', 'o')
+                  ->where('o.orderedAt < :endDate')
+                  ->setParameters(['endDate' => $endDate]);
+        }
+
+        if ($startDate !== null && $endDate !== null) {
+            $query->innerJoin('op.orders', 'o')
+                  ->where('o.orderedAt BETWEEN :startDate AND :endDate')
+                  ->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
         }
 
         return $query->getQuery()->getResult();
@@ -63,38 +77,13 @@ class OrderProductRepository extends ServiceEntityRepository
     public function getTotalQuantityByProducts()
     {
         $em = $this->getEntityManager();
-
-        // $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        // $rsm->addRootEntityFromClassMetadata('App\\Entity\\Product', 'p', ['total_product' => 'total']);
-
-        // $sql = "SELECT *,  SUM(op.quantity * p.quantity_unity) AS total_product
-        // FROM `order_product` op
-        // JOIN `product` p ON op.product_id = p.id
-        // GROUP BY p.name, p.unity";
-
-        // $query = $em->createNativeQuery('
-        // SELECT *,  SUM(op.quantity * p.quantity_unity) AS total_product
-        // FROM `order_product` op
-        // JOIN `product` p ON op.product_id = p.id
-        // GROUP BY p.name, p.unity
-        // ', $rsm);
         
         $query = $em->createQueryBuilder();
         $query->select(['p'])
               ->from('App\Entity\Product', 'p')
               ->groupBy('p.name');
 
-        // dd($query->getQuery());
-
-        // $query = $em->createQuery(
-        //     'SELECT p.name, SUM(op.quantity * p.quantityUnity) AS total
-        //     FROM App\Entity\OrderProduct op
-        //     JOIN App\Entity\Product p
-        //     GROUP BY p.name, p.unity
-        //     ');
-
-            // dd($query->getQuery()->getResult());
-              return $query->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     }
 
 //    /**

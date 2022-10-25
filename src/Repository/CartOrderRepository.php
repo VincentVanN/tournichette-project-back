@@ -39,17 +39,29 @@ class CartOrderRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByDate(string $date = null)
+    public function findByDate(string $startDate = null, string $endDate = null): array
     {
         $em = $this->getEntityManager();
         $query = $em->createQueryBuilder();
         $query->select('co')
               ->from('App\Entity\CartOrder', 'co');
         
-        if ($date !== null) {
+        if ($startDate !== null && $endDate === null) {
             $query->innerJoin('co.orders', 'o')
-                  ->where('o.orderedAt > :date')
-                  ->setParameters(['date' => $date]);
+                    ->where('o.orderedAt > :startDate')
+                    ->setParameters(['startDate' => $startDate]);
+        }
+
+        if ($startDate === null && $endDate !== null) {
+            $query->innerJoin('co.orders', 'o')
+                    ->where('o.orderedAt < :endDate')
+                    ->setParameters(['endDate' => $endDate]);
+        }
+
+        if ($startDate !== null && $endDate !== null) {
+            $query->innerJoin('co.orders', 'o')
+                    ->where('o.orderedAt BETWEEN :startDate AND :endDate')
+                    ->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
         }
 
         return $query->getQuery()->getResult();
