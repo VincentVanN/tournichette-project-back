@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Depot;
 use App\Entity\Order;
-use App\Entity\Depot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Integer;

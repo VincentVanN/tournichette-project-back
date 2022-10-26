@@ -45,21 +45,11 @@ class OrderController extends AbstractController
             }
 
             $orders = $orderRepository->findWithMultiFilters($startDate, $endDate, $orderBy, $sort);
-            // dd($orders);
         }
 
         if ($startDate === null) {
             $orders = $orderRepository->getSortedOrders($orderBy, $sort);
         }
-
-        // if ($request->query->get('order')) {
-        //     $orders = $orderRepository->findBy([], $request->query->get('order'));
-        // }
-
-        // if ($request->query->get('startDate')) {
-        //     $startDate = new DateTimeImmutable($request->query->get('startDate'));
-            
-        // }
 
         return $this->render('back/order/list.html.twig', [
             'orders' => $orders,

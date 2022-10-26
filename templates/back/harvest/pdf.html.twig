@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Administration La Tournichette - Journal de récolte</title>
+		{% block stylesheets %}
+			<style type="text/css">
+				table {
+					width: 70%;
+					margin: auto;
+
+				}
+				body {
+					font-family: 'Courier';
+					margin: 0;
+				}
+				td {
+					padding: 10px;
+				}
+				th, h3 {
+					color: white;
+					border-radius: bold 5px grey;
+					background-color: black;
+				}
+				.nborder {
+					color: #125733;
+					font-style: bold;
+				}
+				.first-lign {
+					height: 5px;
+					width: 100%;
+					background-color: #125733;
+				}
+				.second-lign {
+					height: 5px;
+					width: 100%;
+					background-color: #d6c873;
+					margin-bottom: 20px;
+				}
+				.text-center {
+					text-align: center;
+				}
+                .page {
+                    page-break-before: always;
+                }
+			</style>
+		{% endblock %}
+	</head>
+	<body>
+		<div>
+			<h1 class="text-center">Journal de récolte</h1>
+
+			<p class="text-center">Commandes du	<strong><em>{{ startDate ? startDate|format_date('short', locale='fr') : '01/01/1970' }}</em></strong> au <strong><em>{{ endDate|format_date('short', locale='fr') }}</em></strong></p>
+
+			<h2 class="nborder">Total des produits</h2>
+			<div class="first-lign"></div>
+			<div class="second-lign"></div>
+
+			<article class="row justify-content-center">
+				<div class="col-6">
+					<table class="table table-striped">
+						<thead></thead>
+						<tbody>
+							{% for productName, quantityList in products %}
+								{% for unity, quantity in quantityList %}
+									<tr>
+										<td class="col-3">{{ productName }} :</td>
+										<td class="col-3">{{ quantity ~ ' ' ~ unity }}</td>
+									</tr>
+								{% endfor %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</article>
+		</div>
+
+        {% if depots is not empty %}
+        
+        <div class="page">
+
+        <h2 class="nborder">Répartition par dépôt</h2>
+        <div class="first-lign"></div>
+		<div class="second-lign"></div>
+        {% for currentDepot in depots %}
+            {% for depotName, productsList in currentDepot %}
+            <h3>{{ depotName }}</h3>
+            <article class="row justify-content-center">
+				<div class="col-6">
+					<table class="table table-striped">
+						<thead></thead>
+                        <tbody>
+                            {% for productName, quantityList in productsList %}
+                                {% for unity, quantity in quantityList %}
+                                    <tr>
+                                        <td class="col-2">{{ productName }} :</td>
+                                        <td class="col-1">{{ quantity ~ ' ' ~ unity }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            {% endfor %}
+            
+        {% endfor %}
+        </div>
+
+        {% endif %}
+
+	</body>
+</html>

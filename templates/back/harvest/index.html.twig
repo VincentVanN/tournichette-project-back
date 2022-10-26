@@ -8,7 +8,12 @@
 
     <p>Produits à récolter pour les commandes du <strong><em>{{ startDate ? startDate|format_date('short', locale='fr') : '01/01/1970' }}</em></strong> au <strong><em>{{ endDate|format_date('short', locale='fr') }}</em></strong></p>
 
-    {{ include('back/_form-date-filter.twig') }}
+    <div class="d-flex justify-content-around flex-wrap flex-nowrap align-items-center pt-3 pb-2 mb-3">
+        <div>
+        {{ include('back/_form-date-filter.twig') }}
+        </div>
+        <a href="{{ path('app_back_harvest_home', {'generate-pdf': 'generate', 'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-outline-primary"><i class="bi bi-filetype-pdf"></i> Voir le PDF</a>
+    </div>
 
     {% if products is empty %}
         <div class="text-bg-info">Aucune commande n'a été trouvé pour cette période</div>

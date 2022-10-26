@@ -1,107 +1,112 @@
 {# {% block title %}Commandes{% endblock %} #}
 {% block stylesheets %}
-<style type="text/css">
+	<style type="text/css">
 
-        table {
-         table-layout: fixed;
-         width: 100%;
-        }
-        body {
-        font-family: 'Courier';
-        margin: 0;
-        }
-        td {
-            text-align: center;
-            padding: 10px;
-        }
-        th {
-            color: white;
-            border-radius: bold 5px grey;
-            background-color: black;
-        }
-        .nborder {
-            color: #125733;
-            font-style: bold;
-        }
-        .first-lign {
-            height: 5px;
-            width: 100%;
-            background-color: #125733;
-        }
-        .second-lign {
-            height: 5px;
-            width: 100%;
-             background-color: #d6c873;
-            margin-bottom: 20px;
-        }
-        
-    </style>
+		table {
+			table-layout: fixed;
+			width: 100%;
+		}
+		body {
+			font-family: 'Courier';
+			margin: 0;
+		}
+		td {
+			text-align: center;
+			padding: 10px;
+		}
+		th {
+			color: white;
+			border-radius: bold 5px grey;
+			background-color: black;
+		}
+		.nborder {
+			color: #125733;
+			font-style: bold;
+		}
+		.first-lign {
+			height: 5px;
+			width: 100%;
+			background-color: #125733;
+		}
+		.second-lign {
+			height: 5px;
+			width: 100%;
+			background-color: #d6c873;
+			margin-bottom: 20px;
+		}
+	</style>
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <h2 class="nborder">Commande n°{{ order.id }}</h2>
-    <div class="first-lign"></div>
-    <div class="second-lign"></div>
-    
-    <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Client</th>
-                            <th scope="col">Tél</th>
-                            <th scope="col">Date commande</th>
-                            <th scope="col">Dépôt</th>
-                        </tr>
-                    </thead>
-                <tbody>
-                <tr>
-                    <td>{{ order.user.firstname }} {{ order.user.lastname }}</td>
-                    <td>{{ order.user.phone }}</td>
-                    <td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
-                    <td>{{ order.depot.name }}</td>
-                </tr>
-                    <thead>
-                        <tr>
-                            <th colspan="2">Produits</th>
-                            <th colspan="1">Quantité</th>
-                            <th colspan="1">Prix</th>
-                        </tr>
-                    </thead>
-            
-            {% for currentProduct in order.orderProducts %}
-                <tr>
-                    <td colspan="2">{{ currentProduct.product.name }}</td>     
-                    <td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td> 
-                    <td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td> 
-                </tr>
-                {% endfor %}
+	<div class="container-fluid">
+		<h2 class="nborder">Commande n°{{ order.id }}</h2>
+		<div class="first-lign"></div>
+		<div class="second-lign"></div>
 
-                <thead>
-                    <tr>
-                    <th colspan="2">Panier</th>
-                    <th colspan="1">Quantité</th>
-                    <th colspan="1">Prix</th>
-                </thead>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">Client</th>
+					<th scope="col">Tél</th>
+					<th scope="col">Date commande</th>
+					<th scope="col">Dépôt</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ order.user.firstname }}
+						{{ order.user.lastname }}</td>
+					<td>{{ order.user.phone }}</td>
+					<td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
+					<td>{{ order.depot.name }}</td>
+				</tr>
+				{% if order.orderProducts is not empty %}
+					<thead>
+						<tr>
+							<th colspan="2">Produits</th>
+							<th colspan="1">Quantité</th>
+							<th colspan="1">Prix</th>
+						</tr>
+					</thead>
 
-            {% for currentCart in order.cartOrders %}
-                <tr>
-                    <td colspan="2">{{ currentCart.cart.name }}</td>
-                    <td>{{ currentCart.quantity }}</td>
-                    <td>{{ currentCart.cart.price }}</td>
-                </tr>
-                {% endfor %}
-                <thead>
-                    <tr>  
-                        <th colspan="2">TOTAL PRIX</th>
-                        <th colspan="2">Commande payée ?</th>
-                    </tr>
-                </thead> 
-                
-                <tr>              
-                    <td colspan="2">{{ order.price}}</td>
-                    <td colspan="2">{{ order.getPaymentStatus}}</td>
-                </tr>
-        </tbody>
-    </table>
-</div>        
-{% endblock %}
+					{% for currentProduct in order.orderProducts %}
+						<tr>
+							<td colspan="2">{{ currentProduct.product.name }}</td>
+							<td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td>
+							<td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+
+				{% if order.cartOrders is not empty %}
+					<thead>
+						<tr>
+							<th colspan="2">Panier</th>
+							<th colspan="1">Quantité</th>
+							<th colspan="1">Prix</th>
+						</tr>
+					</thead>
+
+					{% for currentCart in order.cartOrders %}
+						<tr>
+							<td colspan="2">{{ currentCart.cart.name }}</td>
+							<td>{{ currentCart.quantity }}</td>
+							<td>{{ currentCart.cart.price }}</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+			</tbody>
+			<thead>
+				<tr>
+					<th colspan="2">TOTAL PRIX</th>
+					<th colspan="2">Commande payée ?</th>
+				</tr>
+			</thead>
+
+			<tr>
+				<td colspan="2">{{ order.price}}</td>
+				<td colspan="2">{{ order.getPaymentStatus}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>{% endblock %}

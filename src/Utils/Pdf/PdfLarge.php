@@ -22,11 +22,11 @@ class PdfLarge
         $this->domPdf->setOptions($pdfOptions);
     }
 
-    public function showPdfFile($html)
+    public function showPdfFile($html, $namePdf = 'detail.pdf')
     {
         $this->domPdf->loadHtml($html);
         $this->domPdf->render($html);
-        $this->domPdf->stream("detail.pdf", [
+        $this->domPdf->stream($namePdf, [
             'Attachement' => false
         ]);
         $this->domPdf->output();

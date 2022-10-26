@@ -11,6 +11,7 @@ use App\Repository\CartOrderRepository;
 use App\Repository\CartProductRepository;
 use App\Repository\SalesStatusRepository;
 use App\Repository\OrderProductRepository;
+use App\Utils\Pdf\PdfLarge;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +25,7 @@ class HarvestController extends AbstractController
     /**
      * @Route("/", name="_home")
      */
-    public function index(OrderProductRepository $orderProductRepository, CartOrderRepository $cartOrderRepository, SalesStatusRepository $salesStatusRepository, Request $request): Response
+    public function index(OrderProductRepository $orderProductRepository, CartOrderRepository $cartOrderRepository, SalesStatusRepository $salesStatusRepository, Request $request, PdfLarge $pdfLarge): Response
     {   
         $salesStatus = $salesStatusRepository->findOneBy(['name' => 'status']);
 
@@ -182,7 +183,27 @@ class HarvestController extends AbstractController
             
         }
 
-        // dd($productsArray, $depotArray);
+        //-----------------
+        // PDG Generator
+        //-----------------
+
+        if ($request->query->get('generate-pdf') && $request->query->get('generate-pdf') == 'generate') {
+
+            $pdfTwigView = $this->renderView('back/harvest/pdf.html.twig', [
+                'products' => $productsArray,
+                'depots' => $depotArray,
+                'startDate' => $startDate,
+                'endDate' => $endDate
+            ]);
+
+            return $pdfLarge->showPdfFile($pdfTwigView, 'journal-de-recolte-du-' . date('d-m-Y'));
+            // $domPdf = new Dompdf();
+            // $pdfOptions = $domPdf->getOptions();
+            // $domPdf->setPaper('A4', 'portrait');
+            // $domPdf->loadHtml($pdfTwigView);
+            // $domPdf->render($pdfTwigView);
+            // $domPdf->stream('journal-de-recolte-du-' . date('d-m-Y'));
+        }
 
         return $this->render('back/harvest/index.html.twig', [
             'products' => $productsArray,
