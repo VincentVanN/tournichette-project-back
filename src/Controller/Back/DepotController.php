@@ -48,6 +48,7 @@ class DepotController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
         
+            $depot->setAvailable(true);
             $depotRepository->add($depot, true);
 
             return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
@@ -119,28 +120,6 @@ class DepotController extends AbstractController
     );
         $dompdf->showPdfFile($html);
     }
-     /**
-     * Export to PDF
-     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
-     */
-    // public function pdfAction(Depot $depot, $id) : Response
-    // {
-    //     $html = $this->renderView('back/depot/detail.html.twig',  ['depot' => $depot]);
-
-    //     $filename = sprintf('test-%s.pdf', date('Y-m-d'));
-
-    //     return new Response(
-    //     // $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-    //         $snappy = $this->get('knp_snappy.pdf'),
-    //         $snappy->getOuptutFromHTLM($html),
-            
-    //         200,
-    //         [
-    //             'Content-Type'        => 'application/pdf',
-    //             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-    //         ]
-    //     );
-    // }
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
@@ -195,10 +174,3 @@ class DepotController extends AbstractController
     }
     
 }
-// foreach ($orders as $value) {
-        //     foreach ($value as $currentvalue) {
-        //         $total += (int)$currentvalue;
-        //     };
-        //}
-        // $total=$total['total'];
-        //dd($total);

@@ -25,6 +25,12 @@ class DepotType extends AbstractType
             ->add('address', TextareaType::class, [
                 'label' => 'Adresse',
                 'attr' => ['rows' => '3']
+            ])->add('informations', TextareaType::class, [
+                'label' => 'Informations complémentaires',
+                'attr' => [
+                    'rows' => '3',
+                    'placeholder' => 'Entrez des informations complémentaires (horaires d\'ouverture, par exemple)'
+                    ]
             ]);
     }
 

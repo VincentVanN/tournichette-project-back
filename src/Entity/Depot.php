@@ -53,6 +53,14 @@ class Depot
     private $address;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"api_v1_depots_list"})
+     * @Groups({"api_v1_depot_show"})
+     * @Groups({"api_v1_orders_user"})
+     */
+    private $informations;
+
+    /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="depot")
      */
     private $orders;
@@ -149,12 +157,25 @@ class Depot
 
         return $this;
     }
-
-    // public function getTotalPriceOrder(OrderRepository $orderRepository): ?int
-    // {
-    //    $total = $orderRepository->findTotalPriceOrder($this);
-
-
-    // }
     
+
+    /**
+     * Get the value of informations
+     */ 
+    public function getInformations()
+    {
+        return $this->informations;
+    }
+
+    /**
+     * Set the value of informations
+     *
+     * @return  self
+     */ 
+    public function setInformations($informations)
+    {
+        $this->informations = $informations;
+
+        return $this;
+    }
 }
