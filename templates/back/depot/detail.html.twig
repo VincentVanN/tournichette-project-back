@@ -1,0 +1,85 @@
+{# {% block title %}Dépôts{% endblock %} #}
+{% block stylesheets %}
+   <style type="text/css">
+
+        table {
+        table-layout: fixed;
+        width: 100%
+        }
+        body {
+        font-family: 'Courier';
+        margin: 0; 
+        }
+        td {
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            color: white;
+            border-radius: bold 5px grey;
+            background-color: black;
+        }
+        .name {
+            color: #125733;
+            font-style: bold;
+        }
+        .total-facture, .total-order {
+            color: #125733;
+            font-style: bold;
+        }
+        .first-lign {
+            height: 5px;
+            width: 100%;
+            background-color: #125733;
+        }
+        .second-lign {
+            height: 5px;
+            width: 100%;
+            background-color: #d6c873;
+            margin-bottom: 20px;
+        }
+        
+    </style>
+    
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="name">{{ depot.name }}</h2>
+    <div class="first-lign"></div>
+    <div class="second-lign"></div>
+ 
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Commande</th>
+                <th scope="col">Client</th>
+                 <th scope="col">Prix</th>
+            </tr>
+        </thead>
+    <body>
+        {% for order in depot.orders %}
+            <tr>    
+                <td id="{{order.id}}" scope="row">{{ order.id }}</td>
+                <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
+                <td> {{ order.price }}</td>
+            </tr>
+    
+     {% endfor %}
+
+         <thead>
+            <tr>  
+                <th colspan="2">Nombre de Commande: </th>
+                <th colspan="2">TOTAL</th>
+            </tr>
+        </thead> 
+                
+            <tr>              
+                <td colspan="2">{{nborders}}</td>
+                <td colspan="2">{{total}} €</td>
+            </tr>
+        </body>
+    </table> 
+    
+    </div>  
+{% endblock %}

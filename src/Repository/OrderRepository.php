@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Depot;
 use App\Entity\Order;
+use App\Entity\Depot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Integer;
@@ -160,6 +161,19 @@ class OrderRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findTotalPriceOrder(Depot $depot) 
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery (
+        '
+        SELECT SUM(o.price) price, COUNT(o.id) orders
+        FROM App\Entity\Order o
+        WHERE o.depot = :depot
+        '
+        )->setParameter('depot', $depot);
+            return $query->getSingleResult();
+        }
 
 //    /**
 //     * @return Order[] Returns an array of Order objects

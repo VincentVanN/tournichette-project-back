@@ -4,13 +4,17 @@ namespace App\Controller\Back;
 
 use App\Entity\Order;
 use App\Form\OrderType;
+use App\vendor\dompdf\dompdf;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Utils\Pdf\PdfSticker;
 use App\Repository\OrderRepository;
 use DateTimeImmutable;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/back/orders", name="app_back_order")
@@ -77,6 +81,17 @@ class OrderController extends AbstractController
             'order' => $order,
         ]);
     }
+    
+    /**
+     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     */
+    public function generatePdfOrder(Order $order, PdfSticker $dompdf, $id, OrderRepository $orderRepository) 
+    {   
+        $html = $this->renderview('back/order/detail.html.twig', 
+        ['order'=>$order,] 
+    );
+        $dompdf->showPdfFile($html);
+    }
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
@@ -86,8 +101,6 @@ class OrderController extends AbstractController
     {
         $order->setPaymentStatus('yes');
         $orderRepository->add($order, true);
-
-
         //return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }

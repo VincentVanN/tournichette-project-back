@@ -3,8 +3,10 @@
 namespace App\Controller\Back;
 
 use App\Entity\Depot;
+use App\Entity\Order;
 use DateTimeImmutable;
 use App\Form\DepotType;
+use App\Utils\Pdf\PdfLarge;
 use App\Repository\DepotRepository;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,13 +17,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
 
-
 /**
  * @Route("/back/depot", name="app_back_depot")
  */
 class DepotController extends AbstractController
 {
-
     /**
     * List all depots 
     * @Route("", name="_list", methods="GET")
@@ -36,7 +36,6 @@ class DepotController extends AbstractController
         ]);
     }
 
-    
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/new", name="_new", methods={"GET", "POST"})
@@ -48,8 +47,7 @@ class DepotController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-
+        
             $depotRepository->add($depot, true);
 
             return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);
@@ -105,6 +103,46 @@ class DepotController extends AbstractController
     }
 
     /**
+     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     */
+    public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id, OrderRepository $orderRepository) 
+    {   
+        $orders = $orderRepository->findTotalPriceOrder($depot);
+        $total=$orders['price'];
+        $nborders=$orders['orders'];
+        
+        $html = $this->renderview('back/depot/detail.html.twig', 
+        ['depot'=>$depot,
+        'total'=>$total,
+        'nborders'=>$nborders
+        ] 
+    );
+        $dompdf->showPdfFile($html);
+    }
+     /**
+     * Export to PDF
+     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     */
+    // public function pdfAction(Depot $depot, $id) : Response
+    // {
+    //     $html = $this->renderView('back/depot/detail.html.twig',  ['depot' => $depot]);
+
+    //     $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+
+    //     return new Response(
+    //     // $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+    //         $snappy = $this->get('knp_snappy.pdf'),
+    //         $snappy->getOuptutFromHTLM($html),
+            
+    //         200,
+    //         [
+    //             'Content-Type'        => 'application/pdf',
+    //             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+    //         ]
+    //     );
+    // }
+
+    /**
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
      */
@@ -157,3 +195,10 @@ class DepotController extends AbstractController
     }
     
 }
+// foreach ($orders as $value) {
+        //     foreach ($value as $currentvalue) {
+        //         $total += (int)$currentvalue;
+        //     };
+        //}
+        // $total=$total['total'];
+        //dd($total);
