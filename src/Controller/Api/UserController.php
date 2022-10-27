@@ -7,6 +7,8 @@ use App\Entity\User;
 use App\Utils\TokenCreator;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
+use App\Utils\CustomMailer;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +65,8 @@ class UserController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface $validator,
         UserRepository $userRepository,
-        TokenCreator $tokenCreator): Response
+        TokenCreator $tokenCreator,
+        CustomMailer $mailer): Response
     {
         $data = $request->getContent();
 
@@ -86,6 +89,16 @@ class UserController extends AbstractController
             }
             return $this->prepareResponse('Email déjà existant', [], ['data' => $data], true, Response::HTTP_BAD_REQUEST);
         }
+
+        // Token for mail verif
+        $user->setEmailChecked(false);
+        $user->setEmailTokenUpdatedAt(new DateTimeImmutable());
+        $user->setEmailToken(
+            $tokenCreator->create(
+                $user->getEmail(), $passwordHasher->hashPassword(
+                    $user, $user->getEmail() . $user->getFirstname() . $user->getLastname()
+                )));
+        $mailer->emailVerify($user);
 
         $userRepository->add($user, true);
 
@@ -231,8 +244,6 @@ class UserController extends AbstractController
                 Response::HTTP_BAD_REQUEST
             );
         }
-
-        // $serializer->deserialize($data, User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
 
         $user->setSub($requestData['sub']);
 

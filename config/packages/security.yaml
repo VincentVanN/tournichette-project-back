@@ -78,6 +78,7 @@ security:
         - { path: ^/api/v1/users/google_update, roles: PUBLIC_ACCESS }
         - { path: ^/api/v1/sales, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/email, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

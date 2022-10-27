@@ -8,10 +8,14 @@ namespace App\Utils;
 class GetBaseUrl
 {
     private $baseUrl;
+    private $mailerUrl;
+    private $mainUrl;
 
-    public function __construct($baseUrl)
+    public function __construct($baseUrl, $mailerUrl, $mainUrl)
     {
         $this->baseUrl = $baseUrl;
+        $this->mailerUrl = $mailerUrl;
+        $this->mainUrl = $mainUrl;
     }
 
     /**
@@ -20,5 +24,21 @@ class GetBaseUrl
     public function getBaseUrl()
     {
         return $this->baseUrl;
+    }
+
+    /**
+     * Get the value of mailerUrl
+     */ 
+    public function getMailerUrl()
+    {
+        return $this->mailerUrl;
+    }
+
+    /**
+     * Get the value of mainUrl
+     */ 
+    public function getMainUrl()
+    {
+        return $this->mainUrl;
     }
 }

@@ -37,6 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $emailChecked;
+
+    /**
      * @ORM\Column(type="json")
      * @Assert\NotNull
      */
@@ -97,6 +102,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $apiTokenUpdatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $emailToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $emailTokenUpdatedAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -336,6 +351,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSub(?string $sub): self
     {
         $this->sub = $sub;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of emailChecked
+     */ 
+    public function isEmailChecked(): bool
+    {
+        return $this->emailChecked;
+    }
+
+    /**
+     * Set the value of emailChecked
+     *
+     * @return  self
+     */ 
+    public function setEmailChecked(bool $emailChecked): self
+    {
+        $this->emailChecked = $emailChecked;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of emailToken
+     */ 
+    public function getEmailToken()
+    {
+        return $this->emailToken;
+    }
+
+    /**
+     * Set the value of emailToken
+     *
+     * @return  self
+     */ 
+    public function setEmailToken($emailToken)
+    {
+        $this->emailToken = $emailToken;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of emailTokenUpdatedAt
+     */ 
+    public function getEmailTokenUpdatedAt()
+    {
+        return $this->emailTokenUpdatedAt;
+    }
+
+    /**
+     * Set the value of emailTokenUpdatedAt
+     *
+     * @return  self
+     */ 
+    public function setEmailTokenUpdatedAt(?\DateTimeImmutable $emailTokenUpdatedAt)
+    {
+        $this->emailTokenUpdatedAt = $emailTokenUpdatedAt;
 
         return $this;
     }

@@ -25,10 +25,17 @@ services:
     App\Utils\GetBaseUrl:
         bind:
             $baseUrl: '%env(resolve:BASE_URL)%'
+            $mailerUrl: '%env(resolve:MAILER_URL)%'
+            $mainUrl: '%env(resolve:MAIN_URL)%'
 
     App\Utils\TokenCreator:
         bind:
             $tokenExpiredTime: '%env(resolve:TOKEN_EXPIRED_TIME)%'
+
+    App\Utils\CustomMailer:
+        bind:
+            $mailExpiredTime: '%env(resolve:TOKEN_EMAIL_VERIFY_TIME)%'
+            $mailFrom: '%env(resolve:MAILER_FROM)%'
 
     # App\Utils\SalesStatus:
     #     arguments:

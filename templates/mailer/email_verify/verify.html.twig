@@ -1,0 +1,21 @@
+{% extends 'mailer/base-mailer.html.twig' %}
+
+{% block body %}
+    <p>
+        Bonjour {{ user.firstname }},<br/>
+        <br/>
+        Vous venez de créer un compte sur le site du Panier de La Tournichette, et nous vous en remercions.
+    </p>
+    <p>
+        Afin de finaliser votre inscription, nous avons besoin de vérifier votre adresse mail. Pour celà :
+    </p>
+    <p class="text-center"><a href='{{ urlChecker }}' class="btn btn-primary">veuillez cliquer ici</a></p>
+    </p>
+    <p>
+        Si le lien ci-dessus n'est pas cliquable, vous pouvez copier cette URL dans la barre d'adresse de votre navigateur :<br>
+        {{ urlChecker }}
+    </p>
+    <p>
+        Attention, ce lien est valide durant {{ validity / 3600 }} heures.
+    </p>
+{% endblock %}
