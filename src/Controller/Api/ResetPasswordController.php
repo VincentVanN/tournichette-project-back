@@ -60,7 +60,7 @@ class ResetPasswordController extends AbstractController
             }
         }
 
-        return $this->json(['message' => 'Une erreur c\'est produite'], 520);
+        return $this->json(['message' => 'Une erreur s\'est produite'], 520);
     }
 
     /**
