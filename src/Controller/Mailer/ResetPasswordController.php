@@ -50,7 +50,6 @@ class ResetPasswordController extends AbstractController
 
                     $em->flush();
 
-                    dd('expired');
                     return $this->redirect($baseUrl->getMainUrl() . '/oublie-mdp?error=expired');
                 } else {
 
@@ -64,13 +63,12 @@ class ResetPasswordController extends AbstractController
 
                     $em->flush();
 
-                    dd($user->getTempApiToken());
                     return $this->redirect($baseUrl->getMainUrl() . '/oublie-mdp?token=' . $user->getTempApiToken());
                 }
 
             }
         }
-        dd('user not found');
+
         return $this->redirect($baseUrl->getMainUrl() . '/oublie-mdp?error=not-found');
     }
 }
