@@ -1,0 +1,22 @@
+{% extends 'mailer/base-mailer.html.twig' %}
+
+{% block body %}
+    <p>
+        Bonjour,<br/>
+        <br/>
+        Une demande de réinitialisation de votre mot de passe a été demandée.<br>
+        Si vous n'êtes pas à l'origine de cette demande, veuillez ne pas tenir compte de ce message.
+    </p>
+    <p>
+        Afin de réinitialiser votre mot de passe :
+    </p>
+    <p class="text-center"><a href='{{ urlChecker }}' class="btn btn-primary">veuillez cliquer ici</a></p>
+    </p>
+    <p>
+        Si le lien ci-dessus n'est pas cliquable, vous pouvez copier cette URL dans la barre d'adresse de votre navigateur :<br>
+        {{ urlChecker }}
+    </p>
+    <p>
+        Attention, ce lien est valide durant {{ validity / 3600 }} heures.
+    </p>
+{% endblock %}

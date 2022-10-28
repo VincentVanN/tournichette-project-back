@@ -30,6 +30,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         '/api/v1/users/create',
         '/api/v1/users/google_update',
         '/api/v1/sales',
+        '/api/v1/reset-password'
     ];
 
     public function __construct(UserRepository $userRepository)
@@ -53,16 +54,29 @@ class ApiAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('Token not found in headers');
         }
 
-        return new SelfValidatingPassport(
-            new UserBadge($apiToken, function($apiToken) {
-                $user = $this->userRepository->findOneBy(['apiToken' => $apiToken]);
-                
-                if (!$user) {
-                    throw new CustomUserMessageAuthenticationException('No user found');
-                }
-                 return $user;
-            })
-        );
+        if ($request->getPathInfo() === '/api/v1/update-password') {
+            return new SelfValidatingPassport(
+                new UserBadge($apiToken, function($apiToken) {
+                    $user = $this->userRepository->findOneBy(['tempApiToken' => $apiToken]);
+                    
+                    if (!$user) {
+                        throw new CustomUserMessageAuthenticationException('No user found (temp)');
+                    }
+                     return $user;
+                })
+            );
+        } else {
+            return new SelfValidatingPassport(
+                new UserBadge($apiToken, function($apiToken) {
+                    $user = $this->userRepository->findOneBy(['apiToken' => $apiToken]);
+                    
+                    if (!$user) {
+                        throw new CustomUserMessageAuthenticationException('No user found');
+                    }
+                    return $user;
+                })
+            );
+        }
 
     }
 

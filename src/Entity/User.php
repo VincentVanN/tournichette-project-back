@@ -38,6 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"api_v1_users_show"})
      */
     private $emailChecked;
 
@@ -112,6 +113,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $emailTokenUpdatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tempToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $tempTokenUpdatedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tempApiToken;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -378,7 +394,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Get the value of emailToken
      */ 
-    public function getEmailToken()
+    public function getEmailToken(): ?string
     {
         return $this->emailToken;
     }
@@ -388,7 +404,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return  self
      */ 
-    public function setEmailToken($emailToken)
+    public function setEmailToken(?string $emailToken): self
     {
         $this->emailToken = $emailToken;
 
@@ -398,7 +414,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Get the value of emailTokenUpdatedAt
      */ 
-    public function getEmailTokenUpdatedAt()
+    public function getEmailTokenUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->emailTokenUpdatedAt;
     }
@@ -411,6 +427,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmailTokenUpdatedAt(?\DateTimeImmutable $emailTokenUpdatedAt)
     {
         $this->emailTokenUpdatedAt = $emailTokenUpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tempToken
+     */ 
+    public function getTempToken(): ?string
+    {
+        return $this->tempToken;
+    }
+
+    /**
+     * Set the value of tempToken
+     *
+     * @return  self
+     */ 
+    public function setTempToken(?string $tempToken): self
+    {
+        $this->tempToken = $tempToken;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tempTokenUpdatedAt
+     */ 
+    public function getTempTokenUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->tempTokenUpdatedAt;
+    }
+
+    /**
+     * Set the value of tempTokenUpdatedAt
+     *
+     * @return  self
+     */ 
+    public function setTempTokenUpdatedAt(?DateTimeImmutable $tempTokenUpdatedAt)
+    {
+        $this->tempTokenUpdatedAt = $tempTokenUpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tempApiToken
+     */ 
+    public function getTempApiToken(): ?string
+    {
+        return $this->tempApiToken;
+    }
+
+    /**
+     * Set the value of tempApiToken
+     *
+     * @return  self
+     */ 
+    public function setTempApiToken(?string $token): self
+    {
+        $this->tempApiToken = $token;
 
         return $this;
     }

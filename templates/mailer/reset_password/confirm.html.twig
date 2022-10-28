@@ -1,0 +1,14 @@
+{% extends 'mailer/base-mailer.html.twig' %}
+
+{% block body %}
+    <p>
+        Bonjour {{ user.firstname }},<br/>
+        <br/>
+        Votre mot de passe a été modifié avec succès.<br>
+        Si vous n'êtes pas à l'origine de cette demande, veuillez contacter le webmaster du site
+         en répondant à ce mail ou en en envoyant un nouveau message à webmaster@tournichette.fr.
+    </p>
+    <p>
+        A bientôt sur <a href="https://www.tounichette.fr">Le Panier de la Tournichette.</a>
+    </p>
+{% endblock %}

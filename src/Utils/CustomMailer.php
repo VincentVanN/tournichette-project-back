@@ -69,6 +69,49 @@ class CustomMailer
         }
     }
 
+    public function emailResetPassword(User $user)
+    {
+        $email = (new TemplatedEmail())
+            ->from($this->mailFrom)
+            ->to($user->getEmail())
+            ->subject('Demande de réinitialisation de votre mot de passe')
+            ->htmlTemplate('mailer/reset_password/reset.html.twig')
+            ->context([
+                'user' => $user,
+                'validity' => $this->mailExpiredTime,
+                'urlChecker' => $this->baseUrl->getMailerUrl() . $this->router->generate('app_mailer_password_reset', [
+                    'email' => $user->getEmail(),
+                    'token' => $user->getTempToken()
+                ])
+            ]);
+
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            // TODO gérer les erreurs
+        } finally {
+            return;
+        }
+    }
+
+    public function emailConfirmResetPassword(User $user)
+    {
+        $email = (new TemplatedEmail())
+            ->from($this->mailFrom)
+            ->to($user->getEmail())
+            ->subject('Modification de votre mot de passe')
+            ->htmlTemplate('mailer/reset_password/confirm.html.twig')
+            ->context(['user' => $user]);
+
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            // TODO gérer les erreurs
+        } finally {
+            return;
+        }
+    }
+
 
     /**
      * Get the value of mailFrom
