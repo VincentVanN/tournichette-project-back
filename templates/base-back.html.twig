@@ -35,6 +35,9 @@
 								<a class="nav-link {{ "app_back_product_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_product_list') }}"><i class="bi bi-grid-3x2-gap"></i> Produits</a>
 							</li>
 							<li class="nav-item">
+								<a class="nav-link {{ "app_back_category_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_category_list') }}"><i class="bi bi-tags"></i></i> Catégories</a>
+							</li>
+							<li class="nav-item">
 								<a class="nav-link {{ "app_back_order_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_order_list') }}"><i class="bi bi-clipboard-data"></i> Commandes</a>
 							</li>
 							<li class="nav-item">

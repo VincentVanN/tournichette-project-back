@@ -3,7 +3,7 @@
 {% block body %}
     <!-- main -->
     <section class="my-5 py-5 text-center container">
-        <div class="row">
+        <div class="row justify-content-center">
 
             <div class="card col-3 m-2 text-bg-light">
                 <div class="card-body">
@@ -17,6 +17,13 @@
                     <h5 class="card-title"><i class="bi bi-grid-3x2-gap"></i> Produits</a></h5>
                     <p class="card-text">Pour créer et gérer vos différent produits</p>
                     <a href="{{ path('app_back_product_list') }}" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class="card col-3 m-2 text-bg-light">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-tags"></i> Catégories</a></h5>
+                    <p class="card-text">Pour modifier la description des catégories</p>
+                    <a href="{{ path('app_back_category_list') }}" class="stretched-link"></a>
                 </div>
             </div>
              <div class="card col-3 m-2 text-bg-light">

@@ -6,11 +6,13 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @UniqueEntity("name", message="Ce nom de catégorie existe déjà")
  */
 class Category
 {
@@ -34,7 +36,6 @@ class Category
     private $name;
 
     /**
-     * @Assert\Unique(message="le nom est déjà utilisé")
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"api_v1_categories_list"})
      * @Groups({"api_v1_category_product"})
@@ -48,6 +49,13 @@ class Category
      * @Groups({"api_v1_categories_list"})
      */
     private $image;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank(message="Cette description n'est pas valide", allowNull=true, normalizer="trim")
+     * @Groups({"api_v1_categories_list"})
+     */
+    private $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
@@ -127,6 +135,18 @@ class Category
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

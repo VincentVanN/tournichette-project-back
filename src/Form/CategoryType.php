@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Utils\MySlugger;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +15,10 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('image');
+            ->add('image')
+            ->add('description', TextareaType::class, [
+                'attr' => ['rows' => '3']
+            ]);
             //->add('products');
             
     }

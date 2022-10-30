@@ -3,15 +3,17 @@
 namespace App\Controller\Back;
 
 use App\Entity\Category;
-use App\Repository\CategoryRepository;
 use App\Form\CategoryType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/back/category", name="app_back_category")
@@ -83,6 +85,35 @@ class CategoryController extends AbstractController
             'category' => $category,
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @Route("/{id<\d+>}/edit", name="_edit_json", methods={"PATCH"})
+     */
+    public function editJson(
+        Request $request,
+        Category $category,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        EntityManagerInterface $em
+        ): Response
+    {
+        $data = $request->getContent();
+
+        if ($category === null) {
+            return $this->json('Category not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $serializer->deserialize($data, Category::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $category]);
+
+        $category->setDescription(trim(htmlspecialchars($category->getDescription())));
+
+        $category->setDescription( $category->getDescription() === '' ? null : $category->getDescription());
+
+        $em->flush();
+
+        return $this->json(['description' => $category->getDescription()], Response::HTTP_OK, ['Content-Type' => 'application/json;charset=UTF-8']);
     }
 
     /**

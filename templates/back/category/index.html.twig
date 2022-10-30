@@ -1,35 +1,47 @@
 {% extends 'back/category/_base.html.twig' %}
 
-{% block title %}category index{% endblock %}
+{% block title %}Categories{% endblock %}
 
 {% block body %}
-    <h1>Les catégories</h1>
 
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-               <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>
-                    <a href="{{ path('app_back_category_show', {'id': category.id}) }}" class = "btn btn-info">{{ category.name }}</a>
-                    <a href="{{ path('app_back_category_edit', {'id': category.id}) }}" class = "btn btn-warning">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="container-fluid">
 
-    <a href="{{ path('app_back_category_new') }}"class = "btn btn-success">Créer une nouvelle catégorie</a>
+    <h1 class="text-center">Les catégories</h1>
+    <p>Vous avez la possibilité de modifier la description d'une catégorie en cliquent sur le texte.</p>
 
+    <section class="row">
+    {% for currentCategory in categories %}
+        <article class="col-4">
+            <h3 class="text-center">{{ currentCategory.name }}</h3>
+            <p>Description {% if is_granted('ROLE_SUPER_ADMIN') %}(cliquez pour modifier) {% endif %}:</p>
+            <div>
+                <div class="spinners d-none">
+                    <div class="spinner-border spinner-border-sm" role="status"></div>
+                    <div class="spinner-grow spinner-grow-sm" role="status"></div>
+                </div>
+
+                {% if currentCategory.description is null %}
+                <p class="description"><em>Pas de description.{% if is_granted('ROLE_SUPER_ADMIN') %} Vous pouvez en ajouter une en cliquant sur ce texte.{% endif %}</em></p>
+                {% else %}
+                <p class="description w-100 bg-opacity-25 bg-secondary">{{ currentCategory.description }}</p>
+                {% endif %}
+                
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <textarea class="form-control d-none" rows="6" data-id="{{ currentCategory.id }}">
+                    {{ currentCategory.description }}
+                </textarea>
+                <div class="alert alert-warning d-none" role="alert"></div>
+
+                {% endif %}
+            </div>
+        </article>
+    {% endfor %}
+    </section>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <script src="{{ asset('scripts/categoryIndex.js')}}"></script>
+    {% endif %}
 {% endblock %}
