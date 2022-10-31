@@ -374,7 +374,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Get the value of emailChecked
      */ 
-    public function isEmailChecked(): bool
+    public function isEmailChecked(): ?bool
     {
         return $this->emailChecked;
     }

@@ -49,6 +49,11 @@
 							<li class="nav-item">
 								<a class="nav-link {{ "app_back_harvest_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_harvest_home') }}"><i class="bi bi-journal-text"></i> Jounaux de récolte</a>
 							</li>
+							{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<li class="nav-item">
+								<a class="nav-link {{ "app_back_mailing_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_mailing_update_sales') }}"><i class="bi bi-at"></i> Mailing</a>
+							</li>
+							{% endif %}
 						</ul>
                         {% endif %}
 						<ul class="navbar-nav ms-auto mb-2 mb-lg-0">

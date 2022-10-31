@@ -13,6 +13,7 @@
         "doctrine/orm": "^2.13",
         "dompdf/dompdf": "^2.0",
         "fakerphp/faker": "^1.20",
+        "friendsofsymfony/ckeditor-bundle": "^2.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jzonta/faker-restaurant": "^2.0",
         "knplabs/knp-snappy-bundle": "^1.6",
@@ -79,7 +80,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "ckeditor:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

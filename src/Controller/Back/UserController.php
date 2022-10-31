@@ -84,6 +84,7 @@ class UserController extends AbstractController
             $user->setPassword($hashedPassword);
             $role = $formUser->get('roles')->getData() !== null ? $formUser->get('roles')->getData() : 'ROLE_USER';
             $user->setRoles([$role]);
+            $user->setEmailChecked(false);
             $userRepository->add($user, true);
 
             return $this->redirectToRoute('app_back_user_list', [], Response::HTTP_SEE_OTHER);

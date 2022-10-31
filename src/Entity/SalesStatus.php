@@ -28,6 +28,21 @@ class SalesStatus
     private $startAt;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $startMail;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $endMail;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $sendMail;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $endAt;
@@ -86,6 +101,42 @@ class SalesStatus
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getEndMail(): ?string
+    {
+        return $this->endMail;
+    }
+
+    public function setEndMail(?string $endMail): self
+    {
+        $this->endMail = $endMail;
+
+        return $this;
+    }
+
+    public function getStartMail(): ?string
+    {
+        return $this->startMail;
+    }
+
+    public function setStartMail(?string $startMail): self
+    {
+        $this->startMail = $startMail;
+
+        return $this;
+    }
+
+    public function isSendMail(): ?bool
+    {
+        return $this->sendMail;
+    }
+
+    public function setSendMail(bool $sendMail): self
+    {
+        $this->sendMail = $sendMail;
 
         return $this;
     }

@@ -54,6 +54,15 @@
                     <a href="{{ path('app_back_harvest_home') }}" class="stretched-link"></a>
                 </div>
             </div>
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <div class="card col-3 m-2 text-bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-at"></i> Mailing</a></h5>
+                        <p class="card-text">Pour gérer et rédiger les emails d'ouverture et fermeture des ventes</p>
+                        <a href="{{ path('app_back_mailing_update_sales') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            {% endif %}
 
         </div>
         
