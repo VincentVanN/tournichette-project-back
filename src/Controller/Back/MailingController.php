@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/back/mailing", name="app_back_mailing")
@@ -26,6 +27,9 @@ class MailingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $salesStatusRepository->add($saleStatus, true);
+
+            $session = new Session();
+            $session->getFlashBag()->add('success', 'Les mails ont été enregistrés avec succes.');
         }
 
         return $this->renderForm('back/mailing/sales/edit.html.twig', [

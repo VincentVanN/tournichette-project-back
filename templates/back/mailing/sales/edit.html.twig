@@ -13,6 +13,13 @@
         Vous pouvez aussi activer ou désactiver cette fonctionnalité.
     </p>
 
+    {% for message in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}    
+
     {{ form_start(form, {"attr" : {"novalidate": "novalidate"}}) }}
         {{ form_errors(form) }}
         {{ form_row(form.sendMail) }}
@@ -25,6 +32,11 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Sujet : </span>
+                        {{ form_widget(form.startMailSubject, {"attr" : {"aria-describedby": "basic-addon1"}}) }}
+                    </div>
+
                     {{ form_widget(form.startMail) }}
                 </div>
                 </div>
@@ -37,6 +49,10 @@
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Sujet : </span>
+                        {{ form_widget(form.endMailSubject, {"attr" : {"aria-describedby": "basic-addon2"}}) }}
+                    </div>
                     {{ form_widget(form.endMail) }}
                 </div>
                 </div>

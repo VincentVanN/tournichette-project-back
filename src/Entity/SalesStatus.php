@@ -33,6 +33,11 @@ class SalesStatus
     private $startMail;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $startMailSubject;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $endMail;
@@ -41,6 +46,11 @@ class SalesStatus
      * @ORM\Column(type="boolean")
      */
     private $sendMail;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $endMailSubject;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
@@ -137,6 +147,46 @@ class SalesStatus
     public function setSendMail(bool $sendMail): self
     {
         $this->sendMail = $sendMail;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of sendMailSubject
+     */ 
+    public function getEndMailSubject(): ?string
+    {
+        return $this->endMailSubject;
+    }
+
+    /**
+     * Set the value of sendMailSubject
+     *
+     * @return  self
+     */ 
+    public function setEndMailSubject(?string $endMailSubject): self
+    {
+        $this->endMailSubject = $endMailSubject;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of startMailSubject
+     */ 
+    public function getStartMailSubject(): ?string
+    {
+        return $this->startMailSubject;
+    }
+
+    /**
+     * Set the value of startMailSubject
+     *
+     * @return  self
+     */ 
+    public function setStartMailSubject(?string $startMailSubject): self
+    {
+        $this->startMailSubject = $startMailSubject;
 
         return $this;
     }
