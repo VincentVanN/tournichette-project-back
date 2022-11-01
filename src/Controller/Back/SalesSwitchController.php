@@ -3,6 +3,8 @@
 namespace App\Controller\Back;
 
 use App\Repository\SalesStatusRepository;
+use App\Repository\UserRepository;
+use App\Utils\CustomMailer;
 use App\Utils\SalesStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -33,6 +35,8 @@ class SalesSwitchController extends AbstractController
         EntityManagerInterface $em,
         SalesStatusRepository $salesStatusRepository,
         SalesStatus $salesStatusService,
+        UserRepository $userRepository,
+        CustomMailer $mailer,
         $status
     ): Response
     {
@@ -54,6 +58,14 @@ class SalesSwitchController extends AbstractController
 
             // Verifying if success
             if($salesStatusService->isSalesEnabled() === $status) {
+                // Notifications' mails
+                if($salesStatus->isSendMail()) {
+                    $subscribedUsers = $userRepository->findBy(['emailChecked' => true, 'emailNotifications' => true]);
+                    $subject = $salesStatus->isEnable() ? $salesStatus->getStartMailSubject() : $salesStatus->getEndMailSubject();
+                    $message = $salesStatus->isEnable() ? $salesStatus->getStartMail() : $salesStatus->getEndMail();
+                    $mailer->sendSalesNotification($subscribedUsers, $subject, $message);
+                }
+
                 return $this->json('sales status changed', Response::HTTP_OK);
             }
         }
