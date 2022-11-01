@@ -28,8 +28,7 @@ class MailingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $salesStatusRepository->add($saleStatus, true);
 
-            $session = new Session();
-            $session->getFlashBag()->add('success', 'Les mails ont été enregistrés avec succes.');
+            $this->addFlash('success', 'Les mails ont été enregistrés avec succes.');
         }
 
         return $this->renderForm('back/mailing/sales/edit.html.twig', [

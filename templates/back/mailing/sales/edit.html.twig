@@ -13,7 +13,7 @@
         Vous pouvez aussi activer ou désactiver cette fonctionnalité.
     </p>
 
-    {% for message in app.session.flashbag.get('success') %}
+    {% for message in app.flashes('success') %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill"></i> {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
