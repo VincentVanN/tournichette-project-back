@@ -100,6 +100,8 @@ class UserController extends AbstractController
                 )));
         $mailer->emailVerify($user);
 
+        $user->setEmailNotifications(false);
+
         $userRepository->add($user, true);
 
         if ($user->getSub() !== null) {
