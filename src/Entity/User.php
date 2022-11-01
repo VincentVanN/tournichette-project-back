@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(
+     *      type="bool",
+     *      message="La valeur des notifications n'est pas valide. Elle doit être de type boolean ('true' ou 'false').")
      * @Groups({"api_v1_users_show"})
      */
     private $emailNotifications; 

@@ -189,6 +189,44 @@ class UserController extends AbstractController
     }
 
     /**
+     * Update notifications choice of a user
+     * @Route("/notifications", name="_notifications", methods="PATCH")
+     */
+    public function updateNotifications(Request $request, EntityManagerInterface $em)
+    {
+        $data = $request->getContent();
+        $user = $this->getUser();
+
+        $requestData = \json_decode($request->getContent(), true);
+
+        if (!isset($requestData['emailNotifications'])) {
+            return $this->prepareResponse(
+                'emailNotifications est absent',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        if (isset($requestData['emailNotifications']) && !is_bool($requestData['emailNotifications'])) {
+            return $this->prepareResponse(
+                'emailNotifications doit être un booléen',
+                [],
+                [],
+                true,
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $user->setEmailNotifications($requestData['emailNotifications']);
+
+        $em->flush();
+
+        return $this->prepareResponse('Notifications enregistrées', [], [], false, Response::HTTP_OK);
+    }
+
+    /**
      * Update a user with sub Google account
      * @Route("/google_update", name="_update_google", methods="PATCH")
      */
