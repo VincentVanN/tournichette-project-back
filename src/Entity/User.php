@@ -43,6 +43,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $emailChecked;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"api_v1_users_show"})
+     */
+    private $emailNotifications; 
+
+    /**
      * @ORM\Column(type="json")
      * @Assert\NotNull
      */
@@ -487,6 +493,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTempApiToken(?string $token): self
     {
         $this->tempApiToken = $token;
+
+        return $this;
+    }
+
+    public function isEmailNotifications(): ?bool
+    {
+        return $this->emailNotifications;
+    }
+
+    public function setEmailNotifications(?bool $emailNotifications): self
+    {
+        $this->emailNotifications = $emailNotifications;
 
         return $this;
     }

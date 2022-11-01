@@ -20,6 +20,7 @@ class CustomMailer
     private $mailer;
     private $mailExpiredTime;
     private $mailFrom;
+    private $mailAdmin;
     private $baseUrl;
     private $router;
 
@@ -27,12 +28,14 @@ class CustomMailer
         MailerInterface $mailer,
         Int $mailExpiredTime,
         string $mailFrom,
+        string $mailAdmin,
         GetBaseUrl $baseUrl,
         UrlGeneratorInterface $router)
     {
         $this->mailer = $mailer;
         $this->mailExpiredTime = $mailExpiredTime;
         $this->mailFrom = new Address($mailFrom, 'Webmaster de La Tournichette');
+        $this->mailAdmin = new Address($mailAdmin, 'Le Panier de la Tournichette');
         $this->baseUrl = $baseUrl;
         $this->router = $router;
 
@@ -110,6 +113,22 @@ class CustomMailer
         } finally {
             return;
         }
+    }
+
+    public function sendSalesNotification($users, string $subject, string $message)
+    {
+        $email = (new TemplatedEmail())
+            ->from($this->mailAdmin)
+            ->subject($subject)
+            ->htmlTemplate('mailer/email_status_sales/show.html.twig')
+            ->context(['message' => $message]);
+            
+        foreach ($users as $currentUser) {
+            $email->to($currentUser->getEmail());
+            $this->mailer->send($email);
+        }
+        
+        return;
     }
 
 
