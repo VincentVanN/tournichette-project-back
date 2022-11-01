@@ -38,26 +38,4 @@ class MailingController extends AbstractController
             'form' => $form
         ]);
     }
-
-    /**
-     * @Route("/sales/show", name="_show_sales", methods={"GET"})
-     */
-    public function show(SalesStatusRepository $salesStatusRepository, UserRepository $userRepository, CustomMailer $mailer): Response
-    {
-        $saleStatus = $salesStatusRepository->findOneBy(['name' => 'status']);
-
-        $subscribedUsers = $userRepository->findBy(['emailChecked' => true, 'emailNotifications' => true]);
-
-        // dd($subscribedUsers);
-        $subject = $saleStatus->isEnable() ? $saleStatus->getStartMailSubject() : $saleStatus->getEndMailSubject();
-        $message = $saleStatus->isEnable() ? $saleStatus->getStartMail() : $saleStatus->getEndMail();
-
-        // dd($subject, $message);
-
-        $mailer->sendSalesNotification($subscribedUsers, $subject, $message);
-
-        return $this->render('mailer/email_status_sales/show.html.twig', [
-            'message' => $message
-        ]);
-    }
 }
