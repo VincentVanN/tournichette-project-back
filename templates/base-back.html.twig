@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Administration La Tournichette -
-			{% block title %}Welcome!
+		<title>Administration La Tournichette - 
+			{% block title %}Accueil
 			{% endblock %}
 		</title>
 		{% block stylesheets %}
@@ -17,6 +17,7 @@
 	</head>
 	<body>
 		{% block navigation %}
+			{% block navbar %}
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 				<div class="container-fluid">
 					<a href="{{ path('app_back_homepage') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none header-logo">
@@ -27,44 +28,9 @@
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
                         {% if app.user %}
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_cart_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_cart_list') }}"><i class="bi bi-bag"></i> Paniers</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_product_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_product_list') }}"><i class="bi bi-grid-3x2-gap"></i> Produits</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_category_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_category_list') }}"><i class="bi bi-tags"></i></i> Catégories</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_order_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_order_list') }}"><i class="bi bi-clipboard-data"></i> Commandes</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_user_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_user_list') }}"><i class="bi bi-person"></i> Utilisateurs</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_depot_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_depot_list') }}"><i class="bi bi-box-seam"></i> Dépôts</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_harvest_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_harvest_home') }}"><i class="bi bi-journal-text"></i> Jounaux de récolte</a>
-							</li>
-							{% if is_granted('ROLE_SUPER_ADMIN') %}
-							<li class="nav-item">
-								<a class="nav-link {{ "app_back_mailing_" in app.request.attributes.get('_route') ? "active" : "" }}" href="{{ path('app_back_mailing_update_sales') }}"><i class="bi bi-at"></i> Mailing</a>
-							</li>
-							{% endif %}
-						</ul>
+
                         {% endif %}
 						<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-											{# <li class="nav-item me-5">
-												<div class="form-check form-switch position-relative">
-													<input class="form-check-input position-absolute start-0" type="checkbox" role="switch" id="flexSwitchCheckChecked salesSwitchStatus" checked>
-													<span class="text-danger d-none" id="salesStatusClose">Ventes fermées</span>
-													<span class="text-success" id="salesStatusOpen">Ventes ouvertes</span>
-												</div>
-
-											</li> #}
 											{{ render(controller('App\\Controller\\Back\\SalesSwitchController::setSalesSwitchPosition'))}}
 						                    <li class="nav-item dropdown">
 						                        {% if app.user %}
@@ -91,9 +57,99 @@
 					</div>
 				</div>
 			</nav>
-			{% block subnav %}{% endblock %}
+			{% endblock %}
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+	{% if app.user %}
+		{% block sidenav %}
+        <nav class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="{{ path('app_back_homepage') }}" class="nav-link align-middle px-0 {{ "app_back_homepage" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Accueil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_back_cart_list') }}#cart" data-bs-toggle="collapse" class="nav-link px-0 align-middle {{ "app_back_cart_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-bag"></i> <span class="ms-1 d-none d-sm-inline">Paniers</span> </a>
+                        <ul class="collapse {{ "app_back_cart_" in app.request.attributes.get('_route') ? "show" : "" }} nav flex-column ms-1" id="cart" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{{ path('app_back_cart_list') }}" class="nav-link px-0 {{ "app_back_cart_list" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-list-ul"></i> <span class="d-none d-sm-inline">Liste des panier</span></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_back_cart_new') }}" class="nav-link px-0 {{ "app_back_cart_new" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-plus-lg"></i> <span class="d-none d-sm-inline">Créer un panier</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_back_product_list') }}#product" data-bs-toggle="collapse" class="nav-link px-0 align-middle {{ "app_back_product_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-grid-3x2-gap"></i> <span class="ms-1 d-none d-sm-inline">Produits</span> </a>
+                        <ul class="collapse {{ "app_back_product_" in app.request.attributes.get('_route') ? "show" : "" }} nav flex-column ms-1" id="product" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{{ path('app_back_product_list') }}" class="nav-link px-0 {{ "app_back_product_list" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-list-ul"></i> <span class="d-none d-sm-inline">Liste des produits</span></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_back_product_new') }}" class="nav-link px-0 {{ "app_back_product_new" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-plus-lg"></i> <span class="d-none d-sm-inline">Créer un produit</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_back_category_list') }}" class="nav-link px-0 align-middle {{ "app_back_category_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-tags"></i> <span class="ms-1 d-none d-sm-inline">Catégories</span> </a>
+                    </li>					
+                    <li>
+                        <a href="{{ path('app_back_order_list') }}" class="nav-link px-0 align-middle {{ "app_back_order_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-clipboard-data"></i> <span class="ms-1 d-none d-sm-inline">Commandes</span> </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_back_depot_list') }}#depot" data-bs-toggle="collapse" class="nav-link px-0 align-middle {{ "app_back_depot_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-box-seam"></i> <span class="ms-1 d-none d-sm-inline">Dépôts</span> </a>
+                        <ul class="collapse {{ "app_back_depot_" in app.request.attributes.get('_route') ? "show" : "" }} nav flex-column ms-1" id="depot" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{{ path('app_back_depot_list') }}" class="nav-link px-0 {{ "app_back_depot_list" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-list-ul"></i> <span class="d-none d-sm-inline">Liste des dépôts</span></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_back_depot_new') }}" class="nav-link px-0 {{ "app_back_depot_new" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-plus-lg"></i> <span class="d-none d-sm-inline">Créer un dépôt</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_back_harvest_home') }}" class="nav-link px-0 align-middle {{ "app_back_harvest_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-journal-text"></i> <span class="ms-1 d-none d-sm-inline">Journaux de récolte</span> </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_back_user_list') }}#user" data-bs-toggle="collapse" class="nav-link px-0 align-middle {{ "app_back_user_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Utilisateurs</span> </a>
+                        <ul class="collapse {{ "app_back_user_" in app.request.attributes.get('_route') ? "show" : "" }} nav flex-column ms-1" id="user" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="{{ path('app_back_user_list') }}" class="nav-link px-0 {{ "app_back_user_list" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-list-ul"></i> <span class="d-none d-sm-inline">Liste des utilisateurs</span></a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_back_user_new') }}" class="nav-link px-0 {{ "app_back_user_new" in app.request.attributes.get('_route') ? "text-secondary" : "" }}"><i class="bi bi-plus-lg"></i> <span class="d-none d-sm-inline">Créer un utilisateur</span></a>
+                            </li>
+							{% block subnavUser %}
+							{% endblock %}
+                        </ul>
+                    </li>
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li>
+                        <a href="{{ path('app_back_mailing_update_sales') }}" class="nav-link px-0 align-middle {{ "app_back_mailing_" in app.request.attributes.get('_route') ? "text-white" : "" }}">
+                            <i class="fs-4 bi-at"></i> <span class="ms-1 d-none d-sm-inline">Mailing</span> </a>
+                    </li>
+					{% endif %}					
+                </ul>
+                <hr>
+            </div>
+        </nav>
 		{% endblock %}
-		{% block body %}{% endblock %}
+		{% endif %}
+        <div class="col py-3">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+</div>
+		{% endblock %}
 	</body>
 	<!-- JavaScript Bundle with Popper -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
