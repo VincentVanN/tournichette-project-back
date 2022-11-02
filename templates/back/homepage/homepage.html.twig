@@ -5,49 +5,49 @@
     <section class="my-5 py-5 text-center container">
         <div class="row justify-content-center">
 
-            <div class="card col-3 m-2 text-bg-light">
+            <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-bag"></i> Paniers</a></h5>
                     <p class="card-text">Pour créer et gérer vos différent paniers</p>
                     <a href="{{ path('app_back_cart_list') }}" class="stretched-link"></a>
                 </div>
             </div>
-            <div class="card col-3 m-2 text-bg-light">
+            <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-grid-3x2-gap"></i> Produits</a></h5>
                     <p class="card-text">Pour créer et gérer vos différent produits</p>
                     <a href="{{ path('app_back_product_list') }}" class="stretched-link"></a>
                 </div>
             </div>
-            <div class="card col-3 m-2 text-bg-light">
+            <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-tags"></i> Catégories</a></h5>
                     <p class="card-text">Pour modifier la description des catégories</p>
                     <a href="{{ path('app_back_category_list') }}" class="stretched-link"></a>
                 </div>
             </div>
-             <div class="card col-3 m-2 text-bg-light">
+             <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-grid-3x2-gap"></i> Commandes</a></h5>
                     <p class="card-text">Pour consulter et gérer les commandes de vos clients</p>
                     <a href="{{ path('app_back_order_list') }}" class="stretched-link"></a>
                 </div>
             </div>
-            <div class="card col-3 m-2 text-bg-light">
+            <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-person"></i> Utilisateurs</a></h5>
                     <p class="card-text">Pour consulter et créer les comptes utilisateurs, ainsi qu'administrer les droits d'accès</p>
                     <a href="{{ path('app_back_user_list') }}" class="stretched-link"></a>
                 </div>
             </div>
-            <div class="card col-3 m-2 text-bg-light">
+            <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-box-seam"></i> Dépôts</a></h5>
                     <p class="card-text">Pour gérer vos points de distribution</p>
                     <a href="{{ path('app_back_depot_list') }}" class="stretched-link"></a>
                 </div>
             </div>
-            <div class="card col-3 m-2 text-bg-light">
+            <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                 <div class="card-body">
                     <h5 class="card-title"><i class="bi bi-journal-text"></i> Jounaux de récolte</a></h5>
                     <p class="card-text">Pour générer vos journaux de récolte en PDF</p>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                <div class="card col-3 m-2 text-bg-light">
+                <div class="card col-3 m-2 bg-secondary bg-opacity-25 border-0">
                     <div class="card-body">
                         <h5 class="card-title"><i class="bi bi-at"></i> Mailing</a></h5>
                         <p class="card-text">Pour gérer et rédiger les emails d'ouverture et fermeture des ventes</p>
