@@ -58,6 +58,8 @@ class HarvestController extends AbstractController
 
         $productsArray = [];
         $depotArray = [];
+        $productPackArray = [];
+        $depotPackArray = [];
 
         //---------------------------------------------------
         // Creation of arrays with products bought in detail
@@ -66,6 +68,7 @@ class HarvestController extends AbstractController
         foreach ($allProducts as $currentProduct) {
             
             $totalQuantity = $currentProduct->getTotalQuantity();
+            $packQuantity = $currentProduct->getQuantity();
 
             if ($currentProduct->getProduct()->getUnity() === 'g') {
 
@@ -115,6 +118,96 @@ class HarvestController extends AbstractController
                         } else {
                 
                             $depotArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()] = $totalQuantity;
+                        }
+                    }
+                }
+            }
+
+            // Creation of $productPackArray
+            if (($currentProduct->getProduct()->getUnity() === 'g' || $currentProduct->getProduct()->getUnity() === 'Kg') && $currentProduct->getProduct()->getQuantityUnity() == 1) {
+                continue;
+            }
+
+            if (!isset($productPackArray[$currentProduct->getProduct()->getName()])) {
+                
+                if ($currentProduct->getProduct()->getUnity() === 'g' || $currentProduct->getProduct()->getUnity() === 'Kg') {
+                    $productPackArray[$currentProduct->getProduct()->getName()] = ['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity() => $packQuantity];
+                } else {
+                    $productPackArray[$currentProduct->getProduct()->getName()] = [$currentProduct->getProduct()->getUnity() => $totalQuantity];
+                }
+            } else {
+                
+                if ($currentProduct->getProduct()->getUnity() === 'g' || $currentProduct->getProduct()->getUnity() === 'Kg') {
+                    if (isset($productPackArray[$currentProduct->getProduct()->getName()]['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity()])) {
+                
+                        $productPackArray[$currentProduct->getProduct()->getName()]['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity()] += $packQuantity;
+                    
+                    } else {
+                    
+                        $productPackArray[$currentProduct->getProduct()->getName()]['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity()] = $packQuantity;
+                    
+                    }
+                } else {
+                    if (isset($productPackArray[$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()])) {
+                    
+                        $productPackArray[$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()] += $totalQuantity;
+                    
+                    } else {
+                    
+                        $productPackArray[$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()] = $totalQuantity;
+                    
+                    }
+                }
+            }
+
+            // Creation of $depotPackArray
+
+            if (!isset($depotPackArray[$currentProduct->getOrders()->getDepot()->getId()])) {
+                
+                if ($currentProduct->getProduct()->getUnity() === 'g' || $currentProduct->getProduct()->getUnity() === 'Kg') {
+                    $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()] = [
+                        $currentProduct->getOrders()->getDepot()->getName() => [
+                            $currentProduct->getProduct()->getName() => ['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity() => $packQuantity]
+                        ]
+                ];
+                } else {
+                    $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()] = [
+                        $currentProduct->getOrders()->getDepot()->getName() => [
+                            $currentProduct->getProduct()->getName() => [$currentProduct->getProduct()->getUnity() => $totalQuantity]
+                        ]
+                ];
+                }
+   
+            } else {
+                
+                if (isset($depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()])) {
+                
+                    if(!isset($depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()])) {
+                        
+                        if ($currentProduct->getProduct()->getUnity() === 'g' || $currentProduct->getProduct()->getUnity() === 'Kg') {
+                            $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()] = ['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity() => $packQuantity];
+                        } else {
+                            $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()] = [$currentProduct->getProduct()->getUnity() => $totalQuantity];
+                        }
+                    } else {
+                        
+                        if ($currentProduct->getProduct()->getUnity() === 'g' || $currentProduct->getProduct()->getUnity() === 'Kg') {
+                            if (isset($depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()]['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity()])) {
+                
+                                $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()]['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity()] += $packQuantity;
+                            } else {
+                    
+                                $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()]['lot de ' . $currentProduct->getProduct()->getQuantityUnity() . ' ' . $currentProduct->getProduct()->getUnity()] = $packQuantity;
+                            }
+                        } else {
+
+                            if (isset($depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()])) {
+                    
+                                $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()] += $totalQuantity;
+                            } else {
+                    
+                                $depotPackArray[$currentProduct->getOrders()->getDepot()->getId()][$currentProduct->getOrders()->getDepot()->getName()][$currentProduct->getProduct()->getName()][$currentProduct->getProduct()->getUnity()] = $totalQuantity;
+                            }
                         }
                     }
                 }
@@ -190,8 +283,8 @@ class HarvestController extends AbstractController
         if ($request->query->get('generate-pdf') && $request->query->get('generate-pdf') == 'generate') {
 
             $pdfTwigView = $this->renderView('back/harvest/pdf.html.twig', [
-                'products' => $productsArray,
-                'depots' => $depotArray,
+                'products' => $request->query->get('sort') && $request->query->get('sort') === 'pack' ? $productPackArray : $productsArray,
+                'depots' => $request->query->get('sort') && $request->query->get('sort') === 'pack' ? $depotPackArray : $depotArray,
                 'startDate' => $startDate,
                 'endDate' => $endDate
             ]);
@@ -204,10 +297,13 @@ class HarvestController extends AbstractController
             // $domPdf->render($pdfTwigView);
             // $domPdf->stream('journal-de-recolte-du-' . date('d-m-Y'));
         }
+        // dd($productPackArray, $depotPackArray);
 
         return $this->render('back/harvest/index.html.twig', [
             'products' => $productsArray,
             'depots' => $depotArray,
+            'packProducts' => $productPackArray,
+            'packDepots' => $depotPackArray,
             'startDate' => $startDate,
             'endDate' => $endDate
         ]);

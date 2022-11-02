@@ -12,12 +12,20 @@
         <div>
         {{ include('back/_form-date-filter.twig') }}
         </div>
-        <a href="{{ path('app_back_harvest_home', {'generate-pdf': 'generate', 'startDate': startDate, 'endDate': endDate}) }}" class="btn btn-outline-primary"><i class="bi bi-filetype-pdf"></i> Voir le PDF</a>
+        <div class="d-flex justify-content-center align-items-center {{ products is empty ? 'invisible' : '' }}">
+            <input type="radio" class="btn-check" name="pack" value="false" id="success-outlined" autocomplete="off" checked>
+            <label class="btn btn-outline-secondary" for="success-outlined">Par quantité</label>
+
+            <input type="radio" class="btn-check" name="pack" value="true" id="danger-outlined" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="danger-outlined">Par lots</label>
+        </div>  
+        <a href="{{ path('app_back_harvest_home', {'generate-pdf': 'generate', 'startDate': startDate, 'endDate': endDate}) }}" id="print-pdf" class="btn btn-outline-primary {{ products is empty ? 'invisible' : '' }}"><i class="bi bi-filetype-pdf"></i> Voir le PDF</a>
     </div>
 
     {% if products is empty %}
         <div class="text-bg-info">Aucune commande n'a été trouvé pour cette période</div>
     {% else %}
+  
 
     <div class="row justify-content-around">
         <article class="card col-4">
@@ -26,8 +34,18 @@
                 <table class="table table-striped justify-content-center">
                     <thead>
                     </thead>
-                    <tbody>
+                    <tbody class="products-by-total">
                         {% for productName, quantityList in products %}
+                            {% for unity, quantity in quantityList %}
+                                <tr>
+                                    <td class="col-2">{{ productName }} :</td>
+                                    <td class="col-1">{{ quantity ~ ' ' ~ unity }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                    <tbody class="products-by-pack d-none">
+                        {% for productName, quantityList in packProducts %}
                             {% for unity, quantity in quantityList %}
                                 <tr>
                                     <td class="col-2">{{ productName }} :</td>
@@ -44,7 +62,7 @@
             <div class="card-body">
                 <h3 class="card-title">Répartition par dépôt</h3>
                 
-                <div class="accordion" id="accordionPanelsStayOpenExample">
+                <div class="accordion products-by-total">
                 {% for currentDepot in depots %}
                     {% set accordeonItem = loop.index %}
                     {% for depotName, productsList in currentDepot %}
@@ -76,6 +94,39 @@
                 {% endfor %}
                 
                 </div>
+
+                <div class="accordion products-by-pack d-none">
+                {% for currentDepot in packDepots %}
+                    {% set accordeonItem = loop.index %}
+                    {% for depotName, productsList in currentDepot %}
+                        <div class="accordion-item">
+                            <h4 class="accordion-header" id="packStayOpen-heading{{ accordeonItem }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#packStayOpen-collapse{{ accordeonItem }}" aria-expanded="false" aria-controls="packStayOpen-collapse{{ accordeonItem }}">
+                                {{ depotName }}
+                            </button>
+                            </h4>
+                            <div id="packStayOpen-collapse{{ accordeonItem }}" class="accordion-collapse collapse" aria-labelledby="packStayOpen-heading{{ accordeonItem }}">
+                            <div class="accordion-body">
+                                    <table class="table table-striped justify-content-center">
+                                        <tbody>
+                                            {% for productName, quantityList in productsList %}
+                                                {% for unity, quantity in quantityList %}
+                                                    <tr>
+                                                        <td class="col-2">{{ productName }} :</td>
+                                                        <td class="col-1">{{ quantity ~ ' ' ~ unity }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                {% endfor %}
+                
+                </div>
                 
                 
             </div>
@@ -85,4 +136,8 @@
 
     {% endif %}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('scripts/harvestSwitch.js')}}"></script>
 {% endblock %}
