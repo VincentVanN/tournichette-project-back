@@ -475,7 +475,7 @@ class Product
         $allOrders = $this->orderProducts;
         foreach ($allOrders as $currentOrder)
         {
-            $totalProduct += $this->quantityUnity * $currentOrder->getQuantity;
+            $totalProduct += $this->quantityUnity * $currentOrder->getQuantity();
         }
 
 

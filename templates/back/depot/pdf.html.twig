@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Administration La Tournichette - Journal de récolte</title>
+		{% block stylesheets %}
+			<style type="text/css">
+				table {
+					width: 70%;
+					margin: auto;
+
+				}
+				body {
+					font-family: 'Courier';
+					margin: 0;
+				}
+				td {
+					padding: 10px;
+				}
+				th, h3 {
+					color: white;
+					border-radius: bold 5px grey;
+					background-color: black;
+				}
+				article {
+					margin-bottom: 1em;
+				}
+				.nborder {
+					color: #125733;
+					font-style: bold;
+				}
+				.first-lign {
+					height: 5px;
+					width: 100%;
+					background-color: #125733;
+				}
+				.second-lign {
+					height: 5px;
+					width: 100%;
+					background-color: #d6c873;
+					margin-bottom: 20px;
+				}
+				.text-center {
+					text-align: center;
+				}
+                .page {
+                    page-break-before: always;
+                }
+			</style>
+		{% endblock %}
+	</head>
+	<body>
+		<div>
+			<h1 class="text-center">Détail des commandes</h1>
+
+			<p class="text-center">{{ title }}</p>
+
+			{% for currentDepot in depots %}
+
+			<article>
+				<h2 class="nborder">{{ currentDepot.name }}</h2>
+				<div class="first-lign"></div>
+				<div class="second-lign"></div>
+			
+				{% for currentOrder in currentDepot.orders %}
+					<h3 class="text-center">Commande n°{{ currentOrder.id }}</h3>
+
+					<table class="table table-bordered" style="width: 100%">
+						<thead>
+							<tr>
+								<th scope="col">Client</th>
+								<th scope="col">Tél</th>
+								<th scope="col">Date commande</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ currentOrder.user.firstname }}
+									{{ currentOrder.user.lastname }}</td>
+								<td>{{ currentOrder.user.phone }}</td>
+								<td>{{ currentOrder.getDateOrder ? currentOrder.getDateOrder|date('d/m/Y') : '-' }}</td>
+							</tr>
+							{% if currentOrder.orderProducts is not empty %}
+								<thead>
+									<tr>
+										<th colspan="2">Produits</th>
+										<th colspan="1">Quantité</th>
+										<th colspan="1">Prix</th>
+									</tr>
+								</thead>
+
+								{% for currentOrderProduct in currentOrder.orderProducts %}
+									<tr>
+										<td colspan="2">
+											{{ currentOrderProduct.product.name }}
+											{% if currentOrderProduct.product.quantityUnity > 1 %}
+												(x{{ currentOrderProduct.product.quantityUnity ~ ' ' ~ currentOrderProduct.product.unity }})
+											{% endif %}
+											
+										</td>
+										<td colspan="1">
+											{% if currentOrderProduct.product.quantityUnity > 1 %}
+												{{ currentOrderProduct.quantity ~ ' lot(s)'}} (soit {{ currentOrderProduct.getTotalQuantity ~ currentOrderProduct.product.unity }})
+											{% else %}
+												{{ currentOrderProduct.quantity}} {{ currentOrderProduct.product.unity }}
+											{% endif %}
+											</td>
+										<td colspan="1">{{ (currentOrderProduct.quantity * currentOrderProduct.product.price)|number_format(2, ',', '') }}€</td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+
+							{% if currentOrder.cartOrders is not empty %}
+								<thead>
+									<tr>
+										<th colspan="2">Panier</th>
+										<th colspan="1">Quantité</th>
+										<th colspan="1">Prix</th>
+									</tr>
+								</thead>
+
+								{% for currentCart in currentOrder.cartOrders %}
+									<tr>
+										<td colspan="2">{{ currentCart.cart.name }}</td>
+										<td>{{ currentCart.quantity }}</td>
+										<td>{{ currentCart.cart.price|number_format(2, ',', '') }}€</td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+						</tbody>
+						<thead>
+							<tr>
+								<th colspan="2">TOTAL PRIX</th>
+								<th colspan="2">Commande payée ?</th>
+							</tr>
+						</thead>
+
+						<tr>
+							<td colspan="2" class="text-center">{{ currentOrder.price|number_format(2, ',', '') }}€</td>
+							<td colspan="2" class="text-center">{{ currentOrder.getPaymentStatus == 'yes' ? 'oui' : 'non' }}</td>
+						</tr>
+					</table>
+				{% endfor %}
+			</article>
+				
+			{% endfor %}
+
+	</body>
+</html>

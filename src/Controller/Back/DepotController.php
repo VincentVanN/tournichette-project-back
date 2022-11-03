@@ -9,6 +9,7 @@ use App\Form\DepotType;
 use App\Utils\Pdf\PdfLarge;
 use App\Repository\DepotRepository;
 use App\Repository\OrderRepository;
+use App\Repository\SalesStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -104,7 +105,7 @@ class DepotController extends AbstractController
     }
 
     /**
-     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     * @Route("/pdf/{id<\d+>}", name="_detail.pdf", methods={"GET"})
      */
     public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id, OrderRepository $orderRepository) 
     {   
@@ -119,6 +120,26 @@ class DepotController extends AbstractController
         ] 
     );
         $dompdf->showPdfFile($html);
+    }
+
+    /**
+     * @Route("/orders/pdf", name="_orders_pdf", methods="GET")
+     */
+    public function generateAllDepotsOrdersPdf(DepotRepository $depotRepository, SalesStatusRepository $salesStatusRepository, PdfLarge $pdfLarge)
+    {
+        $salesStatus = $salesStatusRepository->findOneBy(['name' => 'status']);
+        $allDepots = $depotRepository->findAllOrdersByDepot($salesStatus->getStartAt(), $salesStatus->getEndAt());
+
+        $pdfFileName = $salesStatus->getEndAt() === null ?
+                'commandes_depuis_le_' . $salesStatus->getStartAt()->format('d-m-Y') :
+                    'commandes_du_' . $salesStatus->getStartAt()->format('d-m-Y') . '_au_' . $salesStatus->getEndAt()->format('d-m-Y');
+
+        $titlePdfView = ucfirst(str_replace('_', ' ', $pdfFileName));
+        
+        $pdfTwigView = $this->renderView('back/depot/pdf.html.twig', ['depots' => $allDepots, 'title' => $titlePdfView]);
+
+        return $pdfLarge->showPdfFile($pdfTwigView, $pdfFileName);
+
     }
 
     /**

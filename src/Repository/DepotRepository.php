@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Depot;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,25 @@ class DepotRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findAllOrdersByDepot(DateTimeImmutable $dateStart, ?DateTimeImmutable $dateEnd)
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQueryBuilder();
+        $query->select('d, o')
+              ->from('App\Entity\Depot', 'd')
+              ->join('d.orders', 'o')
+              ->where('o.orderedAt >= :dateStart');
+
+        if ($dateEnd !== null) {
+            $query->andWhere('o.orderedAt <= :dateEnd')
+                  ->setParameter('dateEnd', $dateEnd);
+        }
+        $query->setParameter('dateStart', $dateStart);
+
+        return $query->getQuery()->getResult();
     }
 
 

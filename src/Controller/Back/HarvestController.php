@@ -290,14 +290,7 @@ class HarvestController extends AbstractController
             ]);
 
             return $pdfLarge->showPdfFile($pdfTwigView, 'journal-de-recolte-du-' . date('d-m-Y'));
-            // $domPdf = new Dompdf();
-            // $pdfOptions = $domPdf->getOptions();
-            // $domPdf->setPaper('A4', 'portrait');
-            // $domPdf->loadHtml($pdfTwigView);
-            // $domPdf->render($pdfTwigView);
-            // $domPdf->stream('journal-de-recolte-du-' . date('d-m-Y'));
         }
-        // dd($productPackArray, $depotPackArray);
 
         return $this->render('back/harvest/index.html.twig', [
             'products' => $productsArray,
