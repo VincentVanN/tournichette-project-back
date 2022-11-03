@@ -34,7 +34,7 @@ class EmailVerifyController extends AbstractController
             $email = filter_var($request->query->get('email'), FILTER_VALIDATE_EMAIL);
             $token = htmlspecialchars($request->query->get('token'));
 
-            $user = $userRepository->findOneBy(['email' => $email, 'tempToken' => $token]);
+            $user = $userRepository->findOneBy(['email' => $email, 'emailToken' => $token]);
 
             if ($user !== null) {
 
