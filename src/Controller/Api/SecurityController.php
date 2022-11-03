@@ -28,6 +28,10 @@ class SecurityController extends AbstractController
             return $this->json(['message' => 'Identifiants incorrects'], Response::HTTP_UNAUTHORIZED);
         }
 
+        if (!$user->isEmailChecked) {
+            return $this->json(['message' => 'Ton compte n\'est pas activé, clique sur le lien dans l\'email d\'activation du compte.'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $currentDateTime = new DateTime();
 
         // A custom token is created if not exists or if it's expired
