@@ -90,22 +90,12 @@ class UserController extends AbstractController
             return $this->prepareResponse('Email déjà existant', [], ['data' => $data], true, Response::HTTP_BAD_REQUEST);
         }
 
-        // Token for mail verif
-        $user->setEmailChecked(false);
-        $user->setEmailTokenUpdatedAt(new DateTimeImmutable());
-        $user->setEmailToken(
-            $tokenCreator->create(
-                $user->getEmail(), $passwordHasher->hashPassword(
-                    $user, $user->getEmail() . $user->getFirstname() . $user->getLastname()
-                )));
-        $mailer->emailVerify($user);
-
-        $user->setEmailNotifications(false);
-
-        $userRepository->add($user, true);
-
+        $user->setEmailNotifications(true);
+        
         if ($user->getSub() !== null) {
             $currentDateTime = new DateTime();
+
+            $user->setEmailChecked(true);
 
             // A custom token is created if not exists or if it's expired
             if (($user->getApiToken() === null) || ($currentDateTime->getTimestamp() - $user->getApiTokenUpdatedAt()->getTimeStamp() >= $tokenCreator->getTokenExpiredTime())) {
@@ -117,6 +107,18 @@ class UserController extends AbstractController
                 'token' => $user->getApiToken()
             ]);
         }
+
+        // Token for mail verif
+        $user->setEmailChecked(false);
+        $user->setEmailTokenUpdatedAt(new DateTimeImmutable());
+        $user->setEmailToken(
+            $tokenCreator->create(
+                $user->getEmail(), $passwordHasher->hashPassword(
+                    $user, $user->getEmail() . $user->getFirstname() . $user->getLastname()
+                )));
+        $mailer->emailVerify($user);
+
+        $userRepository->add($user, true);
 
         return $this->prepareResponse('User Create', [], [], false, Response::HTTP_CREATED);
     }
