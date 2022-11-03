@@ -34,6 +34,9 @@
 			background-color: #d6c873;
 			margin-bottom: 20px;
 		}
+		.text-center {
+			text-align: center;
+		}
 	</style>
 {% endblock %}
 
@@ -57,7 +60,7 @@
 					<td>{{ order.user.firstname }}
 						{{ order.user.lastname }}</td>
 					<td>{{ order.user.phone }}</td>
-					<td>{{ order.getDateOrder ? order.getDateOrder|date('Y-m-d') : '-' }}</td>
+					<td>{{ order.getDateOrder ? order.getDateOrder|date('d/m/Y') : '-' }}</td>
 					<td>{{ order.depot.name }}</td>
 				</tr>
 				{% if order.orderProducts is not empty %}
@@ -72,8 +75,8 @@
 					{% for currentProduct in order.orderProducts %}
 						<tr>
 							<td colspan="2">{{ currentProduct.product.name }}</td>
-							<td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.unity }}</td>
-							<td colspan="1">{{ currentProduct.quantity}}{{ currentProduct.product.price }}</td>
+							<td colspan="1">{{ currentProduct.quantity}} {{ currentProduct.product.unity }}</td>
+							<td colspan="1">{{ (currentProduct.quantity * currentProduct.product.price)|number_format(2, ',', '') }} €</td>
 						</tr>
 					{% endfor %}
 				{% endif %}
@@ -91,7 +94,7 @@
 						<tr>
 							<td colspan="2">{{ currentCart.cart.name }}</td>
 							<td>{{ currentCart.quantity }}</td>
-							<td>{{ currentCart.cart.price }}</td>
+							<td>{{ currentCart.cart.price|number_format(2, ',', '') }} €</td>
 						</tr>
 					{% endfor %}
 				{% endif %}
@@ -104,8 +107,8 @@
 			</thead>
 
 			<tr>
-				<td colspan="2">{{ order.price}}</td>
-				<td colspan="2">{{ order.getPaymentStatus}}</td>
+				<td colspan="2" class="text-center">{{ order.price|number_format(2, ',', '')}} €</td>
+				<td colspan="2" class="text-center">{{ order.getPaymentStatus == 'yes' ? 'oui' : 'non'}}</td>
 			</tr>
 		</tbody>
 	</table>

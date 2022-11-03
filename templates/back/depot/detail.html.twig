@@ -38,7 +38,9 @@
             background-color: #d6c873;
             margin-bottom: 20px;
         }
-        
+        .text-center {
+            text-align: center;
+        }        
     </style>
     
 {% endblock %}
@@ -62,7 +64,7 @@
             <tr>    
                 <td id="{{order.id}}" scope="row">{{ order.id }}</td>
                 <td> {{ order.user.firstname}} {{ order.user.lastname}}</td>
-                <td> {{ order.price }}</td>
+                <td> {{ order.price|number_format(2, ',', '') }} €</td>
             </tr>
     
      {% endfor %}
@@ -75,8 +77,8 @@
         </thead> 
                 
             <tr>              
-                <td colspan="2">{{nborders}}</td>
-                <td colspan="2">{{total}} €</td>
+                <td colspan="2" class="text-center">{{nborders}}</td>
+                <td colspan="2" class="text-center">{{total|number_format(2, ',', '')}} €</td>
             </tr>
         </body>
     </table> 
