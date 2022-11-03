@@ -13,7 +13,17 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ user.lastname }}</li>
                 <li class="list-group-item"><strong class="fw-semibold">Prénom : </strong>{{ user.firstname }}</li>
-                <li class="list-group-item"><strong class="fw-semibold">E-mail : </strong>{{ user.email }}</li>
+                <li class="list-group-item">
+                    <strong class="fw-semibold">E-mail : </strong>{{ user.email }}
+                    {% if user.emailChecked %}
+                        <i class="bi bi-check-square text-success"></i>
+                    {% else %}
+                        <i class="bi bi-x-square text-danger me-2"></i>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <a href="{{ path('app_back_user_check_email', {'id': user.id}) }}" class="btn btn-outline-primary btn-sm">Demande de confirmation</i></a>
+                        {% endif %}
+                    {% endif %}
+                </li>
                 <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ user.phone }}</li>
                 <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ user.address }}</li>
             </ul>

@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
+use App\Utils\CustomMailer;
+use App\Utils\TokenCreator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -140,6 +142,23 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $formUser
         ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @Route("/{id<\d+>}/check-email", name="_check_email", methods="GET")
+     */
+    public function checkEmail(User $user, CustomMailer $mailer, TokenCreator $tokenCreator, UserPasswordHasherInterface $passwordHasher)
+    {
+        $user->setEmailTokenUpdatedAt(new \DateTimeImmutable());
+        $user->setEmailToken(
+            $tokenCreator->create(
+                $user->getEmail(), $passwordHasher->hashPassword(
+                    $user, $user->getEmail() . $user->getFirstname() . $user->getLastname()
+                )));
+        $mailer->emailVerify($user);
+
+        return $this->redirectToRoute('app_back_user_show', ['id' => $user->getId()]);
     }
 
     /**
