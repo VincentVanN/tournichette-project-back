@@ -6,7 +6,6 @@ use App\Repository\UserRepository;
 use App\Utils\CustomMailer;
 use App\Utils\GetBaseUrl;
 use App\Utils\TokenCreator;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +49,7 @@ class ResetPasswordController extends AbstractController
 
                     $em->flush();
 
-                    return $this->redirect($baseUrl->getMainUrl() . '/oublie-mdp?error=expired');
+                    return $this->redirect($baseUrl->getMainUrl() . '/oubli-mdp?error=expired');
                 } else {
 
                     $user->setTempApiToken(
@@ -63,12 +62,12 @@ class ResetPasswordController extends AbstractController
 
                     $em->flush();
 
-                    return $this->redirect($baseUrl->getMainUrl() . '/oublie-mdp?token=' . $user->getTempApiToken());
+                    return $this->redirect($baseUrl->getMainUrl() . '/oubli-mdp?token=' . $user->getTempApiToken());
                 }
 
             }
         }
 
-        return $this->redirect($baseUrl->getMainUrl() . '/oublie-mdp?error=not-found');
+        return $this->redirect($baseUrl->getMainUrl() . '/oubli-mdp?error=not-found');
     }
 }

@@ -17,7 +17,6 @@ class SalesController extends AbstractController
      */
     public function showSalesStatus(SalesStatus $salesStatus): Response
     {
-        // dd($salesStatus->isSalesEnabled());
 
         if($salesStatus->isSalesEnabled() === true) {
 
@@ -25,7 +24,6 @@ class SalesController extends AbstractController
         } else {
             return $this->prepareResponse('Sales disabled', [], [], true, Response::HTTP_LOCKED);
         }
-        // return $this->json($salesStatus, Response::HTTP_OK);
     }
 
     private function prepareResponse(

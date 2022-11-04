@@ -37,10 +37,6 @@ services:
             $mailExpiredTime: '%env(resolve:TOKEN_EMAIL_VERIFY_TIME)%'
             $mailFrom: '%env(resolve:MAILER_FROM)%'
             $mailAdmin: '%env(resolve:MAILER_ADMIN)%'
-
-    # App\Utils\SalesStatus:
-    #     arguments:
-    #         $salesEnabled: '%env(resolve:SALES_ENABLED)%'
     
     App\EventListener\CartListener:
         tags:

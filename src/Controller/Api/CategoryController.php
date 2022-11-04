@@ -2,10 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,7 +52,6 @@ class CategoryController extends AbstractController
             );
         }
 
-        // dd($products);
         return $this->prepareResponse(
             'OK',
             ['groups' => 'api_v1_category_product'],
@@ -76,7 +73,6 @@ class CategoryController extends AbstractController
             'message' => $message,
         ];
 
-        // cf array_push qui fait se travaille merci @Steve A
         foreach ($data as $key => $value)
         {
             $responseData[$key] = $value;

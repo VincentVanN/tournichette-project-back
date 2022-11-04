@@ -40,9 +40,6 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // plus besoin car on a fait un écouteur d'événements
-            // $category->setSlug($mySlugger->slugify($category->getTitle()));
 
             $categoryRepository->add($category, true);
 
@@ -56,7 +53,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="_show", methods={"GET"})
+     * @Route("/{id<\d+>}", name="_show", methods={"GET"})
      */
     public function show(Category $category): Response
     {
@@ -66,7 +63,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
+     * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
@@ -74,8 +71,6 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // $category->setSlug($mySlugger->slugify($category->getTitle()));
             $categoryRepository->add($category, true);
 
             return $this->redirectToRoute('app_back_category_list', [], Response::HTTP_SEE_OTHER);
@@ -95,7 +90,6 @@ class CategoryController extends AbstractController
         Request $request,
         Category $category,
         SerializerInterface $serializer,
-        ValidatorInterface $validator,
         EntityManagerInterface $em
         ): Response
     {
@@ -117,7 +111,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="_delete", methods={"POST"})
+     * @Route("/{id<\d+>}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {

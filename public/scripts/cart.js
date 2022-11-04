@@ -1,6 +1,5 @@
 const cart = {
     init: function () {
-        console.log('Cart script initialized');
         cart.createProductElement();
         const buttonAddProductElement = document.querySelector('#product-add');
         buttonAddProductElement.addEventListener('click', cart.handleAddProductElement);
@@ -16,8 +15,6 @@ const cart = {
         const buttonAddProductElement = document.querySelector('#product-add')
 
         buttonAddProductElement.parentNode.insertBefore(newProductElement, buttonAddProductElement);
-
-        // console.log(divMb3Element);
 
     }
 }

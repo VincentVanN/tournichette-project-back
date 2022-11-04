@@ -7,7 +7,3 @@ twig:
 fos_ck_editor:
     base_path: "custom_bundles/ckeditor_custom"
     js_path: "custom_bundles/ckeditor_custom/ckeditor.js"
-        # my_config:
-        #     language: en
-            # toolbar: [ ["Save, "-", "Save"], "/", ["Anchor"], "/", ["Maximize"] ]
-            # toolbar: [ ["Source", "-", "Save"], "/", ["Anchor"], "/", ["Maximize"] ]

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller\Api;
-use App\Repository\DepotRepository;
 use App\Repository\ProductRepository;
 use App\Utils\GetBaseUrl;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +21,6 @@ class ProductController extends AbstractController
     */
     public function list(ProductRepository $productRepository, GetBaseUrl $baseUrl) :Response
     {
-        // $allProducts = $productRepository->findAll();
         $unarchivedProducts = $productRepository->findBy(['archived' => false], ['name' => 'ASC']);
 
         foreach($unarchivedProducts as $currentProduct)

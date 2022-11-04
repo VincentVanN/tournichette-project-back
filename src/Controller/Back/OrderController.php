@@ -3,13 +3,9 @@
 namespace App\Controller\Back;
 
 use App\Entity\Order;
-use App\Form\OrderType;
-use App\vendor\dompdf\dompdf;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Utils\Pdf\PdfSticker;
 use App\Repository\OrderRepository;
 use DateTimeImmutable;
-use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -63,7 +59,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="_show", methods={"GET"})
+     * @Route("/{id<\d+>}", name="_show", methods={"GET"})
      */
     public function show(Order $order): Response
     {
@@ -73,9 +69,9 @@ class OrderController extends AbstractController
     }
     
     /**
-     * @Route("/pdf/{id}", name="_detail.pdf", methods={"GET"})
+     * @Route("/pdf/{id<\d+>}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfOrder(Order $order, PdfSticker $dompdf, $id, OrderRepository $orderRepository) 
+    public function generatePdfOrder(Order $order, PdfSticker $dompdf) 
     {   
         $html = $this->renderview('back/order/detail.html.twig', 
         ['order'=>$order,] 
@@ -85,23 +81,21 @@ class OrderController extends AbstractController
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * @Route("/validate/{id}", name="_validate", methods={"GET"})
+     * @Route("/validate/{id<\d+>}", name="_validate", methods={"GET"})
      */
-    public function orderValidate(Order $order, OrderRepository $orderRepository, $id): Response
+    public function orderValidate(Order $order, OrderRepository $orderRepository): Response
     {
         $order->setPaymentStatus('yes');
         $orderRepository->add($order, true);
-        //return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_SEE_OTHER);
         return $this->redirectToRoute('app_back_order_list', ['_fragment' => $order->getId()]);
     }
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * @Route("/delivered/{id}", name="_delivered", methods={"GET"})
+     * @Route("/delivered/{id<\d+>}", name="_delivered", methods={"GET"})
      */
     public function orderDelivered(Order $order, OrderRepository $orderRepository): Response
     {
-        //$order->setPaymentStatus('yes');
         $order->setDeliverStatus('yes');
         $orderRepository->add($order, true);
 
@@ -111,7 +105,7 @@ class OrderController extends AbstractController
     /**
      * @Route("/validate/{id<\d+>}", name="_validate-ajax", methods={"POST"})
      */
-    public function orderValidateAjax(Order $order, OrderRepository $orderRepository, $id): Response
+    public function orderValidateAjax(Order $order, OrderRepository $orderRepository): Response
     {
         if($order !== null) {
             $order->setPaymentStatus('yes');

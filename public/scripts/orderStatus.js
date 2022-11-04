@@ -1,6 +1,5 @@
 const orderStatus = {
     init: function() {
-        console.log('orderStatus script initialized');
         
         const paidStatusElements = document.querySelectorAll('a.bi-cash-coin');
         const deliveredStatusElement = document.querySelectorAll('a.bi-clipboard2-check');

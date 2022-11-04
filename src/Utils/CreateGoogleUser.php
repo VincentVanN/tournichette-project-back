@@ -35,17 +35,13 @@ class CreateGoogleUser
         $errors = $this->validator->validate($user);
 
         if (count($errors) > 0) {
-            // $errorString = (string) $errors;
-            // dd($errors);
             $data = [];
             foreach($errors as $currentError) {
                 $data[$currentError->getPropertyPath()] = $currentError->getMessage();
                 
             }
             return $data;
-            // return $this->prepareResponse('Erreurs lors de la création du compte', [], $data, true, Response::HTTP_BAD_REQUEST);
         }
-        // dd($errors);
 
         $this->userRepository->add($user, true);
 

@@ -70,41 +70,4 @@ class EmailVerifyController extends AbstractController
 
         return $this->redirect($baseUrl->getMainUrl() . '/confirmation-compte?checked=not-found');
     }
-
-    /**
-     * @Route("/verify-email", name="_test", methods="GET")
-     */
-    public function testEmailChecked(Request $request)
-    {
-        if($request->query->get('checked')) {
-
-            switch ($request->query->get('checked')) {
-                case 'expired':
-                    dd('lien expiré');
-                    break;
-
-                case 'checked':
-                    dd('email vérifié');
-                    break;
-
-                case 'not-found':
-                    dd('utilisateur non trouvé');
-                    break;
-            }
-        } else {
-            dd('paramètre absent');
-        }
-
-        return;
-    }
-
-    /**
-     * @Route("/test", name="_test_send", methods="GET")
-     */
-    public function testEmailVerif(CustomMailer $mailer)
-    {
-        $mailer->emailVerify($this->getUser());
-        dd('mail send');
-        return;
-    }
 }

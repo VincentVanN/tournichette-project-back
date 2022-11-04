@@ -6,10 +6,7 @@ use App\Entity\Product;
 use App\Utils\MySlugger;
 use App\Form\ProductType;
 use App\Utils\GetBaseUrl;
-use App\Entity\OrderProduct;
-use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +26,7 @@ class ProductController extends AbstractController
     {
         $unarchivedProducts = $productRepository->findBy(['archived' => false], ['name' => 'ASC']);
         return $this->render('back/product/index.html.twig', [
-            'products' => $productRepository->findBy(['archived' => false], ['name' => 'ASC'])
+            'products' => $unarchivedProducts
         ]);
     }
 
@@ -37,14 +34,13 @@ class ProductController extends AbstractController
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ProductRepository $productRepository, MySlugger $mySlugger): Response
+    public function new(Request $request, ProductRepository $productRepository): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
                 
         if ($form->isSubmitted() && $form->isValid()) {
-           // $product->setSlug($mySlugger->slugify($product->getName()));
            $product->setArchived(false);           
             $productRepository->add($product, true);
 
@@ -58,7 +54,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="_show", methods={"GET"})
+     * @Route("/{id<\d+>}", name="_show", methods={"GET"})
      */
     public function show(Product $product, GetBaseUrl $baseUrl): Response
     {
@@ -73,15 +69,14 @@ class ProductController extends AbstractController
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
+     * @Route("/{id<\d+>}/edit", name="_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Product $product, ProductRepository $productRepository, MySlugger $mySlugger): Response
+    public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           // $product->setSlug($mySlugger->slugify($product->getName()));
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
@@ -95,12 +90,11 @@ class ProductController extends AbstractController
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * @Route("/{id}", name="_delete", methods={"POST"})
+     * @Route("/{id<\d+>}", name="_delete", methods={"POST"})
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
-            // $productRepository->remove($product, true);
             $product->setArchived(true);
             $productRepository->add($product, true);
         }

@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use DateTime;
 use App\Entity\User;
 use App\Utils\TokenCreator;
-use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Utils\CustomMailer;
 use DateTimeImmutable;
@@ -13,13 +12,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
 /** @Route("/api/v1/users", name="api_v1_users" )
  * 
@@ -32,7 +29,7 @@ class UserController extends AbstractController
     * @Route("", name="_show", methods="GET")
     * @return Response
     */
-    public function show(UserRepository $userRepository, SerializerInterface $serializer) :Response
+    public function show(): Response
     {
         $user = $this->getUser();
 
@@ -80,8 +77,6 @@ class UserController extends AbstractController
         $errors = $validator->validate($user);
 
         if (count($errors) > 0) {
-            // $errorString = (string) $errors;
-            // dd($errors);
             $data = [];
             foreach($errors as $currentError) {
                 $data[$currentError->getPropertyPath()] = $currentError->getMessage();
@@ -137,7 +132,6 @@ class UserController extends AbstractController
     {
         $data = $request->getContent();
         $user = $this->getUser();
-        // $currentPassword = $user->getPassword();
 
         $requestData = \json_decode($request->getContent(), true);
 
@@ -240,8 +234,6 @@ class UserController extends AbstractController
         UserRepository $userRepository): Response
     {
         $data = $request->getContent();
-        // $user = $this->getUser();
-        // $currentPassword = $user->getPassword();
 
         $requestData = \json_decode($request->getContent(), true);
 

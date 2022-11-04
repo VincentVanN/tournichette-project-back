@@ -13,7 +13,6 @@ class HomepageController extends AbstractController
      */
     public function index(): Response
     {
-        // return $this->redirectToRoute('app_back_order_list', [], Response::HTTP_TEMPORARY_REDIRECT);
         return $this->render('back/homepage/homepage.html.twig', [
             'controller_name' => 'HomepageController',
         ]);

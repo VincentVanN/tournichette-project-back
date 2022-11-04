@@ -2,13 +2,8 @@
 
 namespace App\Controller\Back;
 
-use App\Entity\Order;
 use DateTimeImmutable;
-use App\Repository\DepotRepository;
-use App\Repository\OrderRepository;
-use App\Repository\ProductRepository;
 use App\Repository\CartOrderRepository;
-use App\Repository\CartProductRepository;
 use App\Repository\SalesStatusRepository;
 use App\Repository\OrderProductRepository;
 use App\Utils\Pdf\PdfLarge;
@@ -23,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HarvestController extends AbstractController
 {
     /**
-     * @Route("/", name="_home")
+     * @Route("", name="_home")
      */
     public function index(OrderProductRepository $orderProductRepository, CartOrderRepository $cartOrderRepository, SalesStatusRepository $salesStatusRepository, Request $request, PdfLarge $pdfLarge): Response
     {   

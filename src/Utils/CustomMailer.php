@@ -3,10 +3,7 @@
 namespace App\Utils;
 
 use App\Entity\User;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -50,7 +47,6 @@ class CustomMailer
     {
         $email = (new TemplatedEmail())
             ->from($this->mailFrom)
-            // ->to($user->getEmail())
             ->to($user->getEmail())
             ->subject('Vérification de votre adresse email')
             ->htmlTemplate('mailer/email_verify/verify.html.twig')

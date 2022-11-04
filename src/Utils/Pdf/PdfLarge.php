@@ -38,26 +38,4 @@ class PdfLarge
         $this->domPdf->render();
         $this->domPdf->output();
     }
-
-    /*
-    global
-    lot
-    point dépôt
-    total cumul par produits
-    total produit par dépôt
-    qté global produit par point dépôt
-    nombre de lot par qté vendu
-    client global
-    client par point dépôt
-
-array 
-nom produit
-unity
-prix
-
-commande client
-tel
-nom
-detail
-    */
 }

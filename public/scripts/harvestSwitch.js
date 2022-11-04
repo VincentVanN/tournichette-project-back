@@ -3,7 +3,6 @@ const harvestSwitch = {
     pdfButtonOriginalValue: null,
 
     init: function() {
-        console.log('harvestSwitch initialized');
 
         const packRadioElements = document.querySelectorAll('input[name="pack"]');
         

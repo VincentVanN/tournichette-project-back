@@ -11,7 +11,6 @@ use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,9 +23,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class CartController extends AbstractController
 {
-        /**
-         * @Route("", name="_list", methods={"GET"})
-         */
+    /**
+     * @Route("", name="_list", methods={"GET"})
+     */
     public function list(CartRepository $cartRepository): Response
     {
         return $this->render('back/cart/index.html.twig', [
@@ -37,7 +36,7 @@ class CartController extends AbstractController
     /**
      * @Route("/new", name="_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, CartRepository $cartRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
+    public function new(Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
         $cart = new Cart();
 

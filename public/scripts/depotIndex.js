@@ -1,6 +1,5 @@
 const depotIndex = {
     init: function () {
-        console.log('Depot-index initialized');
         const checkboxesElements = document.querySelectorAll('.form-check-input');
         checkboxesElements.forEach(element => element.addEventListener('change', depotIndex.handleChangeAvailableStatus));
     },

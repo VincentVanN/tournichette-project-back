@@ -6,7 +6,6 @@ use App\Repository\UserRepository;
 use App\Utils\CustomMailer;
 use App\Utils\TokenCreator;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +34,6 @@ class ResetPasswordController extends AbstractController
 
         $email = filter_var($requestData['email'], FILTER_VALIDATE_EMAIL);
 
-        // dd($email);
         if (!$email) {
             return $this->json(['message' => 'l\'email n\'a pas la bonne forme'], Response::HTTP_BAD_REQUEST);
         } else {
@@ -56,7 +54,7 @@ class ResetPasswordController extends AbstractController
                 return $this->json(['message' => 'Un email vient d\'être envoyé à l\'adresse indiquée'], Response::HTTP_OK);
 
             } else {
-                return $this->json(['message' => 'l\'email n\'existe pas dans notre base de données'], Response::HTTP_NOT_FOUND);
+                return $this->json(['message' => 'L\'email n\'existe pas dans notre base de données'], Response::HTTP_NOT_FOUND);
             }
         }
 

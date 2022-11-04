@@ -1,6 +1,5 @@
 const cartIndex = {
     init: function () {
-        console.log('Cart-index initialized');
         const checkboxesElements = document.querySelectorAll('.form-check-input');
         checkboxesElements.forEach(element => element.addEventListener('change', cartIndex.handleChangeOnsaleStatus));
     },

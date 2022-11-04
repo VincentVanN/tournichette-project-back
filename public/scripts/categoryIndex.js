@@ -1,6 +1,5 @@
 const categoryIndex = {
     init: function() {
-        console.log('categoryIndex initialized');
 
         const descriptionElementArray = document.querySelectorAll('p.description');
         
@@ -91,7 +90,6 @@ const categoryIndex = {
         const spinnersElement = descriptionParentElt.querySelector('.spinners');
         const descriptionElement = descriptionParentElt.querySelector('p.description');
         
-        // descriptionText = descriptionText === null ? '<em>Pas de desciption. Vous pouvez en ajouter une en cliquant sur ce texte.</em>' : descriptionText;
         if (descriptionText === null) {
             descriptionText = '<em>Pas de desciption. Vous pouvez en ajouter une en cliquant sur ce texte.</em>';
             descriptionElement.classList.remove('w-100', 'bg-opacity-25', 'bg-secondary');

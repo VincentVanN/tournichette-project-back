@@ -6,7 +6,6 @@ use App\Entity\User;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -59,18 +58,6 @@ class UserType extends AbstractType
                 'label' => 'Adresse'
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPresetDatas']);
-
-        // $builder->get('roles')
-        //     ->addModelTransformer(new CallbackTransformer(
-        //         function ($roleToString) {
-        //             // Transform the array to string
-        //             return $roleToString[0];
-        //         },
-        //         function ($roleToArray) {
-        //             //Transform the string back to array
-        //             return [$roleToArray];
-        //         }
-        //     ));
     }
 
     public function onPresetDatas(FormEvent $event)
@@ -80,7 +67,6 @@ class UserType extends AbstractType
 
         if (!is_null($user->getId())) {
             $roleName = $user->getRoleName();
-            $emailUser = $user->getEmail();
 
             $form->remove('password');
             $form->remove('roles');

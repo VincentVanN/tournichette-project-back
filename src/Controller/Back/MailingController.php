@@ -4,13 +4,10 @@ namespace App\Controller\Back;
 
 use App\Form\SalesMailType;
 use App\Repository\SalesStatusRepository;
-use App\Repository\UserRepository;
-use App\Utils\CustomMailer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @Route("/back/mailing", name="app_back_mailing")

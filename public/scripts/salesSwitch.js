@@ -1,6 +1,5 @@
 const salesSwitch = {
     init: function() {
-        console.log('salesSwitch initialized');
         const salesSwitchElement = document.getElementById('salesSwitchStatus');
         salesSwitchElement.addEventListener('change', salesSwitch.handleEnablingSales);
     },

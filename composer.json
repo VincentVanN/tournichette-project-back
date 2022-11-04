@@ -16,7 +16,6 @@
         "friendsofsymfony/ckeditor-bundle": "^2.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "jzonta/faker-restaurant": "^2.0",
-        "knplabs/knp-snappy-bundle": "^1.6",
         "nelmio/api-doc-bundle": "^4.9",
         "nelmio/cors-bundle": "^2.2",
         "phpdocumentor/reflection-docblock": "^5.3",

@@ -3,7 +3,6 @@
 namespace App\Controller\Back;
 
 use App\Entity\Depot;
-use App\Entity\Order;
 use DateTimeImmutable;
 use App\Form\DepotType;
 use App\Utils\Pdf\PdfLarge;
@@ -16,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\DepotPasswordHasherInterface;
 
 /**
  * @Route("/back/depot", name="app_back_depot")
@@ -30,8 +28,6 @@ class DepotController extends AbstractController
     */
     public function list(DepotRepository $depotRepository) :Response
     {
-       // $allDepots = $depotRepository->findAll();
-
         return $this->render('back/depot/index.html.twig',
             ['depots' => $depotRepository->findAll(),
         ]);
@@ -107,7 +103,7 @@ class DepotController extends AbstractController
     /**
      * @Route("/pdf/{id<\d+>}", name="_detail.pdf", methods={"GET"})
      */
-    public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, $id, OrderRepository $orderRepository) 
+    public function generatePdfDepot(Depot $depot, PdfLarge $dompdf, OrderRepository $orderRepository) 
     {   
         $orders = $orderRepository->findTotalPriceOrder($depot);
         $total=$orders['price'];
@@ -152,8 +148,6 @@ class DepotController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // on slugify le titre fournit par le user avant de l'enregistrer en BDD
-            // $depot->setSlug($mySlugger->slugify($depot->getTitle()));
             $depotRepository->add($depot, true);
 
             return $this->redirectToRoute('app_back_depot_list', [], Response::HTTP_SEE_OTHER);

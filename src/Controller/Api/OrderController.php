@@ -3,11 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\CartOrder;
-use App\Entity\Depot;
 use App\Entity\Order;
 use App\Entity\OrderProduct;
-use App\Entity\PaymentInfo;
-use App\Entity\User;
 use App\Repository\CartRepository;
 use App\Repository\DepotRepository;
 use App\Repository\OrderRepository;
@@ -49,7 +46,6 @@ class OrderController extends AbstractController
         $order->resetOrderProducts();
         $order->resetCartOrders();
         $order->setUser($this->getUser());
-        // $order->setPaymentStatus('no');
         $order->setDeliverStatus('no');
         $order->setDateOrder(new \DateTimeImmutable());
 
