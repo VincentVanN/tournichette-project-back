@@ -61,7 +61,6 @@ const categoryIndex = {
         httpHeaders.append("Content-Type", "application/json");
         const fetchOptions = {
             method: 'PATCH',
-            mode: 'cors',
             cache: 'no-cache',
             headers: httpHeaders,
             body: JSON.stringify(data)
