@@ -84,7 +84,7 @@ class CategoryController extends AbstractController
 
     /**
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * @Route("/{id<\d+>}/edit", name="_edit_json", methods={"POST"})
+     * @Route("/{id<\d+>}/edit-description", name="_edit_json", methods={"PATCH"})
      */
     public function editJson(
         Request $request,

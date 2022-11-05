@@ -68,7 +68,7 @@ const categoryIndex = {
         };
 
         // Fetch request
-        fetch('/back/category/' + categoryId + '/edit', fetchOptions)
+        fetch('/back/category/' + categoryId + '/edit-description', fetchOptions)
             .then(
                 function(response) {
                     if (response.ok) {
