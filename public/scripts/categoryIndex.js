@@ -60,7 +60,7 @@ const categoryIndex = {
         const httpHeaders = new Headers();
         httpHeaders.append("Content-Type", "application/json");
         const fetchOptions = {
-            method: 'POST',
+            method: 'PATCH',
             mode: 'cors',
             cache: 'no-cache',
             headers: httpHeaders,
