@@ -68,7 +68,7 @@ const categoryIndex = {
         };
 
         // Fetch request
-        fetch('/back/category/' + categoryId + '/edit-description', fetchOptions)
+        fetch('https://admin.tournichette.fr/back/category/' + categoryId + '/edit-description', fetchOptions)
             .then(
                 function(response) {
                     if (response.ok) {
