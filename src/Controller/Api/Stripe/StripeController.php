@@ -133,7 +133,7 @@ class StripeController extends AbstractController
     }
 
     /**
-     * @Route("/delete-card'", name="_delete_card", methods="POST")
+     * @Route("/delete-card", name="_delete_card", methods="POST")
      */
     public function deleteCard(Request $request): Response
     {

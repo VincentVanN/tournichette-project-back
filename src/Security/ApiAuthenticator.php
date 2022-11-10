@@ -30,7 +30,12 @@ class ApiAuthenticator extends AbstractAuthenticator
         '/api/v1/users/create',
         '/api/v1/users/google_update',
         '/api/v1/sales',
-        '/api/v1/reset-password'
+        '/api/v1/reset-password',
+        'api/stripe/create-customer',
+        'api/stripe/update-payment-intent',
+        'api/stripe/create-payment-intent',
+        'api/stripe/charge-existing-card',
+        'api/stripe/delete-card'
     ];
 
     public function __construct(UserRepository $userRepository)
