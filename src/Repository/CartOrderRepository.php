@@ -44,23 +44,22 @@ class CartOrderRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
         $query = $em->createQueryBuilder();
         $query->select('co')
-              ->from('App\Entity\CartOrder', 'co');
+              ->from('App\Entity\CartOrder', 'co')
+              ->innerJoin('co.orders', 'o')
+              ->where('o.user IS NOT NULL');
         
         if ($startDate !== null && $endDate === null) {
-            $query->innerJoin('co.orders', 'o')
-                    ->where('o.orderedAt > :startDate')
+            $query->andWhere('o.orderedAt > :startDate')
                     ->setParameters(['startDate' => $startDate]);
         }
 
         if ($startDate === null && $endDate !== null) {
-            $query->innerJoin('co.orders', 'o')
-                    ->where('o.orderedAt < :endDate')
+            $query->andWhere('o.orderedAt < :endDate')
                     ->setParameters(['endDate' => $endDate]);
         }
 
         if ($startDate !== null && $endDate !== null) {
-            $query->innerJoin('co.orders', 'o')
-                    ->where('o.orderedAt BETWEEN :startDate AND :endDate')
+            $query->andWhere('o.orderedAt BETWEEN :startDate AND :endDate')
                     ->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
         }
 

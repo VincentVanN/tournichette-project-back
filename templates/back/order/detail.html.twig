@@ -57,9 +57,21 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{ order.user.firstname }}
-						{{ order.user.lastname }}</td>
-					<td>{{ order.user.phone }}</td>
+					<td>
+					{% if order.user is null %}
+						<em>Utilisateur supprimé</em>
+					{% else %}
+						{{ order.user.firstname }}
+						{{ order.user.lastname }}
+					{% endif %}
+					</td>
+					<td>
+					{% if order.user is null %}
+						-
+					{% else %}
+						{{ order.user.phone }}
+					{% endif %}
+					</td>
 					<td>{{ order.getDateOrder ? order.getDateOrder|date('d/m/Y') : '-' }}</td>
 					<td>{{ order.depot.name }}</td>
 				</tr>

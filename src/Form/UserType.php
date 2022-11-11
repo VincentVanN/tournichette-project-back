@@ -33,7 +33,7 @@ class UserType extends AbstractType
                 'choices' => [
                     'Client' => 'ROLE_USER',
                     'Admin' => 'ROLE_ADMIN',
-                    'Super Admin' => 'ROLE_SUPER_ADMIN',
+                    'Super admin' => 'ROLE_SUPER_ADMIN',
                 ],
                 'choice_attr' => [
                     'Client' => ['checked' => 'checked']
@@ -83,7 +83,7 @@ class UserType extends AbstractType
                 'choices' => [
                     'Client' => 'ROLE_USER',
                     'Admin' => 'ROLE_ADMIN',
-                    'Super Admin' => 'ROLE_SUPER_ADMIN',
+                    'Super admin' => 'ROLE_SUPER_ADMIN',
                 ],
                 'choice_attr' => [
                     $roleName => ['checked' => 'checked']

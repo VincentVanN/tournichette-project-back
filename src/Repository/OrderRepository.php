@@ -59,13 +59,14 @@ class OrderRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQueryBuilder();
         $query  ->select('o')
-                ->from('App\Entity\Order', 'o');
+                ->from('App\Entity\Order', 'o')
+                ->where('o.user IS NOT NULL');
 
         if ($endDate !== null) {
-            $query->where('o.orderedAt BETWEEN :startDate AND :endDate')
+            $query->andWhere('o.orderedAt BETWEEN :startDate AND :endDate')
                   ->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
         } else {
-            $query->where('o.orderedAt > :startDate')
+            $query->andWhere('o.orderedAt > :startDate')
                   ->setParameter('startDate', $startDate);
         }
 
@@ -113,7 +114,8 @@ class OrderRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQueryBuilder();
         $query  ->select('o')
-                ->from('App\Entity\Order', 'o');
+                ->from('App\Entity\Order', 'o')
+                ->where('o.user IS NOT NULL');
 
         if ($depot !== null) {
             $query->andWhere('o.depot = :depot')
@@ -167,6 +169,7 @@ class OrderRepository extends ServiceEntityRepository
         SELECT SUM(o.price) price, COUNT(o.id) orders
         FROM App\Entity\Order o
         WHERE o.depot = :depot
+        AND WHERE o.user IS NOT NULL
         '
         )->setParameter('depot', $depot);
             return $query->getSingleResult();

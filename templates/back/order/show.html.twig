@@ -24,6 +24,11 @@
             </div>
             <div class="card-body">
                 <h3 class="card-title">Infos client</h3>
+                {% if order.user is null %}
+                    <p class="alert alert-info" role="alert">
+                        L'utilisateur a été supprimé.
+                    </p>
+                {% else %}
                 <ul>
                     <li class="list-group-item"><strong class="fw-semibold">Nom : </strong>{{ order.user.lastname }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Prénom : </strong>{{ order.user.firstname }}</li>
@@ -31,6 +36,7 @@
                     <li class="list-group-item"><strong class="fw-semibold">Téléphone : </strong>{{ order.user.phone }}</li>
                     <li class="list-group-item"><strong class="fw-semibold">Adresse : </strong>{{ order.user.address }}</li>
                 </ul>
+                {% endif %}
             </div>
             <div class="cart-body">
                 <h3 class="card-title">Infos point de retrait</h3>

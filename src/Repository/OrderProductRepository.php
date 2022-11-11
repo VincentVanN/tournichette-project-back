@@ -46,23 +46,22 @@ class OrderProductRepository extends ServiceEntityRepository
         $query->select('op')
               ->from('App\Entity\OrderProduct', 'op')
               ->innerJoin('op.product', 'p')
+              ->innerJoin('op.orders', 'o')
+              ->where('o.user IS NOT NULL')
               ->orderBy('p.name', 'ASC');
         
         if ($startDate !== null && $endDate === null) {
-            $query->innerJoin('op.orders', 'o')
-                  ->where('o.orderedAt > :startDate')
+            $query->andWhere('o.orderedAt > :startDate')
                   ->setParameters(['startDate' => $startDate]);
         }
 
         if ($startDate === null && $endDate !== null) {
-            $query->innerJoin('op.orders', 'o')
-                  ->where('o.orderedAt < :endDate')
+            $query->andWhere('o.orderedAt < :endDate')
                   ->setParameters(['endDate' => $endDate]);
         }
 
         if ($startDate !== null && $endDate !== null) {
-            $query->innerJoin('op.orders', 'o')
-                  ->where('o.orderedAt BETWEEN :startDate AND :endDate')
+            $query->andWhere('o.orderedAt BETWEEN :startDate AND :endDate')
                   ->setParameters(['startDate' => $startDate, 'endDate' => $endDate]);
         }
 

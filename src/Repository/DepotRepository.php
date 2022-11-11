@@ -48,7 +48,8 @@ class DepotRepository extends ServiceEntityRepository
         $query->select('d, o')
               ->from('App\Entity\Depot', 'd')
               ->join('d.orders', 'o')
-              ->where('o.orderedAt >= :dateStart');
+              ->where('o.orderedAt >= :dateStart')
+              ->andHaving('o.user IS NOT NULL');
 
         if ($dateEnd !== null) {
             $query->andWhere('o.orderedAt <= :dateEnd')
