@@ -35,6 +35,7 @@ const categoryIndex = {
     },
 
     handleKeyUp: function(event) {
+        event.preventDefault();
         const targetElement = event.currentTarget;
         if (event.key === 'Enter') {
             categoryIndex.handleRemoveListeners(event);
