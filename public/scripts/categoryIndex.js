@@ -84,7 +84,7 @@ const categoryIndex = {
                         categoryIndex.modifyDOM(descriptionParentElt, response.description);
                     }
                 )
-                .catch(err => categoryIndex.showError(err, descriptionParentElt))
+                .catch(err => console.log(err))
             } catch (err) {
                 console.log(err);
             }
