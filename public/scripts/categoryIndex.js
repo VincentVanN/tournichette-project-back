@@ -67,22 +67,26 @@ const categoryIndex = {
         };
 
         // Fetch request
-        fetch('https://admin.tournichette.fr/back/category/' + categoryId + '/edit-description', fetchOptions)
-            .then(
-                function(response) {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Erreur lors de la modification de la description : ' + response.statusText + ' (code ' + response.status + ').');
+        try {
+            fetch('/back/category/' + categoryId + '/edit-description', fetchOptions)
+                .then(
+                    function(response) {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Erreur lors de la modification de la description : ' + response.statusText + ' (code ' + response.status + ').');
+                        }
                     }
-                }
-            )
-            .then(
-                function(response) {
-                    categoryIndex.modifyDOM(descriptionParentElt, response.description);
-                }
-            )
-            .catch(err => categoryIndex.showError(err.message, descriptionParentElt))
+                )
+                .then(
+                    function(response) {
+                        categoryIndex.modifyDOM(descriptionParentElt, response.description);
+                    }
+                )
+                .catch(err => categoryIndex.showError(err.message, descriptionParentElt))
+            } catch (err) {
+                console.log(err);
+            }
     },
 
     modifyDOM: function(descriptionParentElt, descriptionText) {
