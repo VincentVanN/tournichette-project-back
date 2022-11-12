@@ -60,9 +60,9 @@ const categoryIndex = {
         const data = { 'description': descriptionText };
         const httpHeaders = new Headers();
         httpHeaders.append("Content-Type", "application/json");
+        httpHeaders.append("Accept", "application/json");
         const fetchOptions = {
-            method: 'PATCH',
-            
+            method: 'POST',
             headers: httpHeaders,
             body: JSON.stringify(data)
         };
@@ -84,7 +84,7 @@ const categoryIndex = {
                         categoryIndex.modifyDOM(descriptionParentElt, response.description);
                     }
                 )
-                .catch(err => console.log(err))
+                .catch(err => categoryIndex.showError(err.message, descriptionParentElt))
             } catch (err) {
                 console.log(err);
             }
