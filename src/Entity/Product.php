@@ -180,6 +180,11 @@ class Product
      */
     private $quantityUnity;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $onSale;
+
     private $totalProducts;
 
     public function __construct()
@@ -448,6 +453,18 @@ class Product
     public function setQuantityUnity(int $quantityUnity = 1): self
     {
         $this->quantityUnity = $quantityUnity;
+
+        return $this;
+    }
+
+    public function isOnSale(): ?bool
+    {
+        return $this->onSale;
+    }
+
+    public function setOnSale(bool $onSale): self
+    {
+        $this->onSale = $onSale;
 
         return $this;
     }

@@ -21,7 +21,7 @@ class ProductController extends AbstractController
     */
     public function list(ProductRepository $productRepository, GetBaseUrl $baseUrl) :Response
     {
-        $unarchivedProducts = $productRepository->findBy(['archived' => false], ['name' => 'ASC']);
+        $unarchivedProducts = $productRepository->findBy(['archived' => false, 'onSale' => true], ['name' => 'ASC']);
 
         foreach($unarchivedProducts as $currentProduct)
         {

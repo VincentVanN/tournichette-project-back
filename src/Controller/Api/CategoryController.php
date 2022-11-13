@@ -37,10 +37,14 @@ class CategoryController extends AbstractController
      * @Route("/{slug}/products", name="_products", methods="GET")
      * @return Response
      */
-    public function listProducts(string $slug, ProductRepository $productRepository) :Response
+    public function listProducts(string $slug, ProductRepository $productRepository, CategoryRepository $categoryRepository) :Response
     {
         
-        $products = $productRepository->findByCategory($slug);
+        $products = $productRepository->findBy([
+            'archived' => false,
+            'onSale' => true,
+            'category' => $categoryRepository->findOneBy(['slug' => $slug])
+        ], ['name' => 'ASC']);
         if ($products === null )
         {
             return $this->prepareResponse(
