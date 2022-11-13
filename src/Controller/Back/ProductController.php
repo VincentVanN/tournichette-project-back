@@ -7,6 +7,7 @@ use App\Utils\MySlugger;
 use App\Form\ProductType;
 use App\Utils\GetBaseUrl;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,7 +42,8 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
                 
         if ($form->isSubmitted() && $form->isValid()) {
-           $product->setArchived(false);           
+            $product->setArchived(false);
+            $product->setOnSale(true);
             $productRepository->add($product, true);
 
             return $this->redirectToRoute('app_back_product_list', [], Response::HTTP_SEE_OTHER);
@@ -86,6 +88,22 @@ class ProductController extends AbstractController
             'product' => $product,
             'form' => $form
         ]);
+    }
+
+    /**
+     * Modify the onSale status of a product
+     * 
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @Route("/onsale/{id<\d+>}", name="_sale-status", methods={"POST"})
+     */
+    public function changeOnSaleStatus(Product $product, EntityManagerInterface $em)
+    {
+        if ($product !== null) {
+            $product->setOnSale(!$product->isOnSale());
+            $em->flush();
+            $data['productId'] = $product->getId();
+            return $this->json($data, Response::HTTP_OK);
+        }
     }
 
     /**
