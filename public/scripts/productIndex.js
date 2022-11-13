@@ -1,6 +1,5 @@
 const productIndex = {
     init: function () {
-        console.log('ProductIndex initialized')
         const checkboxesElements = document.querySelectorAll('.product-check');
         checkboxesElements.forEach(element => element.addEventListener('change', productIndex.handleChangeOnsaleStatus));
     },
@@ -9,14 +8,13 @@ const productIndex = {
         const fetchOptions = { method: 'POST'};
         const productTarget = event.currentTarget;
         const productTargetId = productTarget.dataset.productId;
-        console.log(productTargetId);
 
         try {
         fetch('/back/product/onsale/' + productTargetId, fetchOptions)
             .then(
                 function(response) {
                     if(!response.ok) {
-                        document.getElementById(productTargetId).checked = false;
+                        productTarget.checked = false;
                         return false;
                     } else {
                         return response.json();
@@ -27,7 +25,7 @@ const productIndex = {
                 function(response) {
                     if (response !== false) {
                         console.log('statut de vente modifié avec succès');
-                        productIndex.modifyLabelTarget(productTargetId, productTarget);
+                        productIndex.modifyLabelTarget(productTargetId);
                     }
                 }
             );
@@ -36,7 +34,7 @@ const productIndex = {
         }
     },
 
-    modifyLabelTarget: function(id, checkbox) {
+    modifyLabelTarget: function(id) {
         const labelTargetElement = document.querySelector('[for="flexSwitch' + id + '"]');
         labelTargetElement.classList.toggle('text-success');
         labelTargetElement.classList.toggle('text-secondary');
