@@ -2,19 +2,53 @@
 
 namespace App\Command;
 
-use Symfony\Component\Console\Attribute\AsCommand;
+use Exception;
+use Composer\Console\Application;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Runtime\Internal\ComposerPlugin;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+
 
 class InstallCommand extends Command
 {
     protected static $defaultName = 'app:install';
-    protected static $defaultDescription = 'A command to installe the application on a server.';
+    protected static $defaultDescription = 'A command to install the application on a server.';
+
+    private $baseUrl;
+    private $mailerUrl;
+    private $mainUrl;
+    private $mailFrom;
+    private $mailAdmin;
+
+    public function __construct(
+        $baseUrl,
+        $mailerUrl,
+        $mainUrl,
+        $mailFrom,
+        $mailAdmin
+        )
+    {
+        $this->baseUrl = $baseUrl;
+        $this->mailerUrl = $mailerUrl;
+        $this->mainUrl = $mainUrl;
+        $this->mailFrom = $mailFrom;
+        $this->mailAdmin = $mailAdmin;
+
+        parent::__construct();
+    }
 
     protected function configure(): void
     {
@@ -27,6 +61,7 @@ class InstallCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $envLocal = [];
         
         //==========================
         // Database configuration
@@ -84,7 +119,7 @@ class InstallCommand extends Command
             }
             $dbUser = urlencode($dbUser);
 
-            $dbPassword = $io->ask('Entrez le mot de passe de la base de données');
+            $dbPassword = $io->askHidden('Entrez le mot de passe de la base de données');
             if ($this->isEmpty($dbPassword, $io)) {
                 return Command::FAILURE;
             }
@@ -99,13 +134,184 @@ class InstallCommand extends Command
 
         }
 
+        $envLocal['DATABASE_URL'] = $databaseUrl;
         $io->block('Base de données configurée', 'ok', 'info');
 
         //==========================
         // URLs configuration
         //==========================
 
-        // TODO
+        $io->title('Configuration des URLs');
+
+        $urlMain = $io->ask('Entrez l\'URL du front office', $this->mainUrl);
+        if ($this->isEmpty($urlMain, $io)) {
+            return Command::FAILURE;
+        }
+
+        $urlBase = $io->ask('Entrez l\'URL du back office', $this->baseUrl);
+        if ($this->isEmpty($urlBase, $io)) {
+            return Command::FAILURE;
+        }
+
+        $urlMailer = $io->ask('Entre l\'URL du mailer', $this->mailerUrl);
+        if ($this->isEmpty($urlMailer, $io)) {
+            return Command::FAILURE;
+        }
+
+        $envLocal['MAIN_URL'] = $urlMain === $this->mainUrl ? null : $urlMain;
+        $envLocal['BASE_URL'] = $urlBase === $this->baseUrl ? null : $urlBase;
+        $envLocal['MAILER_URL'] = $urlMailer === $this->mailerUrl ? null : $urlMailer;
+        $io->block('URLs configurées', 'ok', 'info');
+
+        //==========================
+        // Cores configuration
+        //==========================
+
+        $corsAllowOrigin = str_replace(['http', 'www.'], ['^https?', '(www.)?'], $urlMain);
+
+        $envLocal['CORS_ALLOW_ORIGIN'] = $corsAllowOrigin;
+        
+        //==========================
+        // Mailer configuration
+        //==========================
+
+        $io->title('Configuration du mailer');
+        $io->section('Configuration du protocole SMTP');
+
+        $smtpServer = $io->ask('Entrez l\'adresse du serveur SMTP (exemple : "smtp.example.com")');
+        if ($this->isEmpty($smtpServer, $io)) {
+            return Command::FAILURE;
+        }
+
+        $smtpPort = $io->ask('Entrez le port du serveur SMTP (optionnel)');
+        $smtpPort = filter_var($smtpPort, FILTER_VALIDATE_INT);
+        $smtpPort = $smtpPort === false ? null : $smtpPort;
+
+        $smtpUser = urlencode($io->ask('Entrez le nom d\'utilisateur du serveur SMTP (optionnel)'));
+        if(empty($smtpUser)) { $smtpUser = null; }
+        
+        $smtpPass = urlencode($io->askHidden('Entrez le mot de passe du serveur SMTP (optionnel)'));
+        if(empty($smtpPass)) { $smtpPass = null; }
+
+        $dsnMailer = 'smtp://';
+        
+        if ($smtpUser !== null && $smtpPass !== null) {
+            $dsnMailer .= $smtpUser . ':' . $smtpPass;
+        }
+        
+        $dsnMailer .= '@' . $smtpServer;
+
+        if ($smtpPort !== null) {
+            $dsnMailer .= ':' . $smtpPort;
+        }
+
+        $envLocal['MAILER_DSN'] = $dsnMailer;
+
+        $io->section('Configuration des adresses mails');
+
+        $mailFrom = $io->ask('Entrez l\'adresse email d\'envoi (FROM)', $this->mailFrom);
+        if ($this->isEmpty($mailFrom, $io)) {
+            return Command::FAILURE;
+        }
+        
+        $mailFrom = filter_var($mailFrom, FILTER_VALIDATE_EMAIL);
+        if ($mailFrom === false) {
+            $io->error('Cette adresse n\'a pas une forme valide');
+            return Command::FAILURE;
+        }
+
+        $mailAdmin = $io->ask('Entrez l\'adresse email d\'administration (laissez vide si idem que l\'adresse d\'envoi)');
+        if (empty($mailAdmin)) {
+            $mailAdmin = $mailFrom;
+        } else {
+            $mailAdmin = filter_var($mailAdmin, FILTER_VALIDATE_EMAIL);
+            if ($mailAdmin === false) {
+                $io->error('Cette adresse n\'a pas une forme valide');
+                return Command::FAILURE;
+            }
+        }
+
+        $envLocal['MAILER_FROM'] = $mailFrom === $this->mailFrom ? null : $mailFrom;
+        $envLocal['MAILER_ADMIN'] = $mailAdmin === $this->mailAdmin ? null : $mailAdmin;
+        $io->block('Mailer configuré', 'ok', 'info');
+
+        //==========================
+        // Stripe configuration
+        //==========================
+
+        $io->title('Configuration de stripe');
+
+        $stripeSecretKey = $io->askHidden('Entrez votre clé privée Stripe');
+        if ($this->isEmpty($stripeSecretKey, $io)) {
+            return Command::FAILURE;
+        }
+
+        $envLocal['STRIPE_SECRET_KEY'] = $stripeSecretKey;
+        $io->block('Stripe configuré', 'ok', 'info');
+
+        //==========================
+        // App installation
+        //==========================
+
+        $installationIteration = [
+            'envLocalCreation' => [
+                'parameters' => ['envLocal' => $envLocal, 'io' => $io],
+                'progressBarMessage' => 'Variables d\'environnement créées (.env.local)'
+            ],
+            'composerUpdate' => [
+                'parameters' => ['io' => $io, 'progressBarComposer' => new ProgressBar($output)],
+                'progressBarMessage' => 'Bundles installés'
+
+            ],
+            'databaseCreate' => [
+                'parameters' => ['io' => $io, 'progressBarDatabase' => new ProgressBar($output)],
+                'progressBarMessage' => 'Base de données créée'
+            ]
+        ];
+        
+        $progressBar = new ProgressBar($output, count($installationIteration));
+        $progressBar->setFormatDefinition('custom', '<fg=black;bg=green>%message%</>' . PHP_EOL . '%current%/%max% [%bar%]' . PHP_EOL);
+        $progressBar->setFormat('custom');
+        $progressBar->setEmptyBarCharacter('░');
+        $progressBar->setProgressCharacter('');
+        $progressBar->setBarCharacter('▓');
+        $progressBar->setMessage('Installation...', 'message');
+
+        foreach ($installationIteration as $function => $parameters) {
+            // $progressBar->setMessage($parameters['progressBarMessage'], 'message');
+            // sleep(1);
+
+            if ($this->$function($parameters['parameters']) === true) {
+                $progressBar->setMessage($parameters['progressBarMessage'], 'message');
+                $progressBar->advance();
+                usleep(1000);
+            }
+        }
+
+        $progressBar->finish();
+        $io->success('Backoffice installé et prêt à être utilisé !');
+
+        return Command::SUCCESS;
+
+        // * Database creation
+
+        $progressBarDatabase = new ProgressBar($output, 2);
+
+        $progressBarDatabase->setFormatDefinition('minimal', '<fg=green>%message%</>' . PHP_EOL .  '[%bar%]');
+        $progressBarDatabase->setFormat('minimal');
+        $progressBarDatabase->setEmptyBarCharacter('<fg=red>⚬</>');
+        $progressBarDatabase->setProgressCharacter('<fg=green>➤</>');
+        $progressBarDatabase->setBarCharacter('<fg=green>⚬</>');
+        $progressBarDatabase->setMessage('Création de la base de données', 'message');
+
+        $doctrine = new Process(['bin/console', 'do:mi:mi', '--no-interaction']);
+        $returnCode = $doctrine->start();
+        $progressBarDatabase->start(1);
+        $doctrine->wait();
+
+        dd($returnCode);
+
+        
 
         // $output->writeln('Selected : ' . $DBType);
         // $io = new SymfonyStyle($input, $output);
@@ -132,5 +338,114 @@ class InstallCommand extends Command
         }
 
         return false;
+    }
+
+    private function envLocalCreation(array $parameters)
+    {
+        $envLocal = $parameters['envLocal'];
+        $io = $parameters['io'];
+
+        $fileSystem = new Filesystem;
+
+        if ($fileSystem->exists('.env.local')) {
+            try {
+                $fileSystem->rename('.env.local', 'backup.env.local' . date("dmYHis"));
+            } catch (Exception $error) {
+                $io->error('Une erreur s\'est produite lors du backup du fichier .env.local : ' . $error->getMessage() . ' (' . $error->getCode() . ')');
+                return Command::FAILURE;
+            }
+        }
+
+        $content = '';
+        foreach ($envLocal as $key => $value) {
+            if ($value !== null) {
+                $content .= $key . '=' . $value . PHP_EOL;
+            }
+        }
+
+        try {
+            $fileSystem->dumpFile('.env.local', $content);
+            sleep(2);
+            return true;
+
+        } catch (IOExceptionInterface $exception) {
+            $io->error('Une erreur s\'est produite lors de la création du fichier dans : ' . $exception->getPath());
+            return Command::FAILURE;
+        }
+    }
+
+    private function composerUpdate(array $parameters)
+    { 
+        $io = $parameters['io'];
+        $progressBarComposer = $parameters['progressBarComposer'];
+
+        $progressBarComposer->setFormatDefinition('minimal_nomax', '<fg=green>%message%</>' . PHP_EOL .  '[%bar%]');
+        $progressBarComposer->setFormat('minimal');
+        $progressBarComposer->setEmptyBarCharacter('<fg=red>⚬</>');
+        $progressBarComposer->setProgressCharacter('<fg=green>➤</>');
+        $progressBarComposer->setBarCharacter('<fg=green>⚬</>');
+        $progressBarComposer->setMessage('Installation des bundles...', 'message');
+
+        $composer = new Process(['composer', 'update']);
+        $composer->start();
+
+        $progressBarComposer->start();
+        
+        foreach ($composer as $type => $data) {
+            $progressBarComposer->advance(1);
+            // if ($composer::OUT === $type) {
+
+            //     $progressBarComposer->advance(1);
+            // } else { // $composer::ERR === $type
+            //     $progressBarComposer->advance(1);
+            // }
+        }     
+
+        $progressBarComposer->finish();
+
+        return true;
+    }
+
+    private function databaseCreate(array $parameters)
+    {
+        $io = $parameters['io'];
+        $progressBarDatabase = $parameters['progressBarDatabase'];
+
+        $progressBarDatabase->setFormatDefinition('minimal', '<fg=green>%message%</>' . PHP_EOL .  '[%bar%]');
+        $progressBarDatabase->setFormat('minimal');
+        $progressBarDatabase->setEmptyBarCharacter('<fg=red>⚬</>');
+        $progressBarDatabase->setProgressCharacter('<fg=green>➤</>');
+        $progressBarDatabase->setBarCharacter('<fg=green>⚬</>');
+
+        $doctrine = new Process(['bin/console', 'do:mi:mi', '--no-interaction']);
+        $returnCode = $doctrine->start();
+        $progressBarDatabase->setMessage('Création de la structure de la base de données', 'message');
+        $progressBarDatabase->start(1);
+
+        foreach ($doctrine as $type => $data) {
+            $progressBarDatabase->advance(1);
+        }  
+
+        // TODO => Créer les données : Récupérer les données de la tournichette mais créer des faux utilisateur (dont un super admin et un admin)
+
+        $progressBarDatabase->finish();
+
+        return true;
+
+        ///////////
+        // $io = $parameters['io'];
+        // $progressBarDatabase = $parameters['progressBarDatabase'];
+
+        // $progressBarDatabase->setFormatDefinition('minimal', '[%bar%]' . PHP_EOL . '<fg=green>%status%</>');
+        // $progressBarDatabase->setFormat('minimal');
+        // $progressBarDatabase->setEmptyBarCharacter('<fg=red>⚬</>');
+        // $progressBarDatabase->setProgressCharacter('<fg=green>➤</>');
+        // $progressBarDatabase->setBarCharacter('<fg=green>⚬</>');
+
+        // $doctrine = $this->getApplication()->find('doctrine:migrations:migrate');
+        // $doctrine->run(NullIn, NullOutput);
+
+        // dd($doctrine);
+
     }
 }

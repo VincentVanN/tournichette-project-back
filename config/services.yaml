@@ -38,6 +38,15 @@ services:
             $mailExpiredTime: '%env(resolve:TOKEN_EMAIL_VERIFY_TIME)%'
             $mailFrom: '%env(resolve:MAILER_FROM)%'
             $mailAdmin: '%env(resolve:MAILER_ADMIN)%'
+
+    App\Command\InstallCommand:
+        bind:
+            $baseUrl: '%env(resolve:BASE_URL)%'
+            $mailerUrl: '%env(resolve:MAILER_URL)%'
+            $mainUrl: '%env(resolve:MAIN_URL)%'
+            $mailFrom: '%env(resolve:MAILER_FROM)%'
+            $mailAdmin: '%env(resolve:MAILER_ADMIN)%'
+    
     
     App\EventListener\CartListener:
         tags:
