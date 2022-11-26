@@ -63,11 +63,36 @@ class InstallCommand extends Command
         //     ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
         //     ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         // ;
+
+        $this
+            ->addOption('reset-db', 'r', InputOption::VALUE_NONE, 'Reset the database to initials values');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+
+        if ($input->getOption('reset-db')) {
+            
+            $fileSystem = new Filesystem;
+
+            if ($fileSystem->exists('.env.local')) {
+
+                if($this->resetDatabase($io, $output)) {
+                    $io->text(PHP_EOL);
+                    $io->success('Base de données réiniitalisée');
+                    return Command::SUCCESS;
+                } else {
+                    $io->error('Une erreur est survenue pendant la réinitialisation.');
+                    return Command::FAILURE;
+                }
+
+            } else {
+                $io->warning('Les variables d\'environnement ne sont pas configurées.');
+                $io->note('Installation de l\'application. Veuillez suivre les instructions.');
+            }
+        }
+
         $envLocal = [];
         
         //==========================
@@ -269,6 +294,12 @@ class InstallCommand extends Command
         $envLocal['APP_SECRET'] = $appSecret;
 
         //==========================
+        // Prod configuration
+        //==========================
+
+        $envLocal['APP_ENV'] = 'prod';
+
+        //==========================
         // App installation
         //==========================
 
@@ -301,8 +332,6 @@ class InstallCommand extends Command
         $progressBar->setMessage('Installation...', 'message');
 
         foreach ($installationIteration as $function => $parameters) {
-            // $progressBar->setMessage($parameters['progressBarMessage'], 'message');
-            // sleep(1);
 
             if ($this->$function($parameters['parameters']) === true) {
                 $progressBar->setMessage($parameters['progressBarMessage'], 'message');
@@ -448,7 +477,7 @@ class InstallCommand extends Command
         return true;
     }
 
-    public function clearCache(array $parameters)
+    private function clearCache(array $parameters)
     {
         $io = $parameters['io'];
 
@@ -462,5 +491,19 @@ class InstallCommand extends Command
         $clearCache->start();
         $clearCache->wait();
         return true;
+    }
+
+    private function resetDatabase($io, $output)
+    {
+        $doctrine = new Process(['bin/console' , 'doctrine:schema:drop', '--full-database', '--force', '--no-interaction']);
+        $doctrine->start();
+        $doctrine->wait();
+
+        if($this->databaseCreate(['io' => $io, 'progressBarDatabase' => new ProgressBar($output, 10)])) {
+            return true;
+        } else {
+            $io->error('An error occur during database reset');
+            return Command::FAILURE;
+        }
     }
 }
