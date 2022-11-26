@@ -46,6 +46,7 @@ services:
             $mainUrl: '%env(resolve:MAIN_URL)%'
             $mailFrom: '%env(resolve:MAILER_FROM)%'
             $mailAdmin: '%env(resolve:MAILER_ADMIN)%'
+            $appEnv: '%env(resolve:APP_ENV)%'
     
     
     App\EventListener\CartListener:

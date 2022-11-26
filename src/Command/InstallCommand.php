@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use Exception;
+use App\Utils\InitialDatas;
 use Composer\Console\Application;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Process\Process;
@@ -10,12 +11,12 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Runtime\Internal\ComposerPlugin;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -32,13 +33,17 @@ class InstallCommand extends Command
     private $mainUrl;
     private $mailFrom;
     private $mailAdmin;
+    private $initialDatas;
+    private $appEnv;
 
     public function __construct(
         $baseUrl,
         $mailerUrl,
         $mainUrl,
         $mailFrom,
-        $mailAdmin
+        $mailAdmin,
+        $appEnv,
+        InitialDatas $initialDatas
         )
     {
         $this->baseUrl = $baseUrl;
@@ -46,6 +51,8 @@ class InstallCommand extends Command
         $this->mainUrl = $mainUrl;
         $this->mailFrom = $mailFrom;
         $this->mailAdmin = $mailAdmin;
+        $this->initialDatas = $initialDatas;
+        $this->appEnv = $appEnv;
 
         parent::__construct();
     }
@@ -250,6 +257,18 @@ class InstallCommand extends Command
         $io->block('Stripe configuré', 'ok', 'info');
 
         //==========================
+        // Secret configuration
+        //==========================
+
+        $characters = '0123456789abcdef';
+        $appSecret = '';
+        for ($i = 0; $i < 32; $i++) {
+            $appSecret .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        $envLocal['APP_SECRET'] = $appSecret;
+
+        //==========================
         // App installation
         //==========================
 
@@ -264,8 +283,12 @@ class InstallCommand extends Command
 
             ],
             'databaseCreate' => [
-                'parameters' => ['io' => $io, 'progressBarDatabase' => new ProgressBar($output)],
+                'parameters' => ['io' => $io, 'progressBarDatabase' => new ProgressBar($output, 10)],
                 'progressBarMessage' => 'Base de données créée'
+            ],
+            'clearCache' => [
+                'parameters' => ['io' => $io],
+                'progressBarMessage' => 'Cache effacé'
             ]
         ];
         
@@ -293,41 +316,6 @@ class InstallCommand extends Command
 
         return Command::SUCCESS;
 
-        // * Database creation
-
-        $progressBarDatabase = new ProgressBar($output, 2);
-
-        $progressBarDatabase->setFormatDefinition('minimal', '<fg=green>%message%</>' . PHP_EOL .  '[%bar%]');
-        $progressBarDatabase->setFormat('minimal');
-        $progressBarDatabase->setEmptyBarCharacter('<fg=red>⚬</>');
-        $progressBarDatabase->setProgressCharacter('<fg=green>➤</>');
-        $progressBarDatabase->setBarCharacter('<fg=green>⚬</>');
-        $progressBarDatabase->setMessage('Création de la base de données', 'message');
-
-        $doctrine = new Process(['bin/console', 'do:mi:mi', '--no-interaction']);
-        $returnCode = $doctrine->start();
-        $progressBarDatabase->start(1);
-        $doctrine->wait();
-
-        dd($returnCode);
-
-        
-
-        // $output->writeln('Selected : ' . $DBType);
-        // $io = new SymfonyStyle($input, $output);
-        // $arg1 = $input->getArgument('arg1');
-
-        // if ($arg1) {
-        //     $io->note(sprintf('You passed an argument: %s', $arg1));
-        // }
-
-        // if ($input->getOption('option1')) {
-        //     // ...
-        // }
-
-        // $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
-
-        return Command::SUCCESS;
     }
 
     private function isEmpty(?string $string, $io)
@@ -365,6 +353,7 @@ class InstallCommand extends Command
 
         try {
             $fileSystem->dumpFile('.env.local', $content);
+
             sleep(2);
             return true;
 
@@ -372,6 +361,7 @@ class InstallCommand extends Command
             $io->error('Une erreur s\'est produite lors de la création du fichier dans : ' . $exception->getPath());
             return Command::FAILURE;
         }
+
     }
 
     private function composerUpdate(array $parameters)
@@ -418,34 +408,59 @@ class InstallCommand extends Command
         $progressBarDatabase->setBarCharacter('<fg=green>⚬</>');
 
         $doctrine = new Process(['bin/console', 'do:mi:mi', '--no-interaction']);
-        $returnCode = $doctrine->start();
-        $progressBarDatabase->setMessage('Création de la structure de la base de données', 'message');
+        $doctrine->start();
+        
         $progressBarDatabase->start(1);
 
-        foreach ($doctrine as $type => $data) {
-            $progressBarDatabase->advance(1);
-        }  
+        while ($doctrine->isRunning()) {
+            $progressBarDatabase->setMessage('Création de la structure de la base de données', 'message');
+        }
 
-        // TODO => Créer les données : Récupérer les données de la tournichette mais créer des faux utilisateur (dont un super admin et un admin)
+        $progressBarDatabase->advance(1);
+        $progressBarDatabase->setMessage('Création des données', 'message');
+
+        $this->initialDatas->createCarts();
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createCategories();
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createProducts();
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createCartProducts();
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createDepots();
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createSalesStatus();
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createUsers(20);
+        $progressBarDatabase->advance(1);
+
+        $this->initialDatas->createOrders(50);
+        $progressBarDatabase->advance(1);
 
         $progressBarDatabase->finish();
 
         return true;
+    }
 
-        ///////////
-        // $io = $parameters['io'];
-        // $progressBarDatabase = $parameters['progressBarDatabase'];
+    public function clearCache(array $parameters)
+    {
+        $io = $parameters['io'];
 
-        // $progressBarDatabase->setFormatDefinition('minimal', '[%bar%]' . PHP_EOL . '<fg=green>%status%</>');
-        // $progressBarDatabase->setFormat('minimal');
-        // $progressBarDatabase->setEmptyBarCharacter('<fg=red>⚬</>');
-        // $progressBarDatabase->setProgressCharacter('<fg=green>➤</>');
-        // $progressBarDatabase->setBarCharacter('<fg=green>⚬</>');
 
-        // $doctrine = $this->getApplication()->find('doctrine:migrations:migrate');
-        // $doctrine->run(NullIn, NullOutput);
+        $dumpEnv = new Process( (['composer', 'dump-env', $this->appEnv]));
+        $dumpEnv->start();
+        $dumpEnv->wait();
 
-        // dd($doctrine);
-
+        $appDebug = $this->appEnv === 'prod' ? '0' : '1';
+        $clearCache = new Process(['APP_ENV=' . $this->appEnv, 'APP_DEBUG=' . $appDebug, 'php', 'bin/console', 'cache:clear']);
+        $clearCache->start();
+        $clearCache->wait();
+        return true;
     }
 }
