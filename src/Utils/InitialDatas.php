@@ -296,6 +296,8 @@ class InitialDatas
                 $method = 'set' . $property;
                 if ($method === 'setApiTokenUpdatedAt' || $method === 'setTempTokenUpdatedAt' || $method === 'setEmailTokenUpdatedAt') {
                     $user->$method($value === NULL ? $value : new DateTimeImmutable($value));
+                } elseif ($method === 'setPassword') {
+                    $user->$method($this->userPasswordHasher->hashPassword($user, $value));
                 } else {
                     $user->$method($value);
                 }
